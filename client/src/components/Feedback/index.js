@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import './style.css';
 
-class Contact extends Component {
+class Feedback extends Component {
   render() {
     return (
       <>
-        <h1>Contact</h1>
-        <p>Contact</p>
+        <h1>Feedback</h1>
+        <p>Feedback</p>
       </>
     )
   }
 }
 
-export default Contact;
+export default Feedback;

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import './style.css';
 
-class About extends Component {
+class Map extends Component {
   render() {
     return (
       <>
-        <h1>About</h1>
-        <p>About</p>
+        <h1>Map</h1>
+        <p>Map</p>
       </>
     )
   }
 }
 
-export default About;
+export default Map;
