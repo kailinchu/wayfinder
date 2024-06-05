@@ -7,6 +7,7 @@ class Directory extends Component {
       <>
         <h1>Directory</h1>
         <p>testing</p>
+        <p>ok are we good ??</p>
       </>
     )
   }
