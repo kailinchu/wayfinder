@@ -6,7 +6,7 @@ class Directory extends Component {
     return (
       <>
         <h1>Directory</h1>
-        <p>Directory</p>
+        <p>testing</p>
       </>
     )
   }
