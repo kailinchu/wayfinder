@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
+import TabButtons from './TabButtons.js'
+import TabContent from './TabContent.js'
 
 const data = [ 
   {
@@ -18,6 +20,35 @@ const data = [
   },
 ]
 
+const petData = [
+  {
+    animal: "Cheetah",
+    fact: "Cheetahs are the fastest land animals, capable of reaching speeds up to 75 mph.",
+    image: "../src/assets/6.svg",
+  },
+  {
+    animal: "Koala",
+    fact: "Koalas sleep around 20 hours a day and are known for their eucalyptus diet.",
+    image: "../src/assets/3.svg",
+  },
+  {
+    animal: "Elephant",
+    fact: "Elephants have the largest brains among land animals and demonstrate remarkable intelligence.",
+    image: "../src/assets/1.svg",
+  },
+  {
+    animal: "Zebra",
+    fact: "Zebras have distinctive black and white stripes that act as a natural defense against predators.",
+    image: "../src/assets/7.svg",
+  },
+  {
+    animal: "Horse",
+    fact: "Horses have excellent memory and are capable of recognizing human emotions.",
+    image: "../src/assets/5.svg",
+  },
+];
+
+
 
 class Directory extends React.Component {
 
@@ -28,6 +59,8 @@ class Directory extends React.Component {
     };
   }
 
+
+  //i is an argument
   toggle = (i) => {
     this.setState((prevState) => ({
       selected: prevState.selected === i ? null : i,
@@ -41,7 +74,22 @@ class Directory extends React.Component {
 
     return (
       <>
+        <div className = "main__container">
+          <h1>Choose your pet</h1>
+          <TabButtons petData ={petData}/>
+          <TabContent petData={petData} />
+
+        </div>
+
+
+
+
         <h1>Directory</h1>
+        <p>Click on a place to get directions and a map. If the location is not on the main floor, the map will direct you to the elevators. Use the search feature and alphabetized categories to quickly find a location.</p>
+        <br></br>
+
+        <span>A-E</span> <span>E-I</span>
+
         <div className = "wrapper">
           <div className ="accordion">
 
@@ -51,10 +99,7 @@ class Directory extends React.Component {
                   <h2>{item.question}</h2>
                   <span>{selected === i ? '-': '+'}</span>
                 </div>
-
-                {selected === i && (
-                  <div className="content">{item.answer}</div>
-                )}
+                  <div className={selected === i? 'content show': 'content'}>{item.answer}</div>
               </div>
             ))}
           </div>
