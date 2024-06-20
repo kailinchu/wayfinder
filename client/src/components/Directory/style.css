@@ -129,12 +129,12 @@
     text-align: center;
   }
   
-  /* .active {
+  .active {
     background: var(--text-color);
   
     color: #fff;
     font-weight: 600;
-  } */
+  }
   
   @media screen and (max-width: 1000px) {
     .main__container {

@@ -56,30 +56,42 @@ class Directory extends React.Component {
     super(props);
     this.state = {
       selected: null,
+      selectedTab :null,
     };
   }
 
 
   //i is an argument
+  //toggle is the function name
+  
+  //function: this.setState(func())
+
+  //this is entering a function as an arg, it's saying that selected === the new pressed accordion item
+  //unless it's the prev state, then set == null
   toggle = (i) => {
     this.setState((prevState) => ({
       selected: prevState.selected === i ? null : i,
     }));
   };
 
+  toggleTab = (i) => {
+    this.setState((prevTabState) => ({
+      selectedTab: prevTabState.selected === i ? null : i,
+    }));
+  };
 
 
   render() {
     const { selected } = this.state;
-
+    const {selectedTab} = this.state;
     return (
       <>
-        <div className = "main__container">
+        {/* <div className = "main__container">
           <h1>Choose your pet</h1>
           <TabButtons petData ={petData}/>
           <TabContent petData={petData} />
 
-        </div>
+        </div> */}
 
 
 
@@ -88,7 +100,6 @@ class Directory extends React.Component {
         <p>Click on a place to get directions and a map. If the location is not on the main floor, the map will direct you to the elevators. Use the search feature and alphabetized categories to quickly find a location.</p>
         <br></br>
 
-        <span>A-E</span> <span>E-I</span>
 
         <div className = "wrapper">
           <div className ="accordion">
@@ -99,6 +110,8 @@ class Directory extends React.Component {
                   <h2>{item.question}</h2>
                   <span>{selected === i ? '-': '+'}</span>
                 </div>
+
+                  {/*if content, then it was pressed again, draw back the shown info*/}
                   <div className={selected === i? 'content show': 'content'}>{item.answer}</div>
               </div>
             ))}
