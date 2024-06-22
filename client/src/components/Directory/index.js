@@ -2,121 +2,121 @@ import React, { Component } from 'react'
 import './style.css'
 import TabButtons from './TabButtons.js'
 import TabContent from './TabContent.js'
+import Icon from '@mui/material/Icon';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import AccordionMenu from './accordion'
 
-const data = [ 
+//array of objects to describe each unit/area in the hospital
+const directory = [
   {
-    question: 'Administrative Department',
-    answer: '1st floor. See map below to locate the main floor (2nd floor) elevators.' + 
+    name: "Administrative Department",
+    description: '1st floor. See map below to locate the main floor (2nd floor) elevators.' + 
     'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway.' +
     'The elevators will be on your right. When you exit the elevator, walk straight (around 10m). The Administrative Department will be on your right',
+  }, 
+  {
+    name: 'Ambulatory Care Medical Clinics',
+    description: '4th floor. See map below to locate the main floor elevators. To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
   },
   {
-    question: 'Ambulatory Care Medical Clinics',
-    answer: '4th floor. See map below to locate the main floor elevators. To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
+    name: 'Acute Medical Clinic (AMC)',
+    description: 'Main floor (2nd floor). See map below. To get to AMC from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. Once you pass the registration area, AMC will be on your left, beside the Fracture Clinic.',
   },
   {
-    question: 'Acute Medical Clinic (AMC)',
-    answer: 'Main floor (2nd floor). See map below. To get to AMC from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. Once you pass the registration area, AMC will be on your left, beside the Fracture Clinic.',
+    name: 'Educational Services',
+    description: '1st floor. See map below to locate the main floor (2nd floor) elevators.' + 
+    
+    'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
   },
 ]
 
-const petData = [
-  {
-    animal: "Cheetah",
-    fact: "Cheetahs are the fastest land animals, capable of reaching speeds up to 75 mph.",
-    image: "../src/assets/6.svg",
-  },
-  {
-    animal: "Koala",
-    fact: "Koalas sleep around 20 hours a day and are known for their eucalyptus diet.",
-    image: "../src/assets/3.svg",
-  },
-  {
-    animal: "Elephant",
-    fact: "Elephants have the largest brains among land animals and demonstrate remarkable intelligence.",
-    image: "../src/assets/1.svg",
-  },
-  {
-    animal: "Zebra",
-    fact: "Zebras have distinctive black and white stripes that act as a natural defense against predators.",
-    image: "../src/assets/7.svg",
-  },
-  {
-    animal: "Horse",
-    fact: "Horses have excellent memory and are capable of recognizing human emotions.",
-    image: "../src/assets/5.svg",
-  },
-];
+
+
+
+
+//tab functionality
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
 
 
 
 class Directory extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: null,
-      selectedTab :null,
-    };
-  }
-
-
-  //i is an argument
-  //toggle is the function name
-  
-  //function: this.setState(func())
-
-  //this is entering a function as an arg, it's saying that selected === the new pressed accordion item
-  //unless it's the prev state, then set == null
-  toggle = (i) => {
-    this.setState((prevState) => ({
-      selected: prevState.selected === i ? null : i,
-    }));
+  state = {
+    value: 0, //default
   };
 
-  toggleTab = (i) => {
-    this.setState((prevTabState) => ({
-      selectedTab: prevTabState.selected === i ? null : i,
-    }));
+  handleChange = (event, newValue) => {
+    this.setState({value: newValue});
   };
 
-
-  render() {
-    const { selected } = this.state;
-    const {selectedTab} = this.state;
+  render() { //runs the code everytime this class component is rendered
+    // this is a key feature in react class components, DIFFERENT from functional components
+    const {value} = this.state;
     return (
       <>
-        {/* <div className = "main__container">
-          <h1>Choose your pet</h1>
-          <TabButtons petData ={petData}/>
-          <TabContent petData={petData} />
+      <h2>Directories</h2>
 
-        </div> */}
+        <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={this.handleChange} aria-label="basic tabs example">
+            <Tab label="A-D" />
+            <Tab label="E-H" />
+            <Tab label="I-L" />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          {/* Content for tab index 0 */}
+          <AccordionMenu info={directory} startIdx={0} endIdx={1}/>
+        </CustomTabPanel>
+        
+        
+        <CustomTabPanel value={value} index={1}>
+          {/* Content for tab index 1 */}
+          <AccordionMenu info={directory} startIdx={3} endIdx={3}/>
+
+        
+        </CustomTabPanel>
+        
+        
+        <CustomTabPanel value={value} index={2}>
+          {/* Content for tab index 2 */}
+          <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
+
+        
+        </CustomTabPanel>
+      </Box>
 
 
 
-
-        <h1>Directory</h1>
-        <p>Click on a place to get directions and a map. If the location is not on the main floor, the map will direct you to the elevators. Use the search feature and alphabetized categories to quickly find a location.</p>
-        <br></br>
-
-
-        <div className = "wrapper">
-          <div className ="accordion">
-
-            {data.map((item, i) => (
-              <div className="item" key={i}>
-                <div className ="title" onClick={() => this.toggle(i)}>
-                  <h2>{item.question}</h2>
-                  <span>{selected === i ? '-': '+'}</span>
-                </div>
-
-                  {/*if content, then it was pressed again, draw back the shown info*/}
-                  <div className={selected === i? 'content show': 'content'}>{item.answer}</div>
-              </div>
-            ))}
-          </div>
-        </div>
       </>
     );
 
