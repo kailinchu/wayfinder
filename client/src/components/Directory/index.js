@@ -1,21 +1,11 @@
 import React, { Component } from 'react'
 import './style.css'
-import TabButtons from './TabButtons.js'
-import TabContent from './TabContent.js'
-import Icon from '@mui/material/Icon';
-import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import AccordionMenu from './accordion'
-
+import AccordionMenu from './accordion';
+import SearchBar from './searchbar';
 //array of objects to describe each unit/area in the hospital
 const directory = [
   {
@@ -83,6 +73,7 @@ class Directory extends React.Component {
     const {value} = this.state;
     return (
       <>
+      <SearchBar info={directory}/>
       <h2>Directories</h2>
 
         <Box sx={{ width: '100%' }}>
@@ -91,6 +82,12 @@ class Directory extends React.Component {
             <Tab label="A-D" />
             <Tab label="E-H" />
             <Tab label="I-L" />
+            <Tab label="M-N" />
+            <Tab label="O-R" />
+            <Tab label="S-Z" />
+            <Tab label="Units" />
+
+
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
@@ -98,21 +95,37 @@ class Directory extends React.Component {
           <AccordionMenu info={directory} startIdx={0} endIdx={1}/>
         </CustomTabPanel>
         
-        
         <CustomTabPanel value={value} index={1}>
           {/* Content for tab index 1 */}
           <AccordionMenu info={directory} startIdx={3} endIdx={3}/>
-
-        
         </CustomTabPanel>
-        
         
         <CustomTabPanel value={value} index={2}>
           {/* Content for tab index 2 */}
           <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
-
-        
         </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={3}>
+          {/* Content for tab index 2 */}
+          <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={4}>
+          {/* Content for tab index 2 */}
+          <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={5}>
+          {/* Content for tab index 2 */}
+          <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={6}>
+          {/* Content for tab index 2 */}
+          <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
+        </CustomTabPanel>
+
+
       </Box>
 
 

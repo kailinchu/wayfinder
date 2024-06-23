@@ -5,8 +5,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react'
 
+  
+
 const AccordionMenu = (props) => {
-    console.log(props.startIdx, props.endIdx);
+    // console.log(props.startIdx, props.endIdx);
     
     //destructuring the props
     const {info, startIdx, endIdx} = props;
@@ -20,7 +22,7 @@ const AccordionMenu = (props) => {
     return (
         <>
         {indices.map(idx => (
-            <Accordion key={idx}> 
+            <Accordion disableGutters key={idx}> 
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1-content"
@@ -28,7 +30,6 @@ const AccordionMenu = (props) => {
                 >
                     {info[idx].name}
                 </AccordionSummary>
-        
                 <AccordionDetails>
                     {info[idx].description}
                 </AccordionDetails>
