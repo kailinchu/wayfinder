@@ -13,21 +13,25 @@ const directory = [
   {
     name: "Administrative Department",
     description: '1st floor. See map below to locate the main floor (2nd floor) elevators.\n\n' + 
-    'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway.' +
+    'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. ' +
     'The elevators will be on your right. When you exit the elevator, walk straight (around 10m). The Administrative Department will be on your right',
+    image: '../../../images/Birchmount-Maps/elevators.png'
   }, 
   {
     name: 'Ambulatory Care Medical Clinics',
     description: '4th floor. See map below to locate the main floor elevators. To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
+    image: '../../../images/Birchmount-Maps/elevators.png'
   },
   {
     name: 'Acute Medical Clinic (AMC)',
     description: 'Main floor (2nd floor). See map below. To get to AMC from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. Once you pass the registration area, AMC will be on your left, beside the Fracture Clinic.',
+    image: '../../../images/Birchmount-Maps/fracture-medicine.png'
   },
   {
     name: 'Educational Services',
     description: '1st floor. See map below to locate the main floor (2nd floor) elevators.' + 
     'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
+    image: '../../../images/Birchmount-Maps/elevators.png'
   },
   
 ]

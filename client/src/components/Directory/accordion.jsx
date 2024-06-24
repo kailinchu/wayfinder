@@ -38,6 +38,7 @@ const AccordionMenu = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div dangerouslySetInnerHTML={renderDescription(unit.description)} />
+                    <img src={unit.image} alt= {unit.name + "image"} className="mapImage"></img>
                 </AccordionDetails>
               </Accordion>
               ))}
@@ -55,6 +56,7 @@ const AccordionMenu = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div dangerouslySetInnerHTML={renderDescription(info[idx].description)} />
+                    <img src={info[idx].image} alt= {info[idx].name + "image"} className="map-image"></img>
                 </AccordionDetails>
             </Accordion>
         ))}
