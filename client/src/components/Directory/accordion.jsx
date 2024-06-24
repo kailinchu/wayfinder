@@ -16,6 +16,7 @@ const AccordionMenu = (props) => {
     for(let i = startIdx; i <= endIdx; i++) {
         indices.push(i);
     }    
+    console.log(filteredInfo);
 
     return (
         <>

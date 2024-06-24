@@ -32,7 +32,7 @@ const directory = [
     'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
   },
 ]
-var filteredDirectoryIndices =[];
+var filteredDirectoryIndices = directory;
 //tab functionality
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props; // array destructuring for props
@@ -155,7 +155,6 @@ class Directory extends React.Component {
         <CustomTabPanel value={value} index={7}>
           {/* Content for tab index 7. PASS filtered array into props so that the filtered units are displayed */}
 
-          
           <AccordionMenu info={directory} startIdx={0} endIdx={directory.length-1} filteredInfo={filteredDirectoryIndices} index={7}/>
         </CustomTabPanel>
 
