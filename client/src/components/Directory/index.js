@@ -7,7 +7,6 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
-import { useState } from 'react';
 
 //array of objects to describe each unit/area in the hospital
 const directory = [
@@ -106,8 +105,12 @@ class Directory extends React.Component {
 
         <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={this.handleChange}   variant="scrollable" scrollButtons="auto" aria-label="Alphabetical quick tabbing system for directory">
-            <Tab label="A-D" />
+          <Tabs value={value} onChange={this.handleChange}   variant="scrollable" scrollButtons="auto" 
+            
+            aria-label="Alphabetical quick tabbing system for directory">
+            <Tab 
+                label="A-D" 
+            />
             <Tab label="E-H" />
             <Tab label="I-L" />
             <Tab label="M-N" />
