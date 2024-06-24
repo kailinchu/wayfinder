@@ -12,7 +12,7 @@ import SearchBar from './searchbar';
 const directory = [
   {
     name: "Administrative Department",
-    description: '1st floor. See map below to locate the main floor (2nd floor) elevators.' + 
+    description: '1st floor. See map below to locate the main floor (2nd floor) elevators.\n\n' + 
     'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway.' +
     'The elevators will be on your right. When you exit the elevator, walk straight (around 10m). The Administrative Department will be on your right',
   }, 
@@ -27,9 +27,9 @@ const directory = [
   {
     name: 'Educational Services',
     description: '1st floor. See map below to locate the main floor (2nd floor) elevators.' + 
-    
     'To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.',
   },
+  
 ]
 var filteredDirectoryIndices = directory;
 //tab functionality
@@ -80,16 +80,6 @@ class Directory extends React.Component {
     
     console.log(filteredDirectoryIndices);
 
-    //add all the units which include the search term into a separate filtered array
-    // for(let i = 0; i < directory.length; i++) {
-    //   if(directory[i].name.toLowerCase().includes((input.toLowerCase()))) {
-    //     filteredDirectoryIndices.push(i);
-    //     console.log(i);
-    //   }else {
-    //     filteredDirectoryIndices.splice(i, i);
-    //   }
-    // }
-
   };
 
   render() { //runs the code everytime this class component is rendered
@@ -106,7 +96,16 @@ class Directory extends React.Component {
         <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={this.handleChange}   variant="scrollable" scrollButtons="auto" 
-            
+      sx={{
+        '& .MuiTabs-indicator': {
+          backgroundColor: '#48beb0', // Change the color of the indicator
+        },
+        '& .MuiTab-root': {
+          '&.Mui-selected': {
+            color: '#48beb0', // change the color for selected
+          },
+        },
+      }}
             aria-label="Alphabetical quick tabbing system for directory">
             <Tab 
                 label="A-D" 

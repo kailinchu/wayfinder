@@ -24,7 +24,20 @@ const SearchBar = (props) => {
         variant="outlined" 
         onChange={handleChange} 
         value={searchInput}
-        InputProps={{
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#48beb0', // Default border color
+            },
+            '&:hover fieldset': {
+              borderColor: '#48beb0', // Border color when hovering
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#48beb0', // Border color when focused
+            },
+          },
+        }}
+            InputProps={{
         startAdornment: <InputAdornment position="start">
           <SearchIcon/>
         </InputAdornment>,
