@@ -16,7 +16,7 @@ const SearchBar = (props) => {
   const handleChange = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value); //updates the state which causes the component to re-render (happens with react components)
-    onSearchChange();
+    onSearchChange(e.target.value);
   };
 
   //filter is a method for arrays in javascript "that takes a callback function as an argument 
@@ -33,33 +33,6 @@ const SearchBar = (props) => {
         variant="outlined" 
         onChange={handleChange} 
         value={searchInput}/>
-    <div>
-      {searchInput !== ""? // ternary operator so that the tabs don't show up until something is entered into the search bar
-          <>
-            {filteredUnits.map(unit => (
-              <Accordion disableGutters key={unit.name}> 
-              <AccordionSummary
-                  expandIcon={<ExpandMoreIcon/>}
-                  aria-controls="panel1-content"
-                  id="panel1-header"    
-              >
-                  {unit.name}
-              </AccordionSummary>
-              <AccordionDetails>
-                  {unit.description}
-              </AccordionDetails>
-            </Accordion>
-            ))}
-          </>
-          : 
-          <h1></h1>
-      }  
-                
-        
-      
-      
-      
-      </div>
     </div>
   );
 };
