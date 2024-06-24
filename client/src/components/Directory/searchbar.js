@@ -10,12 +10,13 @@ import AccordionMenu from './accordion';
 const SearchBar = (props) => {
   const [searchInput, setSearchInput] = useState("");
 
-  const { info } = props;
+  const { info, onSearchChange } = props;
 
   //triggered whenever use types in the textfield (onChange is built in react event triggered whenever the value of an input field changes)
   const handleChange = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value); //updates the state which causes the component to re-render (happens with react components)
+    onSearchChange();
   };
 
   //filter is a method for arrays in javascript "that takes a callback function as an argument 
@@ -33,23 +34,35 @@ const SearchBar = (props) => {
         onChange={handleChange} 
         value={searchInput}/>
     <div>
-        {filteredUnits.map(unit => (
-            <Accordion disableGutters key={unit.name}> 
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon/>}
-                aria-controls="panel1-content"
-                id="panel1-header"    
-            >
-                {unit.name}
-            </AccordionSummary>
-            <AccordionDetails>
-                {unit.description}
-            </AccordionDetails>
-        </Accordion>
-    ))}
+      {searchInput !== ""? // ternary operator so that the tabs don't show up until something is entered into the search bar
+          <>
+            {filteredUnits.map(unit => (
+              <Accordion disableGutters key={unit.name}> 
+              <AccordionSummary
+                  expandIcon={<ExpandMoreIcon/>}
+                  aria-controls="panel1-content"
+                  id="panel1-header"    
+              >
+                  {unit.name}
+              </AccordionSummary>
+              <AccordionDetails>
+                  {unit.description}
+              </AccordionDetails>
+            </Accordion>
+            ))}
+          </>
+          : 
+          <h1></h1>
+      }  
+                
+        
+      
+      
+      
       </div>
     </div>
   );
 };
 
 export default SearchBar;
+

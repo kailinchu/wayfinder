@@ -51,6 +51,7 @@ function CustomTabPanel(props) {
   );
 }
 
+
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
@@ -68,13 +69,19 @@ class Directory extends React.Component {
     this.setState({value: newValue});
   };
 
+  handleSearchChange = () => {
+    this.setState({value: 7});
+  };
+
   render() { //runs the code everytime this class component is rendered
     // this is a key feature in react class components, DIFFERENT from functional components
     const {value} = this.state;
     return (
       <>
-      <SearchBar info={directory}/>
-      <h2>Directories</h2>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2>Directories</h2>
+          <SearchBar info={directory} onSearchChange={this.handleSearchChange} />
+        </div>
 
         <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -86,8 +93,7 @@ class Directory extends React.Component {
             <Tab label="O-R" />
             <Tab label="S-Z" />
             <Tab label="Units" />
-
-
+            <Tab label="All"/>
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
@@ -123,6 +129,11 @@ class Directory extends React.Component {
         <CustomTabPanel value={value} index={6}>
           {/* Content for tab index 2 */}
           <AccordionMenu info={directory} startIdx={1} endIdx={1}/>
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={7}>
+          {/* Content for tab index 2 */}
+          <AccordionMenu info={directory} startIdx={0} endIdx={directory.length-1}/>
         </CustomTabPanel>
 
 
