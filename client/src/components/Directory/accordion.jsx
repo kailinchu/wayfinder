@@ -16,6 +16,12 @@ const AccordionMenu = (props) => {
     for(let i = startIdx; i <= endIdx; i++) {
         indices.push(i);
     }    
+    // console.log(filteredInfo);
+
+    const renderDescription = (description) => {
+        return { __html: description.replace(/\n/g, '<br>') };
+    }
+
 
     return (
         <>
@@ -31,7 +37,8 @@ const AccordionMenu = (props) => {
                     {unit.name}
                 </AccordionSummary>
                 <AccordionDetails>
-                    {unit.description}
+                    <div dangerouslySetInnerHTML={renderDescription(unit.description)} />
+                    <img src={unit.image} alt= {unit.name + "image"} className="mapImage"></img>
                 </AccordionDetails>
               </Accordion>
               ))}
@@ -48,7 +55,8 @@ const AccordionMenu = (props) => {
                     {info[idx].name}
                 </AccordionSummary>
                 <AccordionDetails>
-                    {info[idx].description}
+                    <div dangerouslySetInnerHTML={renderDescription(info[idx].description)} />
+                    <img src={info[idx].image} alt= {info[idx].name + "image"} className="map-image"></img>
                 </AccordionDetails>
             </Accordion>
         ))}
