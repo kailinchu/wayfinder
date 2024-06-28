@@ -79,7 +79,7 @@ To get to Diagnostic Imaging from the North Entrance (Information Desk), keep wa
   },
 
 
-  //index 9-21 is for 2nd tab
+  //index 9-20 is for 2nd tab
   {
     name: 'Educational Services',
     description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
@@ -171,6 +171,76 @@ To get to the elevators from the North Entrance (beside the Information Desk), k
 `,
     image: '../../../images/Birchmount-Maps/elevators.png'
   },
+
+  //21-27 Tab I-L
+
+  {
+    name: 'Information Desk',
+    description: `Main floor (2nd floor). Beside the North Entrance. See map below.`,
+    image: '../../../images/Birchmount-Maps/information.png'
+  },
+
+  {
+    name: 'In-Patient Pharmacy',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+    To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn left.`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+  {
+    name: 'Intensive Care Unit (ICU)',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Intensive Care Unit (ICU) from the North Entrance (beside the Information Desk), keep walking straight down the main hallway, past the gift shop. You should see a phone on the wall. If you are an ICU visitor, follow the instructions beside the phone to enter.
+`,
+    image: '../../../images/Birchmount-Maps/icu.png'
+  },
+
+  {
+    name: 'Irene Strickland Education Centre',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn right on exit from elevators. When you exit the elevator, turn right and continue down the hallway. The Irene Stickland Education Centre will be on your right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Kids Care Short Stay Clinic',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Kids Care Short Stay Clinic from the North Entrance (beside the Information Desk), turn right immediately. You will see a hallway on your left before the automatic doors. Turn left down this hallway. If you continue going down this hallway, the Kids Care Short Stay Clinic will be on your left.
+`,
+    image: '../../../images/Birchmount-Maps/kids-care.png'
+  },
+
+  {
+    name: 'Laboratory (Blood/Urine Work)',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Laboratory from the North Entrance (beside the Information Desk), keep walking straight down the main hall. Then, turn right into the first hallway. Continue walking all the way down the hall until you reach the end. Then, turn left and continue walking until you reach the next hall. The laboratory will be on your right.
+`,
+    image: '../../../images/Birchmount-Maps/lab.png'
+  },
+
+  {
+    name: 'Lecture Theatre',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn right on exit from elevators. When you exit the elevator, turn right and continue down the hallway. The Lecture Theatre will be on your right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  //28- M-N tab
+
+  {
+    name: 'Mabel Crolly Board Room',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn right on exit from elevators. When you exit the elevator, walk straight ahead.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+
+  
+
+
+
 
 
 
@@ -276,7 +346,7 @@ class Directory extends React.Component {
 
           <CustomTabPanel value={value} index={2}>
             {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={1} endIdx={1} />
+            <AccordionMenu info={directory} startIdx={21} endIdx={27} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={3}>
