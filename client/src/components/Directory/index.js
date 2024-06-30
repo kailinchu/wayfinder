@@ -236,6 +236,133 @@ To get to the elevators from the North Entrance (beside the Information Desk), k
     image: '../../../images/Birchmount-Maps/elevators.png'
   },
 
+  {
+    name: 'Mail Room',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+  {
+    name: 'Maintenance (Material Management)',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Medical Devices Restructuring Department (MDRD)',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Medicine and Coronary Care Unit (CCU)',
+    description: `3rd floor - Unit 3D. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn left when you exit the elevators.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Medicine Clinic',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Medicine Clinic from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. Once you pass the registration area, the Medicine Clinic will be on your left, beside the Fracture Clinic.
+`,
+    image: '../../../images/Birchmount-Maps/fracture-medicine.png'
+  },
+
+  {
+    name: 'Mental Health Services/Group Room',
+    description: `3rd floor - Unit 3E. See map below to locate the main floor elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Nutritional Services',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn right.
+`,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+ //21-27 tab 4 M-N
+
+ {
+  name: 'Occupational Health and Safety',
+  description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn left.
+`,
+  image: '../../../images/Birchmount-Maps/elevators.png'
+},
+
+  {
+    name: 'Occupational Therapy',
+    description: `3rd floor. See map below to locate the main floor (2nd floor) elevators.
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn right.
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Parking Office',
+    description: `Main floor. See map below.\n
+To get to the Parking Office from the North Entrance (beside the Information Desk), turn right immediately. The Parking Office will immediately be on your left.
+  `,
+    image: '../../../images/Birchmount-Maps/parking-office.png'
+  },
+
+  {
+    name: 'Patient Registration',
+    description: `need to update the images to make it dual compatible or merge the pictures? (easier)
+  `,
+    image: '../../../images/Birchmount-Maps/parking-office.png'
+  },
+
+  {
+    name: 'Patient Relations Facilitator',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Continue straight ahead on exit from the elevator.
+  `,
+    image: '../../../images/Birchmount-Maps/parking-office.png'
+  },
+
+  {
+    name: 'Pre-Admission Services',
+    description: `Main floor (2nd floor). See map below.\n
+To get to Pre-Admission Services from the North Entrance (beside the Information Desk), turn right immediately. You will see a hallway on your left before the automatic doors. Turn left down this hallway. If you continue going down this hallway, Pre-Admission Services will be on your left.
+  `,
+    image: '../../../images/Birchmount-Maps/pre-admissions.png'
+  },
+  {
+    name: 'RBC Mental Health Unit',
+    description: `3rd floor - Unit 3B. See map below to locate the main floor elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. 
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Rehab Day Hospital',
+    description: `3rd floor - Unit 3E. See map below to locate the main floor elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. 
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Retail Pharmacy/Drug Store (Out-Patient)',
+    description: `Main floor (2nd floor). See map below.\n
+From the North Entrance (beside the Information Desk), turn right immediately. The Pharmacy will be on your right.
+  `,
+    image: '../../../images/Birchmount-Maps/pharmacy.png'
+  },
+  
+
 
   
 
@@ -351,12 +478,12 @@ class Directory extends React.Component {
 
           <CustomTabPanel value={value} index={3}>
             {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={1} endIdx={1} />
+            <AccordionMenu info={directory} startIdx={28} endIdx={35} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={4}>
             {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={1} endIdx={1} />
+            <AccordionMenu info={directory} startIdx={36} endIdx={44} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={5}>
