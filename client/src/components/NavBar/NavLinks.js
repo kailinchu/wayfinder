@@ -1,5 +1,5 @@
  import './NavBar.css';
-
+import Translate from './translate.js';
  const NavLinks = ({isClicked, closeMenu}) =>{
     const handleClick = () => {
         if (isClicked) {
@@ -25,7 +25,12 @@
             <li onClick={handleClick}>
               <a href="/feedback">Feedback</a>
             </li>
+            <li>
+              <Translate/>
+
+            </li>
           </ul>
+
         </nav>
     );
  }

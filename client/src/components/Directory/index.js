@@ -401,6 +401,7 @@ CustomTabPanel.propTypes = {
 };
 
 
+
 class Directory extends React.Component {
 
   state = {
@@ -429,6 +430,8 @@ class Directory extends React.Component {
     const { value } = this.state;
     return (
       <>
+        
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h1>Directories</h1>
           <SearchBar info={directory} onSearchChange={this.handleSearchChange} />
@@ -436,6 +439,7 @@ class Directory extends React.Component {
 
 
         <Box sx={{ width: '100%' }}>
+        <div className="notranslate"> 
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={this.handleChange} variant="scrollable" scrollButtons="auto"
               sx={{
@@ -449,18 +453,21 @@ class Directory extends React.Component {
                 },
               }}
               aria-label="Alphabetical quick tabbing system for directory">
-              <Tab
-                label="A-D"
-              />
-              <Tab label="E-H" />
-              <Tab label="I-L" />
-              <Tab label="M-N" />
-              <Tab label="O-R" />
-              <Tab label="S-Z" />
-              <Tab label="Units" />
-              <Tab label="All" />
+
+                <Tab label="A-D"/>
+
+                <Tab label="E-H" />
+                <Tab label="I-L" />
+                <Tab label="M-N" />
+                <Tab label="O-R" />
+                <Tab label="S-Z" />
+                <Tab label="Units" />
+                <Tab label="All" />
+
             </Tabs>
           </Box>
+          </div>
+
           <CustomTabPanel value={value} index={0}>
             {/* Content for tab index 0 */}
             <AccordionMenu info={directory} startIdx={0} endIdx={8} />
