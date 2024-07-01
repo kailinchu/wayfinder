@@ -10,8 +10,7 @@ import SearchBar from './searchbar';
 
 //array of objects to describe each unit/area in the hospital
 const directory = [
-
-  //index 0-8 is for first tab
+  //index 0-8 is for first tab (A-D)
   {
     name: "Administrative Department",
     description: '1st floor. See map below to locate the main floor (2nd floor) elevators.\n\n' +
@@ -79,7 +78,7 @@ To get to Diagnostic Imaging from the North Entrance (Information Desk), keep wa
   },
 
 
-  //index 9-20 is for 2nd tab
+  //index 9-20 is for 2nd tab (E-H)
   {
     name: 'Educational Services',
     description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
@@ -172,8 +171,7 @@ To get to the elevators from the North Entrance (beside the Information Desk), k
     image: '../../../images/Birchmount-Maps/elevators.png'
   },
 
-  //21-27 Tab I-L
-
+  //index 21-27 is for the 3rd Tab (I-L)
   {
     name: 'Information Desk',
     description: `Main floor (2nd floor). Beside the North Entrance. See map below.`,
@@ -226,8 +224,7 @@ To get to the elevators from the North Entrance (beside the Information Desk), k
     image: '../../../images/Birchmount-Maps/elevators.png'
   },
 
-  //28- M-N tab
-
+  //index 28-35 is for the 4th Tab (M-N)
   {
     name: 'Mabel Crolly Board Room',
     description: `1st floor. See map below to locate the main floor (2nd floor) elevators.
@@ -290,8 +287,9 @@ To get to the elevators from the North Entrance (beside the Information Desk), k
 `,
     image: '../../../images/Birchmount-Maps/elevators.png'
   },
- //21-27 tab 4 M-N
 
+
+  //index 36-44 is for the 5th Tab (O-R)
  {
   name: 'Occupational Health and Safety',
   description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
@@ -361,17 +359,105 @@ From the North Entrance (beside the Information Desk), turn right immediately. T
   `,
     image: '../../../images/Birchmount-Maps/pharmacy.png'
   },
+
+  //index 45-57 is for the 6th Tab (S-Z)
+
+  {
+    name: 'Scheduling Office',
+    description: `4th floor. See map below to locate the main floor elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn left.
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
   
+  {
+    name: 'Security Badge Office',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn left as you exit the elevators. (The Security Badge Office is shared with Finance.)\n
+Security Badge Office Hours: Monday, Wednesday, Friday, 10am-12pm
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
 
+  {
+    name: 'SHN Foundation Office',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the SHN Foundation Office from the North Entrance (beside the Information Desk), keep walking straight down the main hallway, past patient registration and the washrooms. You will see the SHN Foundation Office on your left side along the wall.
+  `,
+    image: '../../../images/Birchmount-Maps/shn-foundation.png'
+  },
 
+  {
+    name: 'Specialized Geriatric Clinics',
+    description: `3rd floor - Unit 3E. See map below to locate the main floor elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn right.
+  `,
+    image: '../../../images/Birchmount-Maps/shn-foundation.png'
+  },
+
+  {
+    name: 'Spiritual & Religious Care',
+    description: `Main floor (2nd floor). See map below.\n
+To get to Spiritual & Religious Care from the North Entrance (beside the Information Desk), keep walking straight down the main hallway, past the gift shop. Spiritual & Religious Care will be in on your left.
+  `,
+    image: '../../../images/Birchmount-Maps/spiritual-religious.png'
+  },
+
+  {
+    name: 'Social Work and CCAC',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn left.
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Stroke Clinic',
+    description: `4th floor - Unit 4B. See map below to locate the main floor elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn right as you exit the elevators.
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
+
+  {
+    name: 'Surgical Specialty Clinic',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Surgical Specialty Clinic from the North Entrance (beside the Information Desk), keep walking straight down the main hall. Then, turn right into the first hallway. Continue walking down the hall. The Surgical Specialty Clinic is three hallways down on your right.
+  `,
+    image: '../../../images/Birchmount-Maps/surgical-specialty.png'
+  },
+
+  {
+    name: 'Tim Hortons',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Tim Hortons from the North Entrance (beside the Information Desk), keep walking straight down the main hallway until you see tables and the Tim Hortons on your left side.
+  `,
+    image: '../../../images/Birchmount-Maps/cafe.png'
+  },
   
+  {
+    name: 'Volunteer Services',
+    description: `1st floor. See map below to locate the main floor (2nd floor) elevators.\n
+To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, turn right. Then, turn right down the first hallway.
+  `,
+    image: '../../../images/Birchmount-Maps/elevators.png'
+  },
 
-
-
-
-
-
-
+  {
+    name: 'Washrooms',
+    description: `Main floor (2nd floor). See map below.\n
+There are 2 sets of washrooms on the main floor. To get to the first set of washrooms from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. You will see the washrooms on your left side along the wall. There will also be another set of washrooms down the hallway on your right.
+  `,
+    image: '../../../images/Birchmount-Maps/washrooms.png'
+  },
+  
+  {
+    name: 'Worship and Meditation Room',
+    description: `Main floor (2nd floor). See map below.\n
+To get to the Worship & Meditation Room from the North Entrance (beside the Information Desk), keep walking straight down the main hallway until you reach the Main Lobby. The Worship & Meditation Room will be on your left.
+  `,
+    image: '../../../images/Birchmount-Maps/worship-room.png'
+  },
 ]
 var filteredDirectoryIndices = directory;
 //tab functionality
@@ -430,8 +516,6 @@ class Directory extends React.Component {
     const { value } = this.state;
     return (
       <>
-        
-
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h1>Directories</h1>
           <SearchBar info={directory} onSearchChange={this.handleSearchChange} />
@@ -455,7 +539,6 @@ class Directory extends React.Component {
               aria-label="Alphabetical quick tabbing system for directory">
 
                 <Tab label="A-D"/>
-
                 <Tab label="E-H" />
                 <Tab label="I-L" />
                 <Tab label="M-N" />
@@ -495,7 +578,7 @@ class Directory extends React.Component {
 
           <CustomTabPanel value={value} index={5}>
             {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={1} endIdx={1} />
+            <AccordionMenu info={directory} startIdx={45} endIdx={57} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={6}>
@@ -505,7 +588,6 @@ class Directory extends React.Component {
 
           <CustomTabPanel value={value} index={7}>
             {/* Content for tab index 7. PASS filtered array into props so that the filtered units are displayed */}
-
             <AccordionMenu info={directory} startIdx={0} endIdx={directory.length - 1} filteredInfo={filteredDirectoryIndices} index={7} />
           </CustomTabPanel>
 
