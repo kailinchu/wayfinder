@@ -6,7 +6,7 @@ class Landing extends Component {
     return (
       <>
         <h1>Choose SHN Hospital</h1>
-        <div className="button-container">
+        <div className="notranslate button-container">
           <button className="circle-button">Birchmount</button>
           <button className="circle-button">Centenary</button>
         </div>
