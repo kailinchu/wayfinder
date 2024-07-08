@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 
 import Home from './components/Home';
 import Header from './components/Header';
@@ -15,6 +15,41 @@ import NotFound from './components/NotFound';
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
 
+// Import hospital site specific data
+import { birchmountData } from './data/birchmountData';
+import { centenaryData } from './data/centenaryData';
+// import { generalData } from './data/generalData';
+
+const hospitalData = {
+  birchmount: birchmountData,
+  centenary: centenaryData,
+};
+
+
+const HospitalSite = () => {
+  const { site, page } = useParams();
+  const data = hospitalData[site];
+
+  if (page == undefined) {
+    return <Home data={data.home} />
+  }
+
+  switch (page) {
+    case 'home':
+      return <Home data={data.home} />;
+    case 'faqs':
+      return <Faqs data={data.faqs} />;
+    case 'directory':
+      return <Directory data={data.directory} />;
+    case 'map':
+      return <Map data={data.map} />;
+    case 'feedback':
+      return <Feedback data={data.feedback} />;
+    default:
+      return <NotFound />;
+  }
+};
+
 class App extends Component {
   render() {
     return (
@@ -25,11 +60,8 @@ class App extends Component {
           <div className="container">
             <Routes>
               <Route exact path="/" element={<Landing/>} />
-              <Route path="/birchmount" element={<Home/>} />
-              <Route path="/faqs" element={<Faqs/>} />
-              <Route path="/directory" element={<Directory/>} />
-              <Route path="/map" element={<Map/>} />
-              <Route path="/feedback" element={<Feedback/>} />
+              <Route exact path="/:site" element={<HospitalSite/>} />
+              <Route path="/:site/:page" element={<HospitalSite/>} />
               <Route path="*" element={<NotFound/>} />
             </Routes>
           </div>
