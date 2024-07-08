@@ -11,19 +11,19 @@ import Translate from './translate.js';
         <nav className="NavLinks">
           <ul>
             <li onClick={handleClick}>
-              <a href="/">Home</a>
+              <a href="./">Home</a>
             </li>
             <li onClick={handleClick}>
-              <a href="/faqs">FAQs</a>
+              <a href="./faqs">FAQs</a>
             </li>
             <li onClick={handleClick}>
-              <a href="/directory">Directory</a>
+              <a href="./directory">Directory</a>
             </li>
             <li onClick={handleClick}>
-              <a href="/map">Map</a>
+              <a href="./map">Map</a>
             </li>
             <li onClick={handleClick}>
-              <a href="/feedback">Feedback</a>
+              <a href="./feedback">Feedback</a>
             </li>
             <li>
               <Translate/>
