@@ -26,7 +26,7 @@ import Translate from './translate.js';
               <a href="./feedback">Feedback</a>
             </li>
             <li>
-              <Translate/>
+            <Translate/>
 
             </li>
           </ul>

@@ -578,7 +578,7 @@ class Directory extends React.Component {
 
           <CustomTabPanel value={value} index={5}>
             {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={45} endIdx={57} />
+            <AccordionMenu info={directory} startIdx={45} endIdx={56} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={6}>
