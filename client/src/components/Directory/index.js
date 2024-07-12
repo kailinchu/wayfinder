@@ -459,7 +459,12 @@ To get to the Worship & Meditation Room from the North Entrance (beside the Info
     image: '../../../images/Birchmount-Maps/worship-room.png'
   },
 ]
+
+
 var filteredDirectoryIndices = directory;
+
+
+//FUNCTION COMPONENT, allows for a tag for a CustomTabPanel
 //tab functionality
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props; // array destructuring for props
@@ -479,7 +484,7 @@ function CustomTabPanel(props) {
   );
 }
 
-
+//sets the expected (required) prop types for the tab panel.
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
@@ -487,33 +492,34 @@ CustomTabPanel.propTypes = {
 };
 
 
-
+//MAIN CLASS COMPONENT
 class Directory extends React.Component {
 
+  //react state
   state = {
-    value: 0, //default
+    tabIndex: 0, //default
     searchInput: ""
   };
 
+  //sets the value to newValue
   handleChange = (event, newValue) => {
-    this.setState({ value: newValue });
+    this.setState({ tabIndex: newValue });
   };
 
+  //if something is searched, set the tabIndex to 7 and the searchinput to what was typed
   handleSearchChange = (input) => {
-    this.setState({ value: 7 });
+    this.setState({ tabIndex: 7 });
     this.setState({ searchInput: input })
 
     filteredDirectoryIndices = directory.filter((unit) => { //recalculated during each re-render
       return unit.name.toLowerCase().includes(input.toLowerCase()); //filters the data so that the new results only include the word typed
     });
 
-    console.log(filteredDirectoryIndices);
-
   };
 
   render() { //runs the code everytime this class component is rendered
     // this is a key feature in react class components, DIFFERENT from functional components
-    const { value } = this.state;
+    const { tabIndex } = this.state;
     return (
       <>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -525,7 +531,7 @@ class Directory extends React.Component {
         <Box sx={{ width: '100%' }}>
         <div className="notranslate"> 
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={this.handleChange} variant="scrollable" scrollButtons="auto"
+            <Tabs value={tabIndex} onChange={this.handleChange} variant="scrollable" scrollButtons="auto"
               sx={{
                 '& .MuiTabs-indicator': {
                   backgroundColor: '#48beb0', // Change the color of the indicator
@@ -551,42 +557,42 @@ class Directory extends React.Component {
           </Box>
           </div>
 
-          <CustomTabPanel value={value} index={0}>
+          <CustomTabPanel value={tabIndex} index={0}>
             {/* Content for tab index 0 */}
             <AccordionMenu info={directory} startIdx={0} endIdx={8} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={1}>
+          <CustomTabPanel value={tabIndex} index={1}>
             {/* Content for tab index 1 */}
             <AccordionMenu info={directory} startIdx={9} endIdx={20} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={2}>
+          <CustomTabPanel value={tabIndex} index={2}>
             {/* Content for tab index 2 */}
             <AccordionMenu info={directory} startIdx={21} endIdx={27} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={3}>
+          <CustomTabPanel value={tabIndex} index={3}>
             {/* Content for tab index 2 */}
             <AccordionMenu info={directory} startIdx={28} endIdx={35} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={4}>
+          <CustomTabPanel value={tabIndex} index={4}>
             {/* Content for tab index 2 */}
             <AccordionMenu info={directory} startIdx={36} endIdx={44} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={5}>
+          <CustomTabPanel value={tabIndex} index={5}>
             {/* Content for tab index 2 */}
             <AccordionMenu info={directory} startIdx={45} endIdx={56} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={6}>
+          <CustomTabPanel value={tabIndex} index={6}>
             {/* Content for tab index 2 */}
             <AccordionMenu info={directory} startIdx={1} endIdx={1} />
           </CustomTabPanel>
 
-          <CustomTabPanel value={value} index={7}>
+          <CustomTabPanel value={tabIndex} index={7}>
             {/* Content for tab index 7. PASS filtered array into props so that the filtered units are displayed */}
             <AccordionMenu info={directory} startIdx={0} endIdx={directory.length - 1} filteredInfo={filteredDirectoryIndices} index={7} />
           </CustomTabPanel>
