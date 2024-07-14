@@ -5,7 +5,7 @@ import { useState } from "react";
 import {MdClose} from 'react-icons/md';
 
 
-const MobileNavigation = () =>{
+const MobileNavigation = (props) =>{
     const [click, setclick] = useState(false);
 
     const Hamburger = <MdOutlineMenu className="HamburgerMenu"
@@ -23,7 +23,7 @@ const MobileNavigation = () =>{
                 WayFinder
             </a>
              { click ? Close : Hamburger}
-             {click && <NavLinks isClicked={true} closeMenu={closeMenu}/>}
+             {props.showNavBar && click && <NavLinks isClicked={true} closeMenu={closeMenu}/>}
         </nav>
     )
 }

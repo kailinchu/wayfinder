@@ -1,14 +1,14 @@
 import NavLinks from "./NavLinks";
 import './NavBar.css';
 
-const DesktopNavigation = () => {
+const DesktopNavigation = (props) => {
   return (
     <nav className="DesktopNavigation">
       <a className="logo" href="/">
         <img src="/images/logo.png" alt="SHN WayFinder" className="logo" />
         WayFinder
       </a>
-      <NavLinks />
+      {props.showNavBar && < NavLinks />}
     </nav>
   )
 }
