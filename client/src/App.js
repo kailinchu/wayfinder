@@ -25,7 +25,6 @@ const hospitalData = {
   centenary: centenaryData,
 };
 
-const images = Object.keys(hospitalData).map(hospital => (hospitalData[hospital].landingImage));
 
 const HospitalSite = () => {
   const { site, page } = useParams();
@@ -55,14 +54,15 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-       <NavBar/>
+        <NavBar/>
+
         <main className="flex-shrink-0">
           <div className="container">
             <Routes>
-                <Route exact path="/" element={<Landing images={images}/>} />
-                <Route exact path="/:site" element={<HospitalSite/>} />
-                <Route path="/:site/:page" element={<HospitalSite/>} />
-                <Route path="*" element={<NotFound/>} />
+              <Route exact path="/" element={<Landing/>} />
+              <Route exact path="/:site" element={<HospitalSite/>} />
+              <Route path="/:site/:page" element={<HospitalSite/>} />
+              <Route path="*" element={<NotFound/>} />
             </Routes>
           </div>
         </main>
