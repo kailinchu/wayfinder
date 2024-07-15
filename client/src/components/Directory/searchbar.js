@@ -3,11 +3,11 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 
-
+//creates a search bar function component
 const SearchBar = (props) => {
   const [searchInput, setSearchInput] = useState("");
 
-  const { info, onSearchChange } = props;
+  const { info, onSearchChange } = props; //destructuring the props
 
   //triggered whenever use types in the textfield (onChange is built in react event triggered whenever the value of an input field changes)
   const handleChange = (e) => {
@@ -16,6 +16,8 @@ const SearchBar = (props) => {
     onSearchChange(e.target.value);
   };
 
+
+  //styles and handles the search input
   return (
     <div>
     <TextField 
