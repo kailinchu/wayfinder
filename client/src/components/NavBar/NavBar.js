@@ -1,13 +1,15 @@
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
+import { withRouter } from '../../withRouter';
 
 const NavBar = () => {
+    let showNavBar = window.location.pathname !== '/'
     return(
         <div>
-            <DesktopNavigation />
-            <MobileNavigation />
+            <DesktopNavigation showNavBar={showNavBar}/>
+            <MobileNavigation showNavBar={showNavBar}/>
         </div>
     )
 }
 
-export default NavBar;
+export default withRouter(NavBar);
