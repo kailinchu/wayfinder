@@ -1,14 +1,14 @@
 import NavLinks from "./NavLinks";
 import './NavBar.css';
 
-const DesktopNavigation = () => {
+const DesktopNavigation = ({hospitalSite, displayNavBar}) => {
   return (
     <nav className="DesktopNavigation">
       <a className="logo" href="/">
         <img src="/images/logo.png" alt="SHN WayFinder" className="logo" />
         WayFinder
       </a>
-      <NavLinks />
+      {displayNavBar && <NavLinks hospitalSite={hospitalSite} />}
     </nav>
   )
 }

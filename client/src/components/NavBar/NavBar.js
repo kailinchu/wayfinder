@@ -1,11 +1,11 @@
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
 
-const NavBar = () => {
+const NavBar = ({hospitalSite, displayNavBar}) => {
     return(
         <div>
-            <DesktopNavigation />
-            <MobileNavigation />
+            <DesktopNavigation hospitalSite={hospitalSite} displayNavBar={displayNavBar}/>
+            <MobileNavigation hospitalSite={hospitalSite} displayNavBar={displayNavBar}/>
         </div>
     )
 }
