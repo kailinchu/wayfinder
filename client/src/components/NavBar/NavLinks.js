@@ -1,14 +1,28 @@
- import './NavBar.css';
+import React from 'react';
+
+import {useContext} from 'react'
+import './NavBar.css';
 import Translate from './translate.js';
+import { UserContext } from '../../App'; 
+
+
  const NavLinks = ({isClicked, closeMenu}) =>{
+  const {language, setLanguage } = useContext(UserContext);
+
     const handleClick = () => {
         if (isClicked) {
           closeMenu();
         }
       };
     
+    const handleLanguageChange = (newLanguage) => {
+      console.log(newLanguage);
+      setLanguage(newLanguage);
+    }
+    
+
     return (
-        <nav className="NavLinks">
+        <nav className="NavLinks">  
           <ul>
             <li onClick={handleClick}>
               <a href="./">Home</a>
@@ -26,11 +40,9 @@ import Translate from './translate.js';
               <a href="./feedback">Feedback</a>
             </li>
             <li>
-            <Translate/>
-
+            <Translate onLanguageChange={handleLanguageChange} />
             </li>
           </ul>
-
         </nav>
     );
  }

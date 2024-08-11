@@ -18,7 +18,7 @@ const AccordionMenu = (props) => {
     for(let i = startIdx; i <= endIdx; i++) {
         indices.push(i);
     }    
-
+    
     //used to render the "\n" in the object description as an actual line break
     const renderDescription = (description) => {
         return { __html: description.replace(/\n/g, '<br>') };
@@ -55,7 +55,7 @@ const AccordionMenu = (props) => {
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1-content"
-                    id="panel1-header"    
+                    id="panel1-header"
                 >
                     {info[idx].name}
                 </AccordionSummary>
