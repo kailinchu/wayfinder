@@ -5,7 +5,8 @@ class Feedback extends Component {
   render() {
     return (
       <>
-        <h1>Feedback</h1>
+        <h1 class="title">Feedback</h1>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdJoV8gHmp4djwpJIJAha48j_vMEWtbeuUVjALZ23-salJZUA/viewform?embedded=true" width="100%" height="750" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe> 
         <p>Feedback</p>
       </>
     )
