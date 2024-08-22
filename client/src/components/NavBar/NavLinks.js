@@ -17,7 +17,7 @@ import Translate from './translate.js';
         <nav className="NavLinks">
           <ul>
             <li onClick={handleClick}>
-              <a href={`${baseUrl}/${hospitalSite}`}>{hospitalName} - Home </a>
+              <a href={`${baseUrl}/${hospitalSite}`}>{hospitalName}</a>
             </li>
             <li onClick={handleClick}>
               <a href={`${baseUrl}/${hospitalSite}/faqs`}>FAQs</a>
