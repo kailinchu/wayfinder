@@ -8,5 +8,10 @@ export const centenaryData = {
     map: {
       imagePaths: "img path here"
     },
+    landingImage: {
+      url: '/centenary',
+      srcPath: '/images/hospital-photos/centenary-hospital.png',
+      title: 'Centenary WayFinder',
+    },
   };
   

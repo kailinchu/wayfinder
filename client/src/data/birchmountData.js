@@ -4,7 +4,12 @@ export const birchmountData = {
     },],
     map: [{
       imagePaths: "img path here"
-    },]
+    },],
+    landingImage: {
+      url: '/birchmount',
+      srcPath: '/images/hospital-photos/birchmount-hospital.png',
+      title: 'Birchmount WayFinder',
+    },
   };
   
 export const birchmountDataDirectories = [

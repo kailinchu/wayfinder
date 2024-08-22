@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams, Outlet } from 'react-router-dom';
 
 import Home from './components/Home';
 import Header from './components/Header';
@@ -25,6 +25,7 @@ const hospitalData = {
   centenary: centenaryData,
 };
 
+const images = Object.keys(hospitalData).map(hospital => (hospitalData[hospital].landingImage));
 
 const HospitalSite = () => {
   const { site, page } = useParams();
@@ -50,23 +51,34 @@ const HospitalSite = () => {
   }
 };
 
+const PageLayout = ({displayNavBar}) => {
+  const { site } = useParams();
+  return (
+    <div>
+      <NavBar hospitalSite={site} displayNavBar={displayNavBar}/>
+      <main className="flex-shrink-0">
+        <div className="container">
+          <Outlet />
+        </div>
+      </main>
+    </div>
+  );
+};
+
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <NavBar/>
-
-        <main className="flex-shrink-0">
-          <div className="container">
-            <Routes>
-              <Route exact path="/" element={<Landing/>} />
-              <Route exact path="/:site" element={<HospitalSite/>} />
-              <Route path="/:site/:page" element={<HospitalSite/>} />
-              <Route path="*" element={<NotFound/>} />
-            </Routes>
-          </div>
-        </main>
-
+        <Routes>
+          <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>
+            <Route path="" element={<Landing images={images}/>} />
+          </Route>
+          <Route path="/:site" element={<PageLayout displayNavBar={true}/>}>
+            <Route exact path="/:site" element={<HospitalSite/>} />
+            <Route path="/:site/:page" element={<HospitalSite/>} />
+            <Route path="*" element={<NotFound/>} />
+          </Route>
+        </Routes>
         <Footer/>
       </BrowserRouter>
     )
