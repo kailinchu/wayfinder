@@ -3,7 +3,7 @@ export const birchmountData = {
         // data for faqs here
     },],
     map: [{
-      imagePaths: "img path here"
+      imagePaths: "images/Birchmount-Maps/general.png"
     },],
     landingImage: {
       url: '/birchmount',
