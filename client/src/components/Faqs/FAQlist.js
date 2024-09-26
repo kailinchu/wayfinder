@@ -4,7 +4,6 @@ import FAQItem from './FAQitem';
 const faqData = [
   { question: "Is there a cafeteria/Tim Hortons?", 
     answer: "Yes. From the North Entrance (beside the Information Desk), keep walking down the main hall, straight in front of the entrance, until you see tables and the Tim Hortons on your left side.", 
-    mage: "https://drive.google.com/file/d/1TlKs0yptSKYdBN9TD9cr8wmhYDxudUvr/view?usp=drive_link" 
   },
   { question: "Where are the washrooms?", answer: "From the North Entrance (beside the Information Desk), keep walking straight down the main hallway. You will see the washrooms on your left side along the wall. (There will also be another set of washrooms down the hallway on your right.)" },
   { question: "Where can I find a patient if I know their room number or unit?", answer: "The first digit corresponds to the patient’s floor and the second digit corresponds to the patient’s unit (1= Unit A, 2= Unit B, etc.). For example, the room number 3100 corresponds to Unit 3A. Visit the directory for more information." },
@@ -23,9 +22,14 @@ const faqData = [
 function FAQList() {
   return (
     <div className="faq-list">
-       <h1>Frequently Asked Questions</h1>
+      <h1>Frequently Asked Questions</h1>
       {faqData.map((faq, index) => (
-        <FAQItem key={index} question={faq.question} answer={faq.answer} />
+        <FAQItem
+          key={index}
+          question={faq.question}
+          answer={faq.answer}
+          image={faq.image}
+        />
       ))}
     </div>
   );
