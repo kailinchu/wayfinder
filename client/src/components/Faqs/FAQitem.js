@@ -1,25 +1,23 @@
-import React, {useState} from 'react';
+import React from 'react';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-function FAQitem ({question, answer, image}) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleAnswer = () => {
-    setIsOpen(!isOpen);
-  };
-
+function FAQItem({ question, answer, image }) {
   return (
-    <div className = "faq-item">
-      <h3 onClick={toggleAnswer} style={{ cursor: 'pointer' }}>
-        {question} {isOpen ? <FaChevronUp /> : <FaChevronDown />}
-      </h3>
-      {isOpen && (
-        <>
-          <p>{answer}</p>
-          {image && <img src={image} alt="FAQ" className="faq-image" />}
-        </>
-      )}
-    </div>
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>{question}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography>{answer}</Typography>
+        {image && <img src={image} alt="FAQ image" className="faq-image" />}
+      </AccordionDetails>
+    </Accordion>
   );
 }
-export default FAQitem;
+
+export default FAQItem;
