@@ -2,8 +2,6 @@ import NavLinks from "./NavLinks";
 import './NavBar.css';
 import { MdOutlineMenu, MdClose } from 'react-icons/md';
 import { useState } from "react";
-import {MdClose} from 'react-icons/md';
-
 
 const MobileNavigation = ({ hospitalSite, displayNavBar }) => {
     const [click, setClick] = useState(false);
@@ -29,9 +27,7 @@ const MobileNavigation = ({ hospitalSite, displayNavBar }) => {
         />
     );
 
-    const closeMenu = () => setclick(false);
-
-    return(
+    return (
         <nav className="MobileNavigation">
             <a className="logo notranslate" href="/">
                 <img src="/images/logo.png" alt="SHN WayFinder" className="logo" />
