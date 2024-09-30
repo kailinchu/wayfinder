@@ -32,8 +32,7 @@ import Translate from './translate.js';
               <a href={`${baseUrl}/${hospitalSite}/feedback`}>Feedback</a>
             </li>
             <li>
-            <Translate/>
-
+              <Translate/>
             </li>
           </ul>
 

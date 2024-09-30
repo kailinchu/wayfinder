@@ -9,7 +9,8 @@ const Translate = () => {
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
-        autoDisplay: false
+        autoDisplay: false,
+        // includedLanguages: "en,fr",
       },
       "google_translate_element"
     );
