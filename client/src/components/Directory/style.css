@@ -16,3 +16,13 @@
     object-fit: contain;
     max-height: 500px; /* Adjust as needed for maximum height */
   }
+
+  .directories-title{
+    margin-left: 0;
+    background-color: #474B8E;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    margin-bottom: 25px;
+  }

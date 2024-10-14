@@ -8,7 +8,9 @@ class Map extends Component {
 
     return (
       <>
-        <h1 class="title">Map</h1>
+        <div class="title-container">
+            <h1 class="title">Map</h1>
+        </div>
         <img src={mapImagePath} alt="Hospital Map" class="map"/>
         <p>Map</p>
       </>

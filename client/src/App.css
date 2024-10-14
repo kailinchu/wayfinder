@@ -1,3 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
+
 main > .container {
-    padding: 60px 15px 0;
+    /* padding: 60px 15px 0; */
+    padding: 0 15px 0;
+
 }
+
+*{
+    font-family: 'Proxima Nova';
+}
+
+/* Titles for each page */
+.title{ 
+    text-transform: uppercase;
+    font-weight: bolder;
+    text-align: center;
+    color: #fff;
+}
+.title-container{
+    background-color: #474B8E;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 25px;
+
+}
+
+/* Home */
+.button-container{
+    display: flex;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.circle-button{
+    width: 20vw;
+    height: 20vw;
+}
+.button-text{
+    font-size: 3vw;
+    margin-top: 15px;
+}
+@media only screen and (max-width: 450px) {
+    .button-container{
+        flex-direction: column;
+    }
+    .circle-button{
+        width: 200px;
+        height: 200px;
+        margin: 10px auto !important;
+    }
+    .button-text{
+        font-size: 30px;
+    }
+}
+
+/* footer */
+/* footer{
+    background-color: #191372;
+    color: #fff;
+} */
