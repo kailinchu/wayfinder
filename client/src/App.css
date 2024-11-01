@@ -3,11 +3,17 @@
 main > .container {
     /* padding: 60px 15px 0; */
     padding: 0 15px 0;
-
+    /* min-height: calc(); 100vh - Needs to be navbarheight - 39*/ 
 }
 
+
+html, body{
+    overflow-x: hidden;
+}
+
+
 *{
-    font-family: 'Proxima Nova';
+    font-family: 'Proxima Nova' !important;
 }
 
 /* Titles for each page */
@@ -27,7 +33,6 @@ main > .container {
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 25px;
-
 }
 
 /* Home */
@@ -58,8 +63,6 @@ main > .container {
     }
 }
 
-/* footer */
-/* footer{
-    background-color: #191372;
-    color: #fff;
-} */
+footer{
+    background-color: #EFEFEF;
+}

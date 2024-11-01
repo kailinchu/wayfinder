@@ -11,6 +11,7 @@ class Home extends Component {
   render() {
     return (
       <>
+      <div class="home-container">
         <div className="button-container">
           <button 
             className="circle-button"
@@ -41,6 +42,7 @@ class Home extends Component {
             </div>
           </button>
         </div>
+      </div>
       </>
     )
   }

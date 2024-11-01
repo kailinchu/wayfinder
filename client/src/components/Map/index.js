@@ -12,7 +12,6 @@ class Map extends Component {
             <h1 class="title">Map</h1>
         </div>
         <img src={mapImagePath} alt="Hospital Map" class="map"/>
-        <p>Map</p>
       </>
     );
   }
