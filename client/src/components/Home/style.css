@@ -1,0 +1,6 @@
+@media (min-width: 451px) {
+
+    .home-container{
+        height: calc(100vh - 20vh - 75px)
+    }
+}

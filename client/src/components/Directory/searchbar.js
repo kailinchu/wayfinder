@@ -45,6 +45,8 @@ const SearchBar = (props) => {
         </InputAdornment>,
         }}
 
+        style={{width: '60vw'}}
+
         />
     </div>
   );

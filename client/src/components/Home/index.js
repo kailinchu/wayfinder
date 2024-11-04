@@ -1,31 +1,48 @@
 import React, { Component } from 'react';
 import { withRouter } from '../../withRouter';
 import './style.css';
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineQuestionMark } from "react-icons/md";
+import { BsArrow90DegRight } from "react-icons/bs";
+
+
 
 class Home extends Component {
   render() {
     return (
       <>
+      <div class="home-container">
         <div className="button-container">
           <button 
             className="circle-button"
             onClick={() => this.props.navigate('./faqs')}
+            
           >
-            FAQs
+            <div>
+              <MdOutlineQuestionMark size={'7.5vw'}/>
+              <h1 class="button-text"> FAQs </h1>
+            </div>
           </button>
           <button 
             className="circle-button"
             onClick={() => this.props.navigate('./directory')}
           >
-            Directory
+            <div>
+            <BsArrow90DegRight size={'7.5vw'}/>
+              <h1 class="button-text"> Directory </h1>
+            </div>
           </button>
           <button 
             className="circle-button"
             onClick={() => this.props.navigate('./map')}
           >
-            Map
+            <div>
+            <FaLocationDot size={'7.5vw'}/>
+              <h1 class="button-text"> Map </h1>
+            </div>
           </button>
         </div>
+      </div>
       </>
     )
   }

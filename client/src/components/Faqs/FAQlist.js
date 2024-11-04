@@ -1,5 +1,6 @@
 import React from 'react';
 import FAQItem from './FAQitem';
+import { Container } from '@mui/material';
 
 const faqData = [
   { question: "Is there a cafeteria/Tim Hortons?", 
@@ -22,7 +23,9 @@ const faqData = [
 function FAQList() {
   return (
     <div className="faq-list">
-      <h1>Frequently Asked Questions</h1>
+      <div class="title-container">
+       <h1 class="title">Frequently Asked Questions</h1>
+      </div>
       {faqData.map((faq, index) => (
         <FAQItem
           key={index}
