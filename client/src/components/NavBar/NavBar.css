@@ -57,7 +57,7 @@ nav ul li a:hover{
     width: auto; /* Maintain aspect ratio */
   }
 
-@media (max-width: 600px){
+@media (max-width: 1050px){
 
     .DesktopNavigation{
         display: none;

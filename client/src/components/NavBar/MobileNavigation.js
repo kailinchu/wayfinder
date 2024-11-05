@@ -9,12 +9,14 @@ const MobileNavigation = ({hospitalSite, displayNavBar}) =>{
     const [click, setclick] = useState(false);
 
     const Hamburger = <MdOutlineMenu className="HamburgerMenu"
-           size="30px" color="black"
-           onClick={() => setclick(!click)} />
+            size="30px" color="black"
+            onClick={() => setclick(!click)} />
 
     const Close = <MdClose className="HamburgerMenu"
             size="30px" color="black"
-           onClick={() => setclick(!click)} />
+            onClick={() => setclick(!click)} />
+
+    const closeMenu = () => setclick(false);
 
     return(
         <nav className="MobileNavigation">
@@ -27,7 +29,5 @@ const MobileNavigation = ({hospitalSite, displayNavBar}) =>{
         </nav>
     )
 }
-
-const closeMenu = () => setclick(false);
 
 export default MobileNavigation;
