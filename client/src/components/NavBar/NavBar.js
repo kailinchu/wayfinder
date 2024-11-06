@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
-import { addGoogleTranslateToScript } from './translate';
+import Translate from './translate.js';
 
 const NavBar = ({hospitalSite, displayNavBar}) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1050);
@@ -16,11 +16,6 @@ const NavBar = ({hospitalSite, displayNavBar}) => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-
-    // Add translate component on initialization of the NavBar
-    //useEffect(() => {
-    //    addGoogleTranslateToScript();
-    //}, []);
 
     return(
         <div>

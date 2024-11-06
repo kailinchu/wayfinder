@@ -23,8 +23,6 @@ const Translate = () => {
     const isInitialized = document.querySelector('script[src*="translate_a/element.js"]');
     const existingGoogleScript = document.querySelector('script[src*="translate.googleapis.com"]');
 
-    
-
     if (!(isInitialized && existingGoogleScript)) {
       window.googleTranslateElementInit = googleTranslateElementInit;
 
@@ -37,9 +35,9 @@ const Translate = () => {
       );
       addScript.async = true; 
       document.body.appendChild(addScript);
-      //return () => {
-        //document.body.removeChild(addScript);
-      //};
+      return () => {
+        document.body.removeChild(addScript);
+      };
     }
   }, []);
 
