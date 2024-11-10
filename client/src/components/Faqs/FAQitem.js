@@ -10,7 +10,7 @@ function FAQItem({ question, answer, image }) {
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{question}</Typography>
+        <Typography fontWeight="600">{question}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Typography>{answer}</Typography>
