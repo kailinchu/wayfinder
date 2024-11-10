@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
+import Typography from '@mui/material/Typography';
 import './style.css';
 
 //This class creates the accordion menu, using MUI accordion menu api
@@ -57,7 +58,8 @@ const AccordionMenu = (props) => {
                     aria-controls="panel1-content"
                     id="panel1-header"    
                 >
-                    {info[idx].name}
+                
+                <Typography fontWeight="600">{info[idx].name}</Typography>    
                 </AccordionSummary>
                 <AccordionDetails>
                     <div dangerouslySetInnerHTML={renderDescription(info[idx].description)} />
