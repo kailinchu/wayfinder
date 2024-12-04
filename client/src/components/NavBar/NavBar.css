@@ -39,6 +39,10 @@ nav ul li a:hover{
     transition: .3s;
 }
 
+.NavLinks a.active {
+    color: var(--secondary-navy) !important;
+}
+
 .MobileNavigation{
     display: none;
 }

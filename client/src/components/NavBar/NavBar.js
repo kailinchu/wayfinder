@@ -31,6 +31,7 @@ const NavBar = ({hospitalSite, displayNavBar}) => {
                 <Translate />
             </div>
         </div>
+        
     )
 }
 
