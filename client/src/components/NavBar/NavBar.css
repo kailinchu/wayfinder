@@ -98,13 +98,17 @@ nav ul li a:hover{
         right: 2%;
         cursor: pointer;
     }
+
+    .burger-inner > div {
+        background-color: var(--secondary-navy)!important;
+        }
     
     .NavLinks ul{
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         position: absolute;
-        border-top: 3px solid orange;
+        border-top: 3px solid var(--secondary-navy);
         top: 15vh;
         right: 0;
         height: 50vh;
