@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
 import Translate from './translate.js';
+import './NavBar.css';
+
 
 const NavBar = ({hospitalSite, displayNavBar}) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1050);
@@ -18,12 +20,16 @@ const NavBar = ({hospitalSite, displayNavBar}) => {
     }, []);
 
     return(
-        <div>
+        <div className='Header'>
             { isMobile ? (
                 <MobileNavigation hospitalSite={hospitalSite} displayNavBar={displayNavBar}/>
             ) : (
                 <DesktopNavigation hospitalSite={hospitalSite} displayNavBar={displayNavBar}/>
             )}
+            
+            <div className="TranslateMenu">
+                <Translate />
+            </div>
         </div>
     )
 }

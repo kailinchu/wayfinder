@@ -3,7 +3,7 @@
 nav{
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     background: var(--light-gray);
     padding: 15px 30px 15px 30px;
     z-index: 1;
@@ -18,7 +18,7 @@ nav{
 nav ul{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 nav ul li{
@@ -57,6 +57,21 @@ nav ul li a:hover{
     width: auto; /* Maintain aspect ratio */
   }
 
+.Header{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: var(--light-gray);
+    padding: 15px 30px 15px 30px;
+    z-index: 1;
+    /* background-color: #EFEFEF; */
+}
+
+.TranslateMenu {
+    margin-left: auto;
+    order: 2; 
+}
+
 @media (max-width: 1050px){
 
     .DesktopNavigation{
@@ -92,6 +107,13 @@ nav ul li a:hover{
         width: 100%;
         background:var(--light-gray);
     }
+
+    .TranslateMenu {
+        margin-left: auto; 
+        margin-bottom: auto;
+        order: 2;
+    }
+    
     
 }
 

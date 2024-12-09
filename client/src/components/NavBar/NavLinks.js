@@ -1,5 +1,4 @@
- import './NavBar.css';
-import Translate from './translate.js';
+import './NavBar.css';
 
  const NavLinks = ({isClicked, closeMenu, hospitalSite}) =>{
     const handleClick = () => {
@@ -30,9 +29,6 @@ import Translate from './translate.js';
             </li>
             <li onClick={handleClick}>
               <a href={`${baseUrl}/${hospitalSite}/feedback`}>Feedback</a>
-            </li>
-            <li>
-              <Translate/>
             </li>
           </ul>
 

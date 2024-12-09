@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 //google translate button script 
 
 //translate function component
@@ -10,7 +10,7 @@ const Translate = () => {
       {
         pageLanguage: "en",
         autoDisplay: false,
-        // layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         includedLanguages: "en,fr,zh,ar,ta",
       },
       "google_translate_element"
