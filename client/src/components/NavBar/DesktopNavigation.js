@@ -4,9 +4,9 @@ import './NavBar.css';
 const DesktopNavigation = ({hospitalSite, displayNavBar}) => {
   return (
     <nav className="DesktopNavigation">
-      <a className="logo" href="/">
+      <a className="logo notranslate" href="/">
         <img src="/images/logo.png" alt="SHN WayFinder" className="logo" />
-        WayFinder
+         WayFinder
       </a>
       {displayNavBar && <NavLinks hospitalSite={hospitalSite} />}
     </nav>

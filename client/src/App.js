@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 
 import { BrowserRouter, Routes, Route, useParams, Outlet } from 'react-router-dom';
 
@@ -68,6 +69,8 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <Analytics />
+
         <Routes>
           <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>
             <Route path="" element={<Landing images={images}/>} />

@@ -71,7 +71,8 @@ class Landing extends Component {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%', position: 'absolute', left: '0',}}>
           {images.map((image) => (
             <ImageButton
-              focusRipple
+              className="notranslate"
+            focusRipple
               key={image.title}
               style={{
                 width: `${100/images.length}%`,
