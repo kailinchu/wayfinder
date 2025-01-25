@@ -40,7 +40,7 @@ nav ul li a:hover{
 }
 
 .NavLinks a.active {
-    color: var(--secondary-navy) !important;
+    color: var(--secondary-navy);
 }
 
 .MobileNavigation{
@@ -100,7 +100,7 @@ nav ul li a:hover{
     }
 
     .burger-inner > div {
-        background-color: var(--secondary-navy)!important;
+        background-color: var(--secondary-navy);
         }
     
     .NavLinks ul{
