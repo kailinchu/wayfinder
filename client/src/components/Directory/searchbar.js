@@ -27,6 +27,7 @@ const SearchBar = (props) => {
         onChange={handleChange} 
         value={searchInput}
         sx={{
+          zIndex: 0,
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
               borderColor: '#48beb0', // Default border color
