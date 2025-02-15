@@ -7,6 +7,7 @@ const NavBar = ({hospitalSite, displayNavBar}) => {
             <DesktopNavigation hospitalSite={hospitalSite} displayNavBar={displayNavBar}/>
             <MobileNavigation hospitalSite={hospitalSite} displayNavBar={displayNavBar}/>
         </div>
+        
     )
 }
 
