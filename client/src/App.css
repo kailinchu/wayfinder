@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
-
 main > .container {
     /* padding: 60px 15px 0; */
     padding: 0 15px 0;
@@ -13,7 +11,7 @@ html, body{
 
 
 *{
-    font-family: 'Proxima Nova' !important;
+    font-family: sans-serif;
 }
 
 /* Titles for each page */
@@ -61,8 +59,4 @@ html, body{
     .button-text{
         font-size: 30px;
     }
-}
-
-footer{
-    background-color: #EFEFEF;
 }
