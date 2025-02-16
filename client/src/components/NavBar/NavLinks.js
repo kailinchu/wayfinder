@@ -19,7 +19,7 @@ const NavLinks = ({ isClicked, closeMenu, hospitalSite }) => {
             <ul>
                 <li onClick={handleClick}>
                     <a href={`${baseUrl}/${hospitalSite}`} className={isActive('') ? 'active' : ''}>
-                        {hospitalName}
+                        <span className="notranslate">{hospitalName}</span>
                     </a>
                 </li>
                 <li onClick={handleClick}>
