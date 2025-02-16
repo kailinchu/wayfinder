@@ -29,7 +29,7 @@ const MobileNavigation = ({ hospitalSite, displayNavBar }) => {
 
     return (
         <nav className="MobileNavigation">
-            <a className="logo" href="/">
+            <a className="logo notranslate" href="/">
                 <img src="/images/logo.png" alt="SHN WayFinder" className="logo" />
                 WayFinder
             </a>

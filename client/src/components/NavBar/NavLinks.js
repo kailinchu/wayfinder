@@ -1,5 +1,4 @@
 import './NavBar.css';
-import Translate from './translate.js';
 
 const NavLinks = ({ isClicked, closeMenu, hospitalSite }) => {
     const handleClick = () => {
@@ -20,7 +19,7 @@ const NavLinks = ({ isClicked, closeMenu, hospitalSite }) => {
             <ul>
                 <li onClick={handleClick}>
                     <a href={`${baseUrl}/${hospitalSite}`} className={isActive('') ? 'active' : ''}>
-                        {hospitalName}
+                        <span className="notranslate">{hospitalName}</span>
                     </a>
                 </li>
                 <li onClick={handleClick}>
@@ -42,9 +41,6 @@ const NavLinks = ({ isClicked, closeMenu, hospitalSite }) => {
                     <a href={`${baseUrl}/${hospitalSite}/feedback`} className={isActive('/feedback') ? 'active' : ''}>
                         Feedback
                     </a>
-                </li>
-                <li>
-                    <Translate />
                 </li>
             </ul>
         </nav>
