@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
 import {birchmountDataDirectories} from "../../data/birchmountData" //note: must wrap in curly braces because it is a named export (not a default one)
+import { start } from '@popperjs/core';
 
 let directory = birchmountDataDirectories;
 var filteredDirectoryIndices = directory;
@@ -43,6 +44,10 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
     return firstLetter >= startLetterLower && firstLetter <= endLetterLower;
   });
 
+  if(filteredItems.length === 0){
+    return { startIdx: -1, endIdx: -1 };
+  }
+
   // Get the start index 
   const startIdx = directory.indexOf(filteredItems[0]);
 
@@ -52,6 +57,7 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
   return { startIdx, endIdx };
 }
 
+
   // Letter groups for range (Hard Coded for now)
   const letterGroups = [
     ['A', 'D'],
@@ -60,7 +66,7 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
     ['M', 'N'],
     ['O', 'R'],
     ['S', 'Z'],
-    ['1', '9'],
+    ['0', '9'],
     ['0', 'Z'],
   ];
 
@@ -70,7 +76,9 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
   // Gets the start and end indexes for each letter group and puts it into an array
   letterGroups.forEach(([startLetter, endLetter]) => {
     const { startIdx, endIdx } = getLetterRangeIndices(directory, startLetter, endLetter);
-    indexList.push({ startIdx, endIdx });
+    console.log(startIdx, endIdx);
+      indexList.push({ startIdx, endIdx });      
+    
   });
 
   console.log(indexList);  
@@ -214,9 +222,11 @@ class Directory extends React.Component {
 
           {/* Maps through the indexList to create a tab panel for each alphabetical group units and all */}
           {indexList.map((range, idx) => (
-            <CustomTabPanel key={idx} value={tabIndex} index={idx}>
-              <AccordionMenu info={directory} startIdx={range.startIdx} endIdx={range.endIdx} />
-            </CustomTabPanel>
+            range.startIdx !== -1 && range.endIdx !== -1 ? ( // Only render if valid
+               <CustomTabPanel key={idx} value={tabIndex} index={idx}>
+                 <AccordionMenu info={directory} startIdx={range.startIdx} endIdx={range.endIdx} />
+               </CustomTabPanel>
+             ) : null // Do not render anything if -1
           ))} 
 
         </Box>
