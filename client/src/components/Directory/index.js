@@ -12,7 +12,8 @@ import {birchmountDataDirectories} from "../../data/birchmountData" //note: must
 let directory = birchmountDataDirectories;
 var filteredDirectoryIndices = directory;
 
-// Sorts the directory alphabetically
+// Sorts directory alphabetically, numbers will appear before letters
+
 const sortedDirectory = [...directory].sort((a, b) => {
   const nameA = a.name.toLowerCase(); // makes it case-insensitive
   const nameB = b.name.toLowerCase();
@@ -59,6 +60,8 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
     ['M', 'N'],
     ['O', 'R'],
     ['S', 'Z'],
+    ['1', '9'],
+    ['0', 'Z'],
   ];
 
   // Create an array to store the indices
@@ -209,54 +212,20 @@ class Directory extends React.Component {
           </Box>
           </div>
 
-            {/* Gets the start and end indices for each alphabetical group from the indexList */}
-          <CustomTabPanel value={tabIndex} index={0}>
-            {/* Content for tab index 0 */}
-            <AccordionMenu info={directory} startIdx={indexList[0].startIdx} endIdx={indexList[0].endIdx} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={1}>
-            {/* Content for tab index 1 */}
-            <AccordionMenu info={directory} startIdx={indexList[1].startIdx} endIdx={indexList[1].endIdx} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={2}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={indexList[2].startIdx} endIdx={indexList[2].endIdx} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={3}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={indexList[3].startIdx} endIdx={indexList[3].endIdx} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={4}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={indexList[4].startIdx} endIdx={indexList[4].endIdx} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={5}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={indexList[5].startIdx} endIdx={indexList[5].endIdx} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={6}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={1} endIdx={1} /> {/* I dont know how to make the units like customizable */}
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={7}>
-            {/* Content for tab index 7. PASS filtered array into props so that the filtered units are displayed */}
-            <AccordionMenu info={directory} startIdx={0} endIdx={directory.length - 1} filteredInfo={filteredDirectoryIndices} index={7} />
-          </CustomTabPanel>
+          {/* Maps through the indexList to create a tab panel for each alphabetical group units and all */}
+          {indexList.map((range, idx) => (
+            <CustomTabPanel key={idx} value={tabIndex} index={idx}>
+              <AccordionMenu info={directory} startIdx={range.startIdx} endIdx={range.endIdx} />
+            </CustomTabPanel>
+          ))} 
 
         </Box>
         )}
 
+
       {/* Box for non-english languages, only items marked important*/}
       {!isEnglish && (
         <Box sx={{ width: '100%' }}>
-
           <CustomTabPanel value={tabIndex} index={0}>
             {/* Content for tab index 0 */}
             <AccordionMenu info={importantDirectoryItems} startIdx={0} endIdx={importantDirectoryItems.length - 1} />
