@@ -11,7 +11,7 @@ class Home extends Component {
   render() {
     return (
       <>
-      <div class="home-container">
+      <div className="home-container">
         <div className="button-container">
           <button 
             className="circle-button"
@@ -20,7 +20,7 @@ class Home extends Component {
           >
             <div>
               <MdOutlineQuestionMark size={'7.5vw'}/>
-              <h1 class="button-text"> FAQs </h1>
+              <h1 className="button-text"> FAQs </h1>
             </div>
           </button>
           <button 
@@ -29,7 +29,7 @@ class Home extends Component {
           >
             <div>
             <BsArrow90DegRight size={'7.5vw'}/>
-              <h1 class="button-text"> Directory </h1>
+              <h1 className="button-text"> Directory </h1>
             </div>
           </button>
           <button 
@@ -38,7 +38,7 @@ class Home extends Component {
           >
             <div>
             <FaLocationDot size={'7.5vw'}/>
-              <h1 class="button-text"> Map </h1>
+              <h1 className="button-text"> Map </h1>
             </div>
           </button>
         </div>

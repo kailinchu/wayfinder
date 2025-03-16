@@ -8,10 +8,10 @@ class Map extends Component {
 
     return (
       <>
-        <div class="title-container">
-            <h1 class="title">Map</h1>
+        <div className="title-container">
+            <h1 className="title">Map</h1>
         </div>
-        <img src={mapImagePath} alt="Hospital Map" class="map"/>
+        <img src={mapImagePath} alt="Hospital Map" className="map"/>
       </>
     );
   }

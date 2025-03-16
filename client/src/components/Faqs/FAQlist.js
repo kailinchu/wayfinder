@@ -23,8 +23,8 @@ const faqData = [
 function FAQList() {
   return (
     <div className="faq-list">
-      <div class="title-container">
-       <h1 class="title">Frequently Asked Questions</h1>
+      <div className="title-container">
+       <h1 className="title">Frequently Asked Questions</h1>
       </div>
       {faqData.map((faq, index) => (
         <FAQItem

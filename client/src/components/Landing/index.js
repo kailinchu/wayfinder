@@ -67,7 +67,7 @@ class Landing extends Component {
   render() {
     const { images } = this.props;
     return (
-      <div class="outside-box">
+      <div className="outside-box">
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%', position: 'absolute', left: '0',}}>
           {images.map((image) => (
             <ImageButton
