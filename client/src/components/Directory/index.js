@@ -7,15 +7,84 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
-//imports the data
 import {birchmountDataDirectories} from "../../data/birchmountData" //note: must wrap in curly braces because it is a named export (not a default one)
+import { start } from '@popperjs/core';
 
-const directory = birchmountDataDirectories;
-// console.log(directory[0].name);
+let directory = birchmountDataDirectories;
 var filteredDirectoryIndices = directory;
 
+// Sorts directory alphabetically, numbers will appear before letters
 
-//FUNCTION COMPONENT, allows for a tag for a CustomTabPanel
+const sortedDirectory = [...directory].sort((a, b) => {
+  const nameA = a.name.toLowerCase(); // makes it case-insensitive
+  const nameB = b.name.toLowerCase();
+
+  if (nameA < nameB) return -1; // 'a' comes before 'b'
+  if (nameA > nameB) return 1;  // 'b' comes before 'a'
+  return 0;                     // same name
+});
+
+
+// Reassign the sorted directory to the original directory
+directory = sortedDirectory;
+
+// Important directory items for translated sites (Important should be in the data as a T/F boolean)
+const importantDirectoryItems = directory.filter((item) => item.important === 'true');
+
+
+// Gets ranges of indices for each letter group
+function getLetterRangeIndices(directory, startLetter, endLetter) {
+  //makes comparison case-insensitive
+  const startLetterLower = startLetter.toLowerCase();
+  const endLetterLower = endLetter.toLowerCase();
+
+  // Filter the directory to find items that start with letters between startLetter and endLetter
+  const filteredItems = directory.filter(item => {
+    const firstLetter = item.name[0].toLowerCase(); 
+    return firstLetter >= startLetterLower && firstLetter <= endLetterLower;
+  });
+
+  if(filteredItems.length === 0){
+    return { startIdx: -1, endIdx: -1 };
+  }
+
+  // Get the start index 
+  const startIdx = directory.indexOf(filteredItems[0]);
+
+  // Get the end index 
+  const endIdx = directory.indexOf(filteredItems[filteredItems.length - 1]);
+
+  return { startIdx, endIdx };
+}
+
+
+  // Letter groups for range (Hard Coded for now)
+  const letterGroups = [
+    ['A', 'D'],
+    ['E', 'H'],
+    ['I', 'L'],
+    ['M', 'N'],
+    ['O', 'R'],
+    ['S', 'Z'],
+    ['0', '9'],
+    ['0', 'Z'],
+  ];
+
+  // Create an array to store the indices
+  const indexList = [];
+
+  // Gets the start and end indexes for each letter group and puts it into an array
+  letterGroups.forEach(([startLetter, endLetter]) => {
+    const { startIdx, endIdx } = getLetterRangeIndices(directory, startLetter, endLetter);
+    console.log(startIdx, endIdx);
+      indexList.push({ startIdx, endIdx });      
+    
+  });
+
+  console.log(indexList);  
+
+
+
 //tab functionality
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props; // array destructuring for props
@@ -49,8 +118,40 @@ class Directory extends React.Component {
   //react state
   state = {
     tabIndex: 0, //default
-    searchInput: ""
+    searchInput: "",
+    isEnglish: true, //sets default language state
   };
+
+  //isEnglish? Language states
+  componentDidMount() {
+    // Initialize language detection
+    this.updateLanguageState();
+
+    // Observe changes to the `lang` attribute on <html>
+    this.observer = new MutationObserver(() => {
+      this.updateLanguageState();
+    });
+
+    this.observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
+    });
+  }
+
+  componentWillUnmount() {
+    // Cleanup observer
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  // Updates 'isEnglish' state based on the `lang` attribute on <html>
+  updateLanguageState = () => {
+    const lang = document.documentElement.lang;
+    this.setState({ isEnglish: lang === "en" });
+  };
+
+
 
   //sets the value to newValue
   handleChange = (event, newValue) => {
@@ -68,21 +169,28 @@ class Directory extends React.Component {
 
   };
 
-  render() { //runs the code everytime this class component is rendered
-    // this is a key feature in react class components, DIFFERENT from functional components
+  render() { 
+   
 
     //the code below sends all the info into the accordion menus but mainly creates the tab button functionality!
-    const { tabIndex } = this.state;
+    const { tabIndex, isEnglish } = this.state;
+    console.log("Current isEnglish state:", this.state.isEnglish);
+
     return (
       <>
+      
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column'}}>
           <div class="directories-title">
             <h1 class="title">Directories</h1>
           </div>
-          <SearchBar info={directory} onSearchChange={this.handleSearchChange}/>
+        
+          {isEnglish && ( //if the language is english, show the search bar
+            <SearchBar info={directory} onSearchChange={this.handleSearchChange}/>
+          )}
         </div>
 
-
+        {isEnglish && ( //english tabs (all items)
         <Box sx={{ width: '100%' }}>
         <div className="notranslate"> 
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -112,47 +220,31 @@ class Directory extends React.Component {
           </Box>
           </div>
 
-          <CustomTabPanel value={tabIndex} index={0}>
-            {/* Content for tab index 0 */}
-            <AccordionMenu info={directory} startIdx={0} endIdx={8} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={1}>
-            {/* Content for tab index 1 */}
-            <AccordionMenu info={directory} startIdx={9} endIdx={20} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={2}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={21} endIdx={27} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={3}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={28} endIdx={35} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={4}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={36} endIdx={44} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={5}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={45} endIdx={56} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={6}>
-            {/* Content for tab index 2 */}
-            <AccordionMenu info={directory} startIdx={1} endIdx={1} />
-          </CustomTabPanel>
-
-          <CustomTabPanel value={tabIndex} index={7}>
-            {/* Content for tab index 7. PASS filtered array into props so that the filtered units are displayed */}
-            <AccordionMenu info={directory} startIdx={0} endIdx={directory.length - 1} filteredInfo={filteredDirectoryIndices} index={7} />
-          </CustomTabPanel>
+          {/* Maps through the indexList to create a tab panel for each alphabetical group units and all */}
+          {indexList.map((range, idx) => (
+            range.startIdx !== -1 && range.endIdx !== -1 ? ( // Only render if valid
+               <CustomTabPanel key={idx} value={tabIndex} index={idx}>
+                 <AccordionMenu info={directory} startIdx={range.startIdx} endIdx={range.endIdx} />
+               </CustomTabPanel>
+             ) : null // Do not render anything if -1
+          ))} 
 
         </Box>
+        )}
+
+
+      {/* Box for non-english languages, only items marked important*/}
+      {!isEnglish && (
+        <Box sx={{ width: '100%' }}>
+          <CustomTabPanel value={tabIndex} index={0}>
+            {/* Content for tab index 0 */}
+            <AccordionMenu info={importantDirectoryItems} startIdx={0} endIdx={importantDirectoryItems.length - 1} />
+          </CustomTabPanel>
+
+
+        </Box>
+        )}
+
 
       </>
     );
