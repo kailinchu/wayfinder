@@ -15,6 +15,9 @@ import NotFound from './components/NotFound';
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
 
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './styles/theme';
+
 // Import hospital site specific data
 import { birchmountData } from './data/birchmountData';
 import { centenaryData } from './data/centenaryData';
@@ -68,21 +71,25 @@ const PageLayout = ({displayNavBar}) => {
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Analytics />
+      <ThemeProvider theme={theme}>
 
-        <Routes>
-          <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>
-            <Route path="" element={<Landing images={images}/>} />
-          </Route>
-          <Route path="/:site" element={<PageLayout displayNavBar={true}/>}>
-            <Route exact path="/:site" element={<HospitalSite/>} />
-            <Route path="/:site/:page" element={<HospitalSite/>} />
-            <Route path="*" element={<NotFound/>} />
-          </Route>
-        </Routes>
-        <Footer/>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Analytics />
+
+          <Routes>
+            <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>
+              <Route path="" element={<Landing images={images}/>} />
+            </Route>
+            <Route path="/:site" element={<PageLayout displayNavBar={true}/>}>
+              <Route exact path="/:site" element={<HospitalSite/>} />
+              <Route path="/:site/:page" element={<HospitalSite/>} />
+              <Route path="*" element={<NotFound/>} />
+            </Route>
+          </Routes>
+          <Footer/>
+        </BrowserRouter>
+
+      </ThemeProvider>
     )
   }
 }
