@@ -76,8 +76,8 @@ class Directory extends React.Component {
     return (
       <>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column'}}>
-          <div class="directories-title">
-            <h1 class="title">Directories</h1>
+          <div className="directories-title">
+            <h1 className="title">Directories</h1>
           </div>
           <SearchBar info={directory} onSearchChange={this.handleSearchChange}/>
         </div>
