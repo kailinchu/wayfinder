@@ -8,27 +8,29 @@ import Box from '@mui/material/Box';
 import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
 import {birchmountDataDirectories} from "../../data/birchmountData" //note: must wrap in curly braces because it is a named export (not a default one)
-import { start } from '@popperjs/core';
+import { usePapaParse } from "react-papaparse";
 
+
+//default directory data (should not be used) if somehow the parsing fails
 let directory = birchmountDataDirectories;
 var filteredDirectoryIndices = directory;
 
 // Sorts directory alphabetically, numbers will appear before letters
 
-const sortedDirectory = [...directory].sort((a, b) => {
-  const nameA = a.name.toLowerCase(); // makes it case-insensitive
-  const nameB = b.name.toLowerCase();
+// const sortedDirectory = [...directory].sort((a, b) => { //(DEFAULT BIRCHMOUNT DATA - SHOULD NOT STILL BE USED)
+//   const nameA = a.name.toLowerCase(); // makes it case-insensitive
+//   const nameB = b.name.toLowerCase();
 
-  if (nameA < nameB) return -1; // 'a' comes before 'b'
-  if (nameA > nameB) return 1;  // 'b' comes before 'a'
-  return 0;                     // same name
-});
+//   if (nameA < nameB) return -1; // 'a' comes before 'b'
+//   if (nameA > nameB) return 1;  // 'b' comes before 'a'
+//   return 0;                     // same name
+// });
 
 
-// Reassign the sorted directory to the original directory
-directory = sortedDirectory;
+// Reassign the sorted directory to the original directory (DEFAULT BIRCHMOUNT DATA - SHOULD NOT STILL BE USED)
+// directory = sortedDirectory;
 
-// Important directory items for translated sites (Important should be in the data as a T/F boolean)
+// Important directory items for translated sites (Important should be in the data as a T/F boolean) (DEFAULT BIRCHMOUNT DATA - SHOULD NOT STILL BE USED)
 const importantDirectoryItems = directory.filter((item) => item.important === 'true');
 
 
@@ -70,18 +72,18 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
     ['0', 'Z'],
   ];
 
-  // Create an array to store the indices
-  const indexList = [];
+  // Create an array to store the indices (DEFAULT BIRCHMOUNT DATA - SHOULD NOT STILL BE USED)
+  // const indexList = [];
 
-  // Gets the start and end indexes for each letter group and puts it into an array
-  letterGroups.forEach(([startLetter, endLetter]) => {
-    const { startIdx, endIdx } = getLetterRangeIndices(directory, startLetter, endLetter);
-    console.log(startIdx, endIdx);
-      indexList.push({ startIdx, endIdx });      
+  // // Gets the start and end indexes for each letter group and puts it into an array (DEFAULT BIRCHMOUNT DATA - SHOULD NOT STILL BE USED)
+  // letterGroups.forEach(([startLetter, endLetter]) => {
+  //   const { startIdx, endIdx } = getLetterRangeIndices(directory, startLetter, endLetter);
+  //   console.log(startIdx, endIdx);
+  //     indexList.push({ startIdx, endIdx });      
     
-  });
+  // });
 
-  console.log(indexList);  
+  // console.log(indexList);  
 
 
 
@@ -115,17 +117,23 @@ CustomTabPanel.propTypes = {
 //MAIN CLASS COMPONENT
 class Directory extends React.Component {
 
+
+
+
+  
   //react state
   state = {
     tabIndex: 0, //default
     searchInput: "",
     isEnglish: true, //sets default language state
+    csvData: null,
   };
 
   //isEnglish? Language states
   componentDidMount() {
     // Initialize language detection
     this.updateLanguageState();
+    this.loadCSVData();
 
     // Observe changes to the `lang` attribute on <html>
     this.observer = new MutationObserver(() => {
@@ -167,14 +175,53 @@ class Directory extends React.Component {
       return unit.name.toLowerCase().includes(input.toLowerCase()); //filters the data so that the new results only include the word typed
     });
 
+
+
   };
+
+      //loads csv data using react-papaparse
+      loadCSVData = () => { 
+        console.log(this.props.site)
+        const {site} = this.props; //accesses the site from props
+        const csvPath = `/data/${site}_data.csv` //dynamically changes which data is read based on which site
+        fetch(csvPath)
+          .then((response) => response.text())
+          .then((csvString) => {
+            const { readString } = usePapaParse(); 
+            readString(csvString, {
+              header: true,
+              skipEmptyLines: true,
+              complete: (results) => {
+                console.log("Parsed Data:", results.data);
+                this.setState({ csvData: results.data }); 
+              },
+            });
+          })
+          .catch((error) => console.error("Error fetching CSV:", error));
+      };
+
 
   render() { 
    
-
-    //the code below sends all the info into the accordion menus but mainly creates the tab button functionality!
-    const { tabIndex, isEnglish } = this.state;
+    const { tabIndex, isEnglish, csvData } = this.state;
     console.log("Current isEnglish state:", this.state.isEnglish);
+    directory = csvData ? csvData : directory; // Use CSV data if loadedz
+
+    //dynamically alphabetize:
+
+    const activeDirectory = [...(csvData || birchmountDataDirectories)].sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+
+    //dynamically filter important items:
+    const importantDirectoryItems = activeDirectory.filter((item) => item.important === 'true');
+
+    // dynamically generate index group
+    const indexList = letterGroups.map(([startLetter, endLetter]) =>
+      getLetterRangeIndices(activeDirectory, startLetter, endLetter)
+    );
 
     return (
       <>
@@ -184,9 +231,10 @@ class Directory extends React.Component {
           <div class="directories-title">
             <h1 class="title">Directories</h1>
           </div>
+          
         
           {isEnglish && ( //if the language is english, show the search bar
-            <SearchBar info={directory} onSearchChange={this.handleSearchChange}/>
+            <SearchBar info={activeDirectory} onSearchChange={this.handleSearchChange}/>
           )}
         </div>
 
@@ -224,7 +272,7 @@ class Directory extends React.Component {
           {indexList.map((range, idx) => (
             range.startIdx !== -1 && range.endIdx !== -1 ? ( // Only render if valid
                <CustomTabPanel key={idx} value={tabIndex} index={idx}>
-                 <AccordionMenu info={directory} startIdx={range.startIdx} endIdx={range.endIdx} />
+                 <AccordionMenu info={activeDirectory} startIdx={range.startIdx} endIdx={range.endIdx} />
                </CustomTabPanel>
              ) : null // Do not render anything if -1
           ))} 
