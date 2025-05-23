@@ -268,14 +268,43 @@ class Directory extends React.Component {
           </Box>
           </div>
 
-          {/* Maps through the indexList to create a tab panel for each alphabetical group units and all */}
-          {indexList.map((range, idx) => (
-            range.startIdx !== -1 && range.endIdx !== -1 ? ( // Only render if valid
-               <CustomTabPanel key={idx} value={tabIndex} index={idx}>
-                 <AccordionMenu info={activeDirectory} startIdx={range.startIdx} endIdx={range.endIdx} />
-               </CustomTabPanel>
-             ) : null // Do not render anything if -1
-          ))} 
+    {/*A-D / S-Z indices 0-5 */}
+    {indexList.slice(0, 6).map((range, idx) =>
+      range.startIdx !== -1 && range.endIdx !== -1 ? (
+        <CustomTabPanel key={idx} value={tabIndex} index={idx}>
+          <AccordionMenu
+            info={activeDirectory}
+            startIdx={range.startIdx}
+            endIdx={range.endIdx}
+          />
+        </CustomTabPanel>
+      ) : null
+    )}
+
+    {/* Has to find a letter directly followed by a number */}
+    {tabIndex === 6 && (
+      <CustomTabPanel value={tabIndex} index={6}>
+        <AccordionMenu
+          info={activeDirectory.filter((item) => /\d[A-Za-z]/.test(item.name))}
+          startIdx={0}
+          endIdx={
+            activeDirectory.filter((item) => /\d[A-Za-z]/.test(item.name)).length - 1
+          }
+        />
+      </CustomTabPanel>
+    )}
+
+    {/* Tab for All (index 7) */}
+    {tabIndex === 7 && (
+      <CustomTabPanel value={tabIndex} index={7}>
+        <AccordionMenu
+          info={filteredDirectoryIndices}
+          startIdx={0}
+          endIdx={filteredDirectoryIndices.length - 1}
+        />
+      </CustomTabPanel>
+    )}
+
 
         </Box>
         )}
