@@ -181,8 +181,8 @@ class Directory extends React.Component {
       
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column'}}>
-          <div class="directories-title">
-            <h1 class="title">Directories</h1>
+          <div className="directories-title">
+            <h1 className="title">Directories</h1>
           </div>
         
           {isEnglish && ( //if the language is english, show the search bar
