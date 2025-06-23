@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@popperjs/core": "^2.11.6",
+    "@vercel/analytics": "^1.5.0",
     "bootstrap": "^5.2.3",
     "create-react-app": "^5.0.1",
     "papaparse": "^5.5.2",
