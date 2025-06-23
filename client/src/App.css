@@ -39,22 +39,10 @@ html, body{
     margin-top: 50px;
     margin-bottom: 50px;
 }
-.circle-button{
-    width: 20vw;
-    height: 20vw;
-}
-.button-text{
-    font-size: 3vw;
-    margin-top: 15px;
-}
+
 @media only screen and (max-width: 450px) {
     .button-container{
         flex-direction: column;
-    }
-    .circle-button{
-        width: 200px;
-        height: 200px;
-        margin: 10px auto !important;
     }
     .button-text{
         font-size: 30px;
