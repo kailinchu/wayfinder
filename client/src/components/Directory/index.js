@@ -1,50 +1,28 @@
 //imports
-import React, { Component } from 'react'
-import './style.css'
+import React, { Component } from 'react';
+import './style.css';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
-import {birchmountDataDirectories} from "../../data/birchmountData" //note: must wrap in curly braces because it is a named export (not a default one)
-import { start } from '@popperjs/core';
-
-let directory = birchmountDataDirectories;
-var filteredDirectoryIndices = directory;
-
-// Sorts directory alphabetically, numbers will appear before letters
-
-const sortedDirectory = [...directory].sort((a, b) => {
-  const nameA = a.name.toLowerCase(); // makes it case-insensitive
-  const nameB = b.name.toLowerCase();
-
-  if (nameA < nameB) return -1; // 'a' comes before 'b'
-  if (nameA > nameB) return 1;  // 'b' comes before 'a'
-  return 0;                     // same name
-});
-
-
-// Reassign the sorted directory to the original directory
-directory = sortedDirectory;
-
-// Important directory items for translated sites (Important should be in the data as a T/F boolean)
-const importantDirectoryItems = directory.filter((item) => item.important === 'true');
-
+import Papa from 'papaparse';
 
 // Gets ranges of indices for each letter group
 function getLetterRangeIndices(directory, startLetter, endLetter) {
-  //makes comparison case-insensitive
+
+  // Makes comparison case insensitive
   const startLetterLower = startLetter.toLowerCase();
   const endLetterLower = endLetter.toLowerCase();
 
-  // Filter the directory to find items that start with letters between startLetter and endLetter
+// Filter the directory: Find items starting with letters between startLetter and endLetter
   const filteredItems = directory.filter(item => {
-    const firstLetter = item.name[0].toLowerCase(); 
+    const firstLetter = item.name[0].toLowerCase();
     return firstLetter >= startLetterLower && firstLetter <= endLetterLower;
   });
 
-  if(filteredItems.length === 0){
+  if (filteredItems.length === 0) {
     return { startIdx: -1, endIdx: -1 };
   }
 
@@ -57,39 +35,23 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
   return { startIdx, endIdx };
 }
 
+// Letter groups for range (Hard Coded)
+const letterGroups = [
+  ['A', 'D'],
+  ['E', 'H'],
+  ['I', 'L'],
+  ['M', 'N'],
+  ['O', 'R'],
+  ['S', 'Z'],
+  ['0', '9'],
+  ['0', 'Z'],
+];
 
-  // Letter groups for range (Hard Coded for now)
-  const letterGroups = [
-    ['A', 'D'],
-    ['E', 'H'],
-    ['I', 'L'],
-    ['M', 'N'],
-    ['O', 'R'],
-    ['S', 'Z'],
-    ['0', '9'],
-    ['0', 'Z'],
-  ];
-
-  // Create an array to store the indices
-  const indexList = [];
-
-  // Gets the start and end indexes for each letter group and puts it into an array
-  letterGroups.forEach(([startLetter, endLetter]) => {
-    const { startIdx, endIdx } = getLetterRangeIndices(directory, startLetter, endLetter);
-    console.log(startIdx, endIdx);
-      indexList.push({ startIdx, endIdx });      
-    
-  });
-
-  console.log(indexList);  
-
-
-
-//tab functionality
+// Tab functionality
 function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props; // array destructuring for props
+  const { children, value, index, ...other } = props; // Array destructuring for props
 
-  //from MUI, defines props and accessibility
+//from MUI, defines props and accessibility
   return (
     <div
       role="tabpanel"
@@ -98,36 +60,36 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {/* tabs are defined by the index*/}
+{/* Tabs are defined by the index*/}
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
 
-//sets the expected (required) prop types for the tab panel.
+// Sets the expected (required) prop types for the tab panel.
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
 
-
-//MAIN CLASS COMPONENT
+// MAIN CLASS COMPONENT
 class Directory extends React.Component {
-
-  //react state
   state = {
-    tabIndex: 0, //default
-    searchInput: "",
-    isEnglish: true, //sets default language state
+    tabIndex: 0, // Default
+    searchInput: '',
+    isEnglish: true, // Sets default language to English
+    csvData: null,
+    filteredDirectoryIndices: [],
   };
 
-  //isEnglish? Language states
+// isEnglish? Language states
   componentDidMount() {
-    // Initialize language detection
+// Initialize language detection
     this.updateLanguageState();
+    this.loadCSVData();
 
-    // Observe changes to the `lang` attribute on <html>
+// Observe changes to the `lang` attribute on <html>
     this.observer = new MutationObserver(() => {
       this.updateLanguageState();
     });
@@ -139,116 +101,158 @@ class Directory extends React.Component {
   }
 
   componentWillUnmount() {
-    // Cleanup observer
+// Cleanup observer
     if (this.observer) {
       this.observer.disconnect();
     }
   }
 
-  // Updates 'isEnglish' state based on the `lang` attribute on <html>
+// Updates 'isEnglish' state based on the `lang` attribute on <html>
   updateLanguageState = () => {
     const lang = document.documentElement.lang;
     this.setState({ isEnglish: lang === "en" });
   };
 
-
-
-  //sets the value to newValue
+  // Sets the value to newValue
   handleChange = (event, newValue) => {
     this.setState({ tabIndex: newValue });
   };
 
-  //if something is searched, set the tabIndex to 7 and the searchinput to what was typed
   handleSearchChange = (input) => {
-    this.setState({ tabIndex: 7 });
-    this.setState({ searchInput: input })
+    const { csvData } = this.state; // Access csvData from the component's state
 
-    filteredDirectoryIndices = directory.filter((unit) => { //recalculated during each re-render
-      return unit.name.toLowerCase().includes(input.toLowerCase()); //filters the data so that the new results only include the word typed
-    });
+    this.setState({ tabIndex: 7, searchInput: input }); // Set tabIndex to 7 for to be in the "All" tab and update searchInput
 
+    // Makes sure search is case insensitive
+    const filteredDirectoryIndices = csvData.filter((unit) => 
+      unit.name.toLowerCase().includes(input.toLowerCase())
+    );
+
+    // Update the state with the filtered results
+    this.setState({ filteredDirectoryIndices });
   };
 
-  render() { 
-   
+// Loads csv data using papaparse directly
+  loadCSVData = () => {
+    const { site } = this.props; // Access the site from props
+    const csvPath = `/data/${site}_data.csv`; // Dynamically changes which data is read based on which site
 
-    //the code below sends all the info into the accordion menus but mainly creates the tab button functionality!
-    const { tabIndex, isEnglish } = this.state;
-    console.log("Current isEnglish state:", this.state.isEnglish);
+    // Fetch the CSV file
+    fetch(csvPath)
+      .then((response) => response.text()) // Convert response to text
+      .then((csvString) => {
+        // Use Papa.parse directly
+        Papa.parse(csvString, {
+          header: true, // Use the first row as header
+          skipEmptyLines: true, // Skip empty lines
+          complete: (results) => {
+            this.setState({ 
+              csvData: results.data, // Set the parsed CSV data to state
+              filteredDirectoryIndices: results.data // Initialize filteredDirectoryIndices with all items
+            });
+          },
+        });
+      })
+      .catch((error) => console.error("Error fetching CSV:", error));
+  };
+
+  render() {
+    const { tabIndex, isEnglish, csvData, filteredDirectoryIndices } = this.state;
+
+    const activeDirectory = csvData
+      ? [...csvData].sort((a, b) => { // Sort name alphabetically using a shallow copy of csvData
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+          return nameA.localeCompare(nameB);
+        })
+      : [];
+
+    const importantDirectoryItems = activeDirectory.filter((item) => item.important === 'true'); // Filter important items from the directory
+
+    // Dynamically generate index group
+    const indexList = letterGroups.map(([startLetter, endLetter]) =>
+      getLetterRangeIndices(activeDirectory, startLetter, endLetter)
+    );
 
     return (
       <>
-      
-
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column'}}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column' }}>
           <div className="directories-title">
             <h1 className="title">Directories</h1>
           </div>
-        
-          {isEnglish && ( //if the language is english, show the search bar
-            <SearchBar info={directory} onSearchChange={this.handleSearchChange}/>
-          )}
+
+          {isEnglish && <SearchBar info={activeDirectory} onSearchChange={this.handleSearchChange} />}
         </div>
 
-        {isEnglish && ( //english tabs (all items)
-        <Box sx={{ width: '100%' }}>
-        <div className="notranslate"> 
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={tabIndex} onChange={this.handleChange} variant="scrollable" scrollButtons="auto"
-              sx={{
-                '& .MuiTabs-indicator': {
-                  backgroundColor: '#48beb0', // Change the color of the indicator
-                },
-                '& .MuiTab-root': {
-                  '&.Mui-selected': {
-                    color: '#48beb0', // change the color for selected
-                  },
-                },
-              }}
-              aria-label="Alphabetical quick tabbing system for directory">
+        {isEnglish && ( // English tabs (all tabs included)
+          <Box sx={{ width: '100%' }}>
+            <div className="notranslate">
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabIndex} onChange={this.handleChange} variant="scrollable" scrollButtons="auto"
+                  sx={{
+                    '& .MuiTabs-indicator': {
+                      backgroundColor: '#48beb0', // Change the color of the indicator
+                    },
+                    '& .MuiTab-root': {
+                      '&.Mui-selected': {
+                        color: '#48beb0', // Change the color for selected
+                      },
+                    },
+                  }}
+                  aria-label="Alphabetical quick tabbing system for directory"
+                >
+                  <Tab label="A-D" />
+                  <Tab label="E-H" />
+                  <Tab label="I-L" />
+                  <Tab label="M-N" />
+                  <Tab label="O-R" />
+                  <Tab label="S-Z" />
+                  <Tab label="Units" />
+                  <Tab label="All" />
+                </Tabs>
+              </Box>
+            </div>
 
-                <Tab label="A-D"/>
-                <Tab label="E-H" />
-                <Tab label="I-L" />
-                <Tab label="M-N" />
-                <Tab label="O-R" />
-                <Tab label="S-Z" />
-                <Tab label="Units" />
-                <Tab label="All" />
+            {/*A-D / S-Z indices 0-5 */}
+            {indexList.slice(0, 6).map((range, idx) =>
+              range.startIdx !== -1 && range.endIdx !== -1 ? (
+                <CustomTabPanel key={idx} value={tabIndex} index={idx}>
+                  <AccordionMenu info={activeDirectory} startIdx={range.startIdx} endIdx={range.endIdx} />
+                </CustomTabPanel>
+              ) : null
+            )}
 
-            </Tabs>
+            {/* Has to find a letter directly followed by a number for Units*/}
+            {tabIndex === 6 && (
+              <CustomTabPanel value={tabIndex} index={6}>
+                <AccordionMenu
+                  info={activeDirectory.filter((item) => /\d[A-Za-z]/.test(item.name))}
+                  startIdx={0}
+                  endIdx={activeDirectory.filter((item) => /\d[A-Za-z]/.test(item.name)).length - 1}
+                />
+              </CustomTabPanel>
+            )}
+
+            {/* Tab for All (index 7) */}
+            {tabIndex === 7 && (
+              <CustomTabPanel value={tabIndex} index={7}>
+                <AccordionMenu info={filteredDirectoryIndices} startIdx={0} endIdx={filteredDirectoryIndices.length - 1} />
+              </CustomTabPanel>
+            )}
           </Box>
-          </div>
-
-          {/* Maps through the indexList to create a tab panel for each alphabetical group units and all */}
-          {indexList.map((range, idx) => (
-            range.startIdx !== -1 && range.endIdx !== -1 ? ( // Only render if valid
-               <CustomTabPanel key={idx} value={tabIndex} index={idx}>
-                 <AccordionMenu info={directory} startIdx={range.startIdx} endIdx={range.endIdx} />
-               </CustomTabPanel>
-             ) : null // Do not render anything if -1
-          ))} 
-
-        </Box>
         )}
 
-
-      {/* Box for non-english languages, only items marked important*/}
-      {!isEnglish && (
-        <Box sx={{ width: '100%' }}>
-          <CustomTabPanel value={tabIndex} index={0}>
+        {/* Non English table */}
+        {!isEnglish && (
+          <Box sx={{ width: '100%' }}>
+            <CustomTabPanel value={tabIndex} index={0}>
             {/* Content for tab index 0 */}
-            <AccordionMenu info={importantDirectoryItems} startIdx={0} endIdx={importantDirectoryItems.length - 1} />
-          </CustomTabPanel>
-
-
-        </Box>
+              <AccordionMenu info={importantDirectoryItems} startIdx={0} endIdx={importantDirectoryItems.length - 1} />
+            </CustomTabPanel>
+          </Box>
         )}
-
-
       </>
     );
-
   }
 }
 

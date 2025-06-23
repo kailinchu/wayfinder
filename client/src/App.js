@@ -44,7 +44,7 @@ const HospitalSite = () => {
     case 'faqs':
       return <Faqs data={data.faqs} />;
     case 'directory':
-      return <Directory data={data.directory} />;
+      return <Directory data={data.directory} site={site} />;
     case 'map':
       return <Map data={data.map} />;
     case 'feedback':
