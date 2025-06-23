@@ -167,7 +167,7 @@ class Directory extends React.Component {
         })
       : [];
 
-    const importantDirectoryItems = activeDirectory.filter((item) => item.important === 'true'); // Filter important items from the directory
+    const importantDirectoryItems = activeDirectory.filter((item) => item.Important === 'TRUE'); // Filter important items from the directory
 
     // Dynamically generate index group
     const indexList = letterGroups.map(([startLetter, endLetter]) =>
