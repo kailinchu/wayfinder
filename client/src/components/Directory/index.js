@@ -215,7 +215,7 @@ class Directory extends React.Component {
                   }}
                   aria-label="Alphabetical quick tabbing system for directory"
                 >
-                  <Tab label="*" />
+                  <Tab label="★" />
                   <Tab label="A-D" />
                   <Tab label="E-H" />
                   <Tab label="I-L" />
