@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
 import Papa from 'papaparse';
+import Fuse from 'fuse.js'
 
 // Gets ranges of indices for each letter group
 function getLetterRangeIndices(directory, startLetter, endLetter) {
@@ -121,14 +122,19 @@ class Directory extends React.Component {
   handleSearchChange = (input) => {
     const { csvData } = this.state; // Access csvData from the component's state
 
-    this.setState({ tabIndex: 7, searchInput: input }); // Set tabIndex to 7 for to be in the "All" tab and update searchInput
+    this.setState({ tabIndex: 8, searchInput: input }); // Set tabIndex to 9 for the "All" tab and update searchInput
 
-    // Makes sure search is case insensitive
-    const filteredDirectoryIndices = csvData.filter((unit) => 
-      unit.name.toLowerCase().includes(input.toLowerCase())
-    );
+    // Use Fuse.js for typo-tolerant search
+    const fuse = new Fuse(csvData, {
+      keys: ['name'], // Search by name property
+      threshold: 0.3 // tolerence threshold (How fuzzy the search is) Lower values = more strict, higher values = more fuzzy
+    });
 
-    // Update the state with the filtered results
+    //  Use Fuse.js to perform the search to get items that match the input
+    const filteredDirectoryIndices = input
+      ? fuse.search(input).map(result => result.item)
+      : csvData;
+
     this.setState({ filteredDirectoryIndices });
   };
 
@@ -146,6 +152,14 @@ class Directory extends React.Component {
           header: true, // Use the first row as header
           skipEmptyLines: true, // Skip empty lines
           complete: (results) => {
+            // Sort the results by name alphabetically
+            const sortedData = results.data.sort((a, b) => {
+              const nameA = a.name.toLowerCase();
+              const nameB = b.name.toLowerCase();
+              return nameA.localeCompare(nameB);
+            });
+            
+            // Update the state with the sorted data
             this.setState({ 
               csvData: results.data, // Set the parsed CSV data to state
               filteredDirectoryIndices: results.data // Initialize filteredDirectoryIndices with all items
@@ -167,7 +181,7 @@ class Directory extends React.Component {
         })
       : [];
 
-    const importantDirectoryItems = activeDirectory.filter((item) => item.Important === 'TRUE'); // Filter important items from the directory
+    const importantDirectoryItems = activeDirectory.filter((item) => item.important === 'TRUE'); // Filter important items from the directory
 
     // Dynamically generate index group
     const indexList = letterGroups.map(([startLetter, endLetter]) =>
@@ -201,6 +215,7 @@ class Directory extends React.Component {
                   }}
                   aria-label="Alphabetical quick tabbing system for directory"
                 >
+                  <Tab label="★" />
                   <Tab label="A-D" />
                   <Tab label="E-H" />
                   <Tab label="I-L" />
@@ -212,19 +227,27 @@ class Directory extends React.Component {
                 </Tabs>
               </Box>
             </div>
+            
+
+            {/* Tab for * (index 0) */}
+            {tabIndex === 0 && (
+              <CustomTabPanel value={tabIndex} index={0}>
+                <AccordionMenu info={importantDirectoryItems} startIdx={0} endIdx={importantDirectoryItems.length - 1} />
+              </CustomTabPanel>
+            )}
 
             {/*A-D / S-Z indices 0-5 */}
             {indexList.slice(0, 6).map((range, idx) =>
               range.startIdx !== -1 && range.endIdx !== -1 ? (
-                <CustomTabPanel key={idx} value={tabIndex} index={idx}>
+                <CustomTabPanel key={idx + 1 } value={tabIndex} index={idx + 1}>
                   <AccordionMenu info={activeDirectory} startIdx={range.startIdx} endIdx={range.endIdx} />
                 </CustomTabPanel>
               ) : null
             )}
 
             {/* Has to find a letter directly followed by a number for Units*/}
-            {tabIndex === 6 && (
-              <CustomTabPanel value={tabIndex} index={6}>
+            {tabIndex === 7 && (
+              <CustomTabPanel value={tabIndex} index={7}>
                 <AccordionMenu
                   info={activeDirectory.filter((item) => /\d[A-Za-z]/.test(item.name))}
                   startIdx={0}
@@ -234,8 +257,8 @@ class Directory extends React.Component {
             )}
 
             {/* Tab for All (index 7) */}
-            {tabIndex === 7 && (
-              <CustomTabPanel value={tabIndex} index={7}>
+            {tabIndex === 8 && (
+              <CustomTabPanel value={tabIndex} index={8}>
                 <AccordionMenu info={filteredDirectoryIndices} startIdx={0} endIdx={filteredDirectoryIndices.length - 1} />
               </CustomTabPanel>
             )}
