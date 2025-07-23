@@ -5,8 +5,6 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineQuestionMark } from "react-icons/md";
 import { BsArrow90DegRight } from "react-icons/bs";
 
-
-
 class Home extends Component {
   render() {
     return (
@@ -47,7 +45,7 @@ class Home extends Component {
               </svg>
             </div>
             <div className="feature-content">
-              <h3>Interactive Maps</h3>
+              <h3>Maps</h3>
               <p>Navigate our hospital with interactive maps showing the quickest routes to your destination.</p>
               <button className="feature-button" onClick={() => this.props.navigate('./map')}>Open Maps</button>
             </div>

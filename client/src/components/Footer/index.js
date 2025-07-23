@@ -9,7 +9,7 @@ class Footer extends Component {
     return (
       <footer className="footer mt-auto py-3 bg-light">
         <div className="container">
-          <span className="text-muted">&copy;&nbsp; 2024</span>
+          <span className="text-muted">&copy;&nbsp; 2025</span>
         </div>
       </footer>
     )
