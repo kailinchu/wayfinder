@@ -11,7 +11,7 @@ import Feedback from './components/Feedback';
 import Landing from './components/Landing';
 import Map from './components/Map';
 import NotFound from './components/NotFound';
-
+import ShnChatBot from './components/Chatbot';
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
 
@@ -88,6 +88,9 @@ class App extends Component {
           </Routes>
           <Footer/>
         </BrowserRouter>
+
+        <ShnChatBot></ShnChatBot>t
+
 
       </ThemeProvider>
     )

@@ -1,0 +1,17 @@
+{
+	"chatInput": {
+		"enabledPlaceholderText": "How can I help you?"
+	},
+	"notification": {
+		"disabled": true
+	},
+	"general": {
+		"primaryColor": "#48beb0",
+		"secondaryColor": "#48beb0",
+		"showFooter": false
+	},
+	"header": {
+		"showAvatar": false,
+		"title": "Your Personal Wayfinder"
+	}
+}
