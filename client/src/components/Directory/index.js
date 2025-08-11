@@ -152,17 +152,30 @@ class Directory extends React.Component {
           header: true, // Use the first row as header
           skipEmptyLines: true, // Skip empty lines
           complete: (results) => {
+            // Combine all description columns into one
+            const processedData = results.data.map(row => {
+              const combinedDescription = Object.keys(row)
+                .filter(key => key.toLowerCase().includes('description'))
+                .map(key => row[key])
+                .filter(Boolean)
+                .join('\n\n'); // Add an extra newline for spacing
+              return {
+                ...row,
+                description: combinedDescription
+              };
+            });
+
             // Sort the results by name alphabetically
-            const sortedData = results.data.sort((a, b) => {
+            const sortedData = processedData.sort((a, b) => {
               const nameA = a.name.toLowerCase();
               const nameB = b.name.toLowerCase();
               return nameA.localeCompare(nameB);
             });
-            
+
             // Update the state with the sorted data
             this.setState({ 
-              csvData: results.data, // Set the parsed CSV data to state
-              filteredDirectoryIndices: results.data // Initialize filteredDirectoryIndices with all items
+              csvData: sortedData, // Set the processed CSV data to state
+              filteredDirectoryIndices: sortedData // Initialize filteredDirectoryIndices with all items
             });
           },
         });
