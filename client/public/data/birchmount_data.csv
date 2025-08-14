@@ -1,4 +1,4 @@
-name,description,image,important
+name,description-north,image,important
 Adminstrative Department,"1st floor. See map below to locate the main floor (2nd floor) elevators.
 To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. When you exit the elevator, walk straight (around 10m). The Administrative Department will be on your right.",../../../images/birchmount-maps/elevators.png,
 Ambulatory Care Medical Clinics,"4th floor. See map below to locate the main floor elevators. To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right.
@@ -48,7 +48,8 @@ Gift Shop,"Main floor (2nd floor). See map below.
 
 To get to the Gift Shop from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The Gift Shop will be on your right.",../../../images/birchmount-maps/gift-shop.png,TRUE
 Health Records,"1st floor. See map below to locate the main floor (2nd floor) elevators. To get to the elevators from the North Entrance (beside the Information Desk), keep walking straight down the main hallway. The elevators will be on your right. Turn right on exit from the elevator.
-",../../../images/birchmount-maps/elevators.png,
+
+",../../../images/birchmount-maps/elevators.png,
 Health Sciences Library,"1st floor. See map below to locate the main floor (2nd floor) elevators.
 
  

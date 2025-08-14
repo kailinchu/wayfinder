@@ -153,17 +153,21 @@ class Directory extends React.Component {
           skipEmptyLines: true, // Skip empty lines
           complete: (results) => {
             // Combine all description columns into one
-            const processedData = results.data.map(row => {
-              const combinedDescription = Object.keys(row)
-                .filter(key => key.toLowerCase().includes('description'))
-                .map(key => row[key])
-                .filter(Boolean)
+          const processedData = results.data.map(row => {
+            const combinedDescription = Object.keys(row)
+              .filter(key => key.toLowerCase().includes('description'))
+              .map(key => {
+                if (!row[key]) return null; 
+                const direction = key.split('-')[1] || ''; //split at the first - of this column
+                return `<strong>Directions from the ${direction} entrance: </strong> \n ${row[key]}`;
+              })
+              .filter(Boolean)
                 .join('\n\n'); // Add an extra newline for spacing
-              return {
-                ...row,
-                description: combinedDescription
-              };
-            });
+            return {
+              ...row,
+              description: combinedDescription
+            };
+          });
 
             // Sort the results by name alphabetically
             const sortedData = processedData.sort((a, b) => {
