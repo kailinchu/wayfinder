@@ -12,6 +12,7 @@ import Landing from './components/Landing';
 import Map from './components/Map';
 import Chatbot from './components/Chatbot';
 import NotFound from './components/NotFound';
+import ChatBotPopup from './components/Popup';
 
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
@@ -67,12 +68,15 @@ const PageLayout = ({displayNavBar}) => {
           <Outlet />
         </div>
       </main>
+      <ChatBotPopup site={site} />
     </div>
   );
 };
 
 class App extends Component {
+  
   render() {
+    
     return (
       <ThemeProvider theme={theme}>
 
@@ -90,7 +94,10 @@ class App extends Component {
             </Route>
           </Routes>
           <Footer/>
+
+
         </BrowserRouter>
+
 
       </ThemeProvider>
     )
