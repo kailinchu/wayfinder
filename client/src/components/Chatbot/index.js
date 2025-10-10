@@ -1,4 +1,3 @@
-//path: client/src/components/Chatbot/index.js
 import React, { useState, useRef, useEffect } from 'react';
 
 const Chatbot = ({ site = 'birchmount', data }) => {
@@ -16,6 +15,8 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState({});
   const [showQuickActions, setShowQuickActions] = useState(true);
+  const [questionCount, setQuestionCount] = useState(0);
+  const maxQuestions = 10; // Maximum questions allowed per user per session
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -29,7 +30,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
+    if (!inputValue.trim() || isLoading || questionCount >= maxQuestions) return;
 
     const userMessage = {
       id: Date.now(),
@@ -39,21 +40,16 @@ const Chatbot = ({ site = 'birchmount', data }) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    setQuestionCount(prev => prev + 1);  // Increment question count
     const currentInput = inputValue;
     setInputValue('');
     setIsLoading(true);
 
     try {
-      // Make actual API call to your backend
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: currentInput,
-          site: site
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: currentInput, site: site }),
       });
 
       if (!response.ok) {
@@ -70,6 +66,17 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       };
 
       setMessages(prev => [...prev, botMessage]);
+
+      if (questionCount + 1 >= maxQuestions) {
+        const limitMessage = {
+          id: Date.now() + 2,
+          text: `You've reached the maximum number of questions for today. Please try again later.`,
+          isBot: true,
+          timestamp: new Date(),
+          isError: true
+        };
+        setMessages(prev => [...prev, limitMessage]);
+      }
     } catch (error) {
       console.error('Error calling chat API:', error);
       const errorMessage = {
@@ -90,8 +97,17 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       ...prev,
       [messageId]: isPositive
     }));
-    
     console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'}`);
+    // Temporary analytics logging (e.g., fire-and-forget method for analytics)
+    fetch('/api/log-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messageId,
+        feedback: isPositive ? 'positive' : 'negative',
+        timestamp: new Date()
+      })
+    });
   };
 
   const handleKeyPress = (e) => {
@@ -145,7 +161,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       margin: '2rem auto', 
       fontFamily: 'Arial, sans-serif'
     }}>
-      {/* Header Section - Similar to Directory Title */}
       <div style={{
         backgroundColor: '#474B8E',
         padding: '50px',
@@ -222,7 +237,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
         overflow: 'hidden'
       }}>
-        {/* Quick Actions Accordion - Similar to Directory Structure */}
         <div style={{
           border: '1px solid #e0e0e0',
           borderRadius: '0',
@@ -293,7 +307,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
 
         <div style={{ height: '1px', backgroundColor: '#e0e0e0' }}></div>
 
-        {/* Messages Area */}
         <div style={{ 
           height: '400px', 
           overflowY: 'auto', 
@@ -395,7 +408,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
               </div>
             </div>
           ))}
-          
+
           {isLoading && (
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
               <div style={{
@@ -462,7 +475,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
 
         <div style={{ height: '1px', backgroundColor: '#e0e0e0' }}></div>
 
-        {/* Input Area - Similar to SearchBar styling */}
         <form onSubmit={handleSubmit} style={{ padding: '16px' }}>
           <div style={{ position: 'relative' }}>
             <div style={{
@@ -548,7 +560,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
         </form>
       </div>
 
-      {/* CSS Animation for typing indicator */}
       <style>
         {`
           @keyframes pulse {
