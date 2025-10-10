@@ -1,7 +1,5 @@
-
-/**
- * Module dependencies.
- */
+//path: app.js
+require('dotenv').config();
 
 var express = require('express')
   , http = require('http')
@@ -11,12 +9,15 @@ var express = require('express')
   , logger = require('morgan')
   , methodOverride = require('method-override');
 
+const chatHandler = require('./api');
+
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()); 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -24,8 +25,9 @@ if (app.get('env') == 'development') {
   app.locals.pretty = true;
 }
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
+app.post('/api/chat', chatHandler);
+
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
