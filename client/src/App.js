@@ -9,7 +9,7 @@ import Directory from './components/Directory';
 import Faqs from './components/Faqs';
 import Feedback from './components/Feedback';
 import Landing from './components/Landing';
-import Map from './components/Map';
+import InteractiveMap from './components/Map';
 import NotFound from './components/NotFound';
 
 import './App.css';
@@ -46,7 +46,7 @@ const HospitalSite = () => {
     case 'directory':
       return <Directory data={data.directory} site={site} />;
     case 'map':
-      return <Map data={data.map} site={site}/>;
+      return <InteractiveMap data={data.map} site={site}/>;
     case 'feedback':
       return <Feedback data={data.feedback} />;
     default:

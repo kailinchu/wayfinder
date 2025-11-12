@@ -1,3 +1,112 @@
-.map{
+#main-content {
+  display: flex;
+  justify-content: center;   /* center children horizontally */
+  align-items: flex-start;   /* align them from the top */
+  flex-direction: column;    /* stack title, map, etc. */
+  padding: 20px;
+}
+
+#birchmount-map {
+  width: 100%;
+}
+
+#centenary-map {
+  display: flex;
+  flex-direction: column;     /* stack search bar and map vertically */
+  align-items: center;        /* center both horizontally */
+  justify-content: center;
+  gap: 20px;                  /* space between search bar and map */
+  width: 100%;
+}
+
+#svg-container svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== Search Box ===== */
+#search-box {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;     /* stack start + (end+button) vertically */
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 700px;           /* don’t let it stretch too wide */
+}
+
+#search-box #start-row{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+/* bottom row: end input + button side by side */
+#search-box #end-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+#end-destination {
+  flex: 1;   /* let the end input expand */
+}
+
+/* Search Button Styling */
+#search-btn {
+  padding: 8px 14px;
+  background: #48beb0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+}
+#search-btn:hover {
+  background: #3aa599;
+}
+
+/* ===== Dropdown Styling ===== */
+.dropdown {
+  border: 2px solid #48beb0;
+  border-radius: 12px;
+  padding: 5px;
+}
+.dropdown:empty {
+  border: none;
+}
+.dropdown-row:hover {
+  background-color: #d8fffa;
+}
+
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 768px) {
+  #search-box {
+    flex-direction: column;   /* stack start, end, button vertically */
+    width: 90%;
+  }
+
+  #search-box .end-row {
+    flex-direction: column;   /* stack input and button on small screens */
+    align-items: stretch;
+  }
+
+  #search-btn {
+    width: 50px;              /* full width on mobile */
+  }
+
+  #svg-container svg {
     width: 100%;
+    height: auto;
+  }
 }
