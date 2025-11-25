@@ -21,7 +21,6 @@ import theme from './styles/theme';
 // Import hospital site specific data
 import { birchmountData } from './data/birchmountData';
 import { centenaryData } from './data/centenaryData';
-// import { generalData } from './data/generalData';
 
 const hospitalData = {
   birchmount: birchmountData,
@@ -54,11 +53,11 @@ const HospitalSite = () => {
   }
 };
 
-const PageLayout = ({displayNavBar}) => {
+const PageLayout = ({ displayNavBar }) => {
   const { site } = useParams();
   return (
     <div>
-      <NavBar hospitalSite={site} displayNavBar={displayNavBar}/>
+      <NavBar hospitalSite={site} displayNavBar={displayNavBar} />
       <main className="flex-shrink-0">
         <div className="container">
           <Outlet />
@@ -69,6 +68,25 @@ const PageLayout = ({displayNavBar}) => {
 };
 
 class App extends Component {
+  componentDidMount() {
+    // Log language to console
+    const userLanguage = navigator.language || navigator.languages[0];
+    console.log("Browser's preferred language:", userLanguage);
+
+    // Fire-and-forget
+    fetch('/api/log-language', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        language: userLanguage,
+      }),
+    }).catch((error) => {
+      console.error('Error logging language:', error); 
+    });
+  }
+
   render() {
     return (
       <ThemeProvider theme={theme}>

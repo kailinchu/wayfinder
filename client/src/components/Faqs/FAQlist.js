@@ -1,15 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import FAQItem from './FAQitem';
 import { CircularProgress, Alert } from '@mui/material';
 import Papa from 'papaparse';
+import { IconButton } from '@mui/material';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+
+const speakText = (text, lang) => {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang || 'en-US';
+    speechSynthesis.speak(utterance);
+  } else {
+    alert('Sorry, your browser does not support text-to-speech.');
+  }
+};
 
 function FAQList() {
   const { site } = useParams();      // get birchmount or centenary
   const [faqData, setFaqData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [language, setLanguage] = useState('en-US');
+  const faqRefs = useRef([]);
 
+  // Load FAQ data from CSV
   useEffect(() => {
     const loadFAQData = async () => {
       try {
@@ -71,6 +87,38 @@ function FAQList() {
     loadFAQData();
   }, [site]);
 
+  // Handle language changes for speech synthesis
+  useEffect(() => {
+    const combo = document.querySelector('.goog-te-combo');
+
+    if (combo) {
+      const updateLangFromGoogle = () => {
+        const langMap = {
+          en: 'en-US',
+          es: 'es-ES',
+          fr: 'fr-FR',
+          de: 'de-DE',
+          zh: 'zh-CN',
+          hi: 'hi-IN',
+          ar: 'ar-SA'
+        };
+        setLanguage(langMap[combo.value] || 'en-US');
+      };
+
+      updateLangFromGoogle();
+      combo.addEventListener('change', updateLangFromGoogle);
+      return () => combo.removeEventListener('change', updateLangFromGoogle);
+    }
+  }, []);
+
+  const handleSpeak = (index) => {
+    const node = faqRefs.current[index];
+    if (node) {
+      const translatedText = node.innerText; 
+      speakText(translatedText, language);
+    }
+  };
+
   if (loading) {
     return (
       <div className="faq-list">
@@ -102,15 +150,29 @@ function FAQList() {
       <div className="title-container">
         <h1 className="title">Frequently Asked Questions</h1>
       </div>
+
       {faqData.map((faq, index) => (
-        <FAQItem
-          key={index}
-          question={faq.question}
-          answer={faq.answer}
-          image={faq.image}
-          isFirst={index === 0}
-          isLast={index === faqData.length - 1}
-        />
+        <div 
+          key={index} 
+          style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
+        >
+          <div ref={(el) => faqRefs.current[index] = el} style={{ flex: 1 }}>
+          <FAQItem
+            key={index}
+            question={faq.question}
+            answer={faq.answer}
+            image={faq.image}
+            isFirst={index === 0}
+            isLast={index === faqData.length - 1}
+          />
+          </div>
+          <IconButton
+            onClick={() => handleSpeak(index)}
+            aria-label="read aloud"
+          >
+            <VolumeUpIcon />
+          </IconButton>
+        </div>
       ))}
     </div>
   );
