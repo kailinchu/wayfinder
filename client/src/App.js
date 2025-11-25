@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 
 import { BrowserRouter, Routes, Route, useParams, Outlet } from 'react-router-dom';
 
@@ -13,6 +14,9 @@ import NotFound from './components/NotFound';
 
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
+
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './styles/theme';
 
 // Import hospital site specific data
 import { birchmountData } from './data/birchmountData';
@@ -39,9 +43,9 @@ const HospitalSite = () => {
     case 'faqs':
       return <Faqs data={data.faqs} />;
     case 'directory':
-      return <Directory data={data.directory} />;
+      return <Directory data={data.directory} site={site} />;
     case 'map':
-      return <Map data={data.map} />;
+      return <Map data={data.map} site={site}/>;
     case 'feedback':
       return <Feedback data={data.feedback} />;
     default:
@@ -85,20 +89,26 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<PageLayout displayNavBar={false} />}>
-            <Route path="" element={<Landing images={images} />} />
-          </Route>
-          <Route path="/:site" element={<PageLayout displayNavBar={true} />}>
-            <Route exact path="/:site" element={<HospitalSite />} />
-            <Route path="/:site/:page" element={<HospitalSite />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    );
+      <ThemeProvider theme={theme}>
+
+        <BrowserRouter>
+          <Analytics />
+
+          <Routes>
+            <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>
+              <Route path="" element={<Landing images={images}/>} />
+            </Route>
+            <Route path="/:site" element={<PageLayout displayNavBar={true}/>}>
+              <Route exact path="/:site" element={<HospitalSite/>} />
+              <Route path="/:site/:page" element={<HospitalSite/>} />
+              <Route path="*" element={<NotFound/>} />
+            </Route>
+          </Routes>
+          <Footer/>
+        </BrowserRouter>
+
+      </ThemeProvider>
+    )
   }
 }
 

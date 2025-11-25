@@ -24,8 +24,10 @@ const Translate = () => {
         {
           pageLanguage: "en",
           autoDisplay: false,
-        },
-        "google_translate_element"
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          includedLanguages: "en,ar,zh-TW,fr,es,zh-CN,tl,ta,ur,pt-PT",
+          },
+          "google_translate_element"
       );
 
       // Poll for the dropdown to appear

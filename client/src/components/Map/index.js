@@ -3,15 +3,21 @@ import './style.css';
 
 class Map extends Component {
   render() {
-
-    const mapImagePath = this.props.data[0]?.imagePaths;
+    // Access the site prop and construct the image path dynamically
+    const { site } = this.props;
+    // Always use lowercase for folder and file names
+    const mapImagePath = `../../../images/${ site }-maps/general.png`;
 
     return (
       <>
-        <div class="title-container">
-            <h1 class="title">Map</h1>
+        <div className="title-container">
+            <h1 className="title">Map</h1>
         </div>
-        <img src={mapImagePath} alt="Hospital Map" class="map"/>
+        <img 
+          src={mapImagePath} 
+          alt={`${site} Map`} 
+          className="map" 
+        />
       </>
     );
   }
