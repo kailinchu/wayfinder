@@ -1,12 +1,12 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useRef } from 'react';
 import './style.css';
 import SearchLocationBar from './searchlocation';
 
-const makeSVG = (site) => {
+
+const MakeSVG = (site, onRoomSelect) => {
   // Access the site prop and construct the image path dynamically
-  const centenaryMap = `../../../images/${site}-Maps/Centenary2.svg`; // Use capitalized site
+  const centenaryMap = `../../../images/${site}-Maps/Centenary_Maps_2025_FINAL2.svg`; // Use capitalized site
   let selectedRooms = [];
-  const roomsSelected = 2;
 
   if (site === "Centenary") {
     fetch(centenaryMap)
@@ -34,16 +34,22 @@ const makeSVG = (site) => {
           };
         }
 
-        function areAdjacent(rectA, rectB) {
-          const A = getCenter(rectA);
-          const B = getCenter(rectB);
-          const tolerance = 8.5;
+        const isOverLapping = (rectA, rectB) =>{
+          const Axy1 = rectA.getBBox();//top left of the rectangle
+          const Axy2 = { //bottom right
+            x: Axy1.x + Axy1.width,
+            y: Axy1.y + Axy1.height
+          };
 
-          // Consider rectangles adjacent if their centers are close 
-          return (
-            Math.abs(A.x - B.x) <= rectA.getBBox().width + tolerance &&
-            Math.abs(A.y - B.y) <= rectA.getBBox().height + tolerance
-          );
+          const Bxy1 = rectB.getBBox();//top left of the rectangle
+          const Bxy2 = {//bottom right
+            x: Bxy1.x + Bxy1.width,
+            y: Bxy1.y + Bxy1.height
+          }
+
+          if (Axy1.x < Bxy2.x && Axy2.y > Bxy1.y && Axy2.x > Bxy1.x && Bxy2.y > Axy1.y) return true;
+
+        return false;
         }
 
         function findClosestRect(room, rects) {
@@ -79,42 +85,46 @@ const makeSVG = (site) => {
 
           while (queue.length > 0) {
             let currentNode = queue.shift();
-            if (currentNode === end) break;
-
+            if (currentNode === end) break;//stop once the current node is the end rect
+            
             for (let rect of path) {
-              if (!visited.has(rect) && areAdjacent(currentNode, rect)) {
+              if (!visited.has(rect) && isOverLapping(currentNode, rect)) {
+               //console.log(rect);
                 visited.add(rect);
-                parent.set(rect, currentNode); // save the parent node of each visited
-                queue.push(rect);
+                parent.set(rect, currentNode); // set current node as the parent of next valid rect
+                queue.push(rect);//add valid rectangles to the queue
               }
             }
           }
-
           let node = end;
-          while (node && node !== start) {
+          while (node && node !== start) {//trace back the ancestors of the end node until you reach the start
             result.push(node);
             node = parent.get(node);
             if (node === start) result.push(start);
           }
-
           return result;
         }
 
-        function makePath(room1, room2) {
+        function makePath(room1, room2) {//to fix corner jumping add midpoints to smooth out the line
           //make a function the clears the room stroke generally not just for the rooms
           room1.removeAttribute('stroke');
           room2.removeAttribute('stroke');
+          //console.log(selectedRooms);
+          selectedRooms = [];
 
           // find closest dot to start and end room
           const closestStartDot = findClosestRect(room1, doorDot);
           const closestEndDot = findClosestRect(room2, doorDot);
 
+
           // find closest rect to the dots
           const startRect = findClosestRect(closestStartDot, path);
           const endRect = findClosestRect(closestEndDot, path);
 
+
           //run bfs between the rectangles and save the result path
           const resultpath = bfs(startRect, endRect, path);
+        
           const points = resultpath.map(getCenter).map(c => `${c.x},${c.y}`).join(' ');
 
           const oldLine = svg.querySelector('#room-connector');//find old line and remove it
@@ -128,40 +138,97 @@ const makeSVG = (site) => {
             line.setAttribute('stroke-width', '3');
             line.setAttribute('fill', 'none');
             svg.appendChild(line);
+              
+            try{//fix this, clicking the rooms makes it weird
+               // avoid focus causing auto-scroll
+              if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                document.activeElement.blur();
+              }
+
+              // ensure layout is stable (double frame)
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  // prefer path midpoint (visual center)
+                  const len = line.getTotalLength();
+                  const mid = line.getPointAtLength(len / 2);
+
+                  // convert SVG point -> screen (viewport) coords
+                  const pt = svg.createSVGPoint();
+                  pt.x = mid.x; 
+                  pt.y = mid.y;
+                  const screenPt = pt.matrixTransform(svg.getScreenCTM());
+
+                  // convert viewport coords to document scroll offsets
+                  const targetLeft = (screenPt.x + window.scrollX) - window.innerWidth / 2;
+                  const targetTop  = (screenPt.y + window.scrollY) - window.innerHeight / 2;
+
+                  window.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: 'smooth' });
+
+                  // guard: if something else scrolls right after (rare), re-center once more
+                  setTimeout(() => {
+                    const after = window.scrollY;
+                    if (Math.abs(after - targetTop) > 10) {
+                      window.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: 'smooth' });
+                    }
+                  }, 100);
+                });
+              });
+
+            } catch (err) {
+              console.log("centering failed", err)
+            }
           }
         } // end of makePath
 
         window.makePath = makePath;//make makepath function available to component
 
         const Rooms = svg.querySelectorAll('path[fill="#FFFFFA"]');//select all the rooms and highlight add them to an array
-        selectedRooms = [];
-        console.log(selectedRooms);
+
+        //console.log(selectedRooms);
         Rooms.forEach(room => {
           room.style.cursor = 'pointer';
           room.onclick = () => {
-            if (selectedRooms.length < roomsSelected) {
-              selectedRooms.push(room);
-              room.setAttribute('stroke', 'red');
+            if (selectedRooms.includes(room)) return;
+            
+            selectedRooms.push(room);
+            room.setAttribute('stroke', 'red');
+
+            if (selectedRooms.length === 1){
+              onRoomSelect({ start: room.id });
             }
-            if (selectedRooms.length === roomsSelected) {
+            if (selectedRooms.length === 2) {
+
+              onRoomSelect({ end: room.id });
+
               makePath(selectedRooms[0], selectedRooms[1]);
+              
               selectedRooms = [];
             }
           };
         });
       }).catch((error) => console.error("Error fetching SVG:", error)); // end of svg fetch
     }
-} // end of makeSVG
+} // end of MakeSVG
 
 class InteractiveMap extends Component {
   state = {
-    roomIds: []
+    roomIds: [],
+    start: "",
+    end:""
+  }
+
+  onRoomSelect = (update) => {
+    this.setState(prev => ({
+      ...prev,
+      ...update
+    }))
   }
 
   componentDidMount() {
     const { site } = this.props;
     const capitalizedSite = site.charAt(0).toUpperCase() + site.slice(1);
-    makeSVG(capitalizedSite); //load the svg to the page
+    MakeSVG(capitalizedSite, this.onRoomSelect); //load the svg to the page
+    
 
     const observer = new MutationObserver(() => {
     const whiteRooms = document.querySelectorAll('path[fill="#FFFFFA"]');
@@ -182,12 +249,13 @@ class InteractiveMap extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.site !== this.props.site) {
       const capitalizedSite = this.props.site.charAt(0).toUpperCase() + this.props.site.slice(1);
-      makeSVG(capitalizedSite);
+      MakeSVG(capitalizedSite, this.onRoomSelect);
     }
   }
 
   handleSearchChange = (input) => {//set make path using the info from the search bars
   const svg = document.querySelector('#svg-container svg');
+  const whiteRooms = document.querySelectorAll('path[fill="#FFFFFA"]');
   if (!svg) {
     console.log("SVG not loaded yet");
     return;
@@ -195,9 +263,12 @@ class InteractiveMap extends Component {
   //the start and end location input boxes
   const room1 = document.getElementById(input.start);
   const room2 = document.getElementById(input.end);
-  
+
   if (window.makePath && room1 && room2) {//if the window can access the make path method and the input boxes are loaded then send the values from the boxes
     window.makePath(room1, room2);
+    whiteRooms.forEach(rooms => {
+      rooms.removeAttribute('stroke');
+    });
   } else {
     console.log("failed", {windowMakePath: !!window.makePath, room1, room2});
   }
@@ -206,6 +277,7 @@ class InteractiveMap extends Component {
   render() {
     const { site } = this.props;
     const birchmountMap = `../../../images/${site}-Maps/general.png`;
+    const flippedCompass = `../../../images/${site}-Maps/flipped_compass.png`;
     
     return (
       <div>
@@ -222,7 +294,13 @@ class InteractiveMap extends Component {
           
           {site === "centenary" && (
             <div id='centenary-map'>
-            <SearchLocationBar info={this.state.roomIds} onSearchChange={this.handleSearchChange}/>
+            <img src={flippedCompass} id="compass"></img>
+            <SearchLocationBar 
+                info={this.state.roomIds} 
+                onSearchChange={this.handleSearchChange} 
+                startLocation={this.state.start} 
+                endLocation={this.state.end} 
+              />
             <div id="svg-container"></div>
             </div>
           )}

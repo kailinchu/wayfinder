@@ -25,6 +25,11 @@
   display: block;
 }
 
+#compass {
+  height: 100px;
+  width: 100px;
+}
+
 /* ===== Search Box ===== */
 #search-box {
   display: flex;

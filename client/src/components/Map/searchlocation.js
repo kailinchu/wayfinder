@@ -1,24 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import Fuse from 'fuse.js';
 import SearchIcon from '@mui/icons-material/Search';
 import './style.css';
 import { Divider } from '@mui/material';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 
 //creates a search bar function component
 const SearchLocationBar = (props) => {
+
+    const { info, onSearchChange, startLocation, endLocation } = props; //destructuring the props
+    
     const [input, setInput] = useState({
       start: "",
       end: ""
     });
 
-    const { info, onSearchChange } = props; //destructuring the props
-    
     const options = {
       includeScore: true
     }
+
+
     const fuse = new Fuse(info, options);
+
+    useEffect(() =>{
+      setInput(prev => ({
+          ...prev,
+          start: startLocation,
+          end: endLocation
+        }));
+    },[startLocation, endLocation]);
+
 
     //triggered whenever user types in the textfield (onChange is built in react event triggered whenever the value of an input field changes)
     const handleChange = (e) => {
@@ -39,7 +51,7 @@ const SearchLocationBar = (props) => {
     }
     };
 
-    const onSearch = (input, startEnd) =>{
+    const onSearch = (input, startEnd) =>{//when an item on the dropdown is selected populate the searchbar
         if (startEnd === "start"){
           setInput(prev => ({
           ...prev,
@@ -53,12 +65,15 @@ const SearchLocationBar = (props) => {
         }
     };
 
-    const sendLocations = () => {
+    const sendLocations = () => {//send the value in the input fields to the make svg function
       onSearchChange(input);
-         setInput(prev => ({
+    }
+
+    const swapLocations = () => {
+        setInput(prev => ({
           ...prev,
-          start: "",
-          end:""
+          start: input.end,
+          end: input.start
         }));
     }
     
@@ -88,7 +103,7 @@ const SearchLocationBar = (props) => {
     <div id="search-box">
         <TextField 
         id="start-destination"
-        label="Start Location"
+        placeholder="Start Location"
         value={input.start}
         onChange={handleChange} 
         sx={{
@@ -116,9 +131,12 @@ const SearchLocationBar = (props) => {
         )}
       </div>
 
+        <button onClick={()=>swapLocations()} id='search-btn'><SwapVertIcon/></button>
+
         <div id="end-row">
-          <TextField id="end-destination" 
-          label="End Location"
+          <TextField 
+          id="end-destination" 
+          placeholder="End Location"
           value={input.end}
           onChange={handleChange} 
           sx={{
