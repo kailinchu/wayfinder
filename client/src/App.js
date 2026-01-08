@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Analytics } from "@vercel/analytics/react"
+//import { Analytics } from "@vercel/analytics/react"
 
 import { BrowserRouter, Routes, Route, useParams, Outlet } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import Faqs from './components/Faqs';
 import Feedback from './components/Feedback';
 import Landing from './components/Landing';
 import InteractiveMap from './components/Map';
+import Chatbot from './components/Chatbot';
 import NotFound from './components/NotFound';
 
 import './App.css';
@@ -49,6 +50,8 @@ const HospitalSite = () => {
       return <InteractiveMap data={data.map} site={site}/>;
     case 'feedback':
       return <Feedback data={data.feedback} />;
+    case 'chatbot':
+      return <Chatbot site={site} data={data} />;
     default:
       return <NotFound />;
   }
@@ -74,7 +77,7 @@ class App extends Component {
       <ThemeProvider theme={theme}>
 
         <BrowserRouter>
-          <Analytics />
+          {/* <Analytics /> */}
 
           <Routes>
             <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>

@@ -38,6 +38,11 @@ const NavLinks = ({ isClicked, closeMenu, hospitalSite }) => {
                     </a>
                 </li>
                 <li onClick={handleClick}>
+                    <a href={`${baseUrl}/${hospitalSite}/chatbot`} className={isActive('/chatbot') ? 'active' : ''}>
+                        Assistant
+                    </a>
+                </li>
+                <li onClick={handleClick}>
                     <a href={`${baseUrl}/${hospitalSite}/feedback`} className={isActive('/feedback') ? 'active' : ''}>
                         Feedback
                     </a>
