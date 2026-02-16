@@ -348,12 +348,12 @@
 <g id="ATM Machine">
 <mask id="mask8_1_844" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="491" y="921" width="35" height="34">
 <g id="Group_17">
-<path id="ATM Machine_2" d="M526 938C526 947.389 518.165 955 508.5 955C498.835 955 491 947.389 491 938C491 928.611 498.835 921 508.5 921C518.165 921 526 928.611 526 938Z" fill="#FFFFFA"/>
+<path id="ATM Machine" d="M526 938C526 947.389 518.165 955 508.5 955C498.835 955 491 947.389 491 938C491 928.611 498.835 921 508.5 921C518.165 921 526 928.611 526 938Z" fill="#FFFFFA"/>
 </g>
 </mask>
 <g mask="url(#mask8_1_844)">
 <g id="Group_18">
-<path id="Vector_223" d="M525.746 921.188V954.578H490.682V921.188H525.746Z" fill="url(#pattern8_1_844)" stroke="#FFFFFA"/>
+<path id="Vector_223" d="M525.746 921.188V954.578H490.682V921.188H525.746Z" fill="url(#pattern8_1_844)" stroke="#FFFFFF"/>
 </g>
 </g>
 </g>

@@ -1,4 +1,6 @@
 import React, { Component, useRef } from 'react';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
+import { FaMaximize } from 'react-icons/fa6';
 import './style.css';
 import SearchLocationBar from './searchlocation';
 
@@ -135,36 +137,30 @@ const MakeSVG = (site, onRoomSelect) => {
             line.setAttribute('id', 'room-connector');
             line.setAttribute('points', points);
             line.setAttribute('stroke', 'blue');
-            line.setAttribute('stroke-width', '3');
+            line.setAttribute('stroke-width', '5');
             line.setAttribute('fill', 'none');
             svg.appendChild(line);
               
             try{//fix this, clicking the rooms makes it weird
-               // avoid focus causing auto-scroll
               if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
                 document.activeElement.blur();
               }
 
-              // ensure layout is stable (double frame)
               requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                  // prefer path midpoint (visual center)
                   const len = line.getTotalLength();
                   const mid = line.getPointAtLength(len / 2);
 
-                  // convert SVG point -> screen (viewport) coords
                   const pt = svg.createSVGPoint();
                   pt.x = mid.x; 
                   pt.y = mid.y;
                   const screenPt = pt.matrixTransform(svg.getScreenCTM());
 
-                  // convert viewport coords to document scroll offsets
                   const targetLeft = (screenPt.x + window.scrollX) - window.innerWidth / 2;
                   const targetTop  = (screenPt.y + window.scrollY) - window.innerHeight / 2;
 
                   window.scrollTo({ left: Math.max(0, targetLeft), top: Math.max(0, targetTop), behavior: 'smooth' });
 
-                  // guard: if something else scrolls right after (rare), re-center once more
                   setTimeout(() => {
                     const after = window.scrollY;
                     if (Math.abs(after - targetTop) > 10) {
@@ -184,7 +180,6 @@ const MakeSVG = (site, onRoomSelect) => {
 
         const Rooms = svg.querySelectorAll('path[fill="#FFFFFA"]');//select all the rooms and highlight add them to an array
 
-        //console.log(selectedRooms);
         Rooms.forEach(room => {
           room.style.cursor = 'pointer';
           room.onclick = () => {
@@ -199,10 +194,9 @@ const MakeSVG = (site, onRoomSelect) => {
             if (selectedRooms.length === 2) {
 
               onRoomSelect({ end: room.id });
-
               makePath(selectedRooms[0], selectedRooms[1]);
-              
               selectedRooms = [];
+
             }
           };
         });
@@ -214,8 +208,11 @@ class InteractiveMap extends Component {
   state = {
     roomIds: [],
     start: "",
-    end:""
+    end:"",
+    isFullscreen: false
   }
+
+  mapRef = React.createRef();
 
   onRoomSelect = (update) => {
     this.setState(prev => ({
@@ -224,12 +221,30 @@ class InteractiveMap extends Component {
     }))
   }
 
+  toggleFullscreen = () => {
+    const el = this.mapRef.current;
+    if (!el) return;
+
+    if (!document.fullscreenElement) {
+      el.requestFullscreen();
+      console.log("true");
+      this.setState({ isFullscreen: true });
+    } else {
+      document.exitFullscreen();
+      console.log("false");
+      this.setState({ isFullscreen: false });
+    }
+  };
+
   componentDidMount() {
     const { site } = this.props;
     const capitalizedSite = site.charAt(0).toUpperCase() + site.slice(1);
     MakeSVG(capitalizedSite, this.onRoomSelect); //load the svg to the page
-    
 
+    document.addEventListener("fullscreenchange", () => {
+      this.setState({ isFullscreen: !!document.fullscreenElement });
+    });
+    
     const observer = new MutationObserver(() => {
     const whiteRooms = document.querySelectorAll('path[fill="#FFFFFA"]');
     if (whiteRooms.length > 0) {//wait for the rooms to be loaded in before getting the room ids
@@ -294,14 +309,33 @@ class InteractiveMap extends Component {
           
           {site === "centenary" && (
             <div id='centenary-map'>
-            <img src={flippedCompass} id="compass"></img>
-            <SearchLocationBar 
-                info={this.state.roomIds} 
-                onSearchChange={this.handleSearchChange} 
-                startLocation={this.state.start} 
-                endLocation={this.state.end} 
+
+              <div id="compass-container">
+                <img src={flippedCompass} id="compass"></img>
+              </div>
+
+              <SearchLocationBar 
+                  info={this.state.roomIds} 
+                  onSearchChange={this.handleSearchChange} 
+                  startLocation={this.state.start} 
+                  endLocation={this.state.end} 
               />
-            <div id="svg-container"></div>
+
+              <div id="Full-screen-button-container">
+                <button id="Full-screen-button" onClick={this.toggleFullscreen} title="Maximize Map"><FaMaximize/></button>
+              </div>
+
+              <div id="svg-container" ref={this.mapRef}>
+                {this.state.isFullscreen && (
+                  <button
+                    id="exit-fullscreen-button"
+                    onClick={this.toggleFullscreen}
+                    title="Exit Fullscreen"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -25,12 +25,23 @@ if (app.get('env') == 'development') {
   app.locals.pretty = true;
 }
 
-app.post('/api/chat', chatHandler);
+try {
+  app.post('/api/chat', chatHandler);
+  console.log('registered route: POST /api/chat');
+} catch (e) {
+  console.error('Failed registering POST /api/chat', e);
+  throw e;
+}
 
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+try {
+  app.use((req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+  console.log('registered route: GET *');
+} catch (e) {
+  console.error('Failed registering GET *', e);
+  throw e;
+}
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

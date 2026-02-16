@@ -19,10 +19,59 @@
   width: 100%;
 }
 
+#svg-container{
+  display: relative;
+
+}
+
+#Full-screen-button-container{
+  position: absolute;
+  top: 320px;
+  right: 0;
+}
+
 #svg-container svg {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+#Full-screen-button{
+  padding: 8px 14px;
+  background: #48beb0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+}
+
+#exit-fullscreen-button{
+  padding: 8px 14px;
+  background: #48beb0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#svg-container:fullscreen {
+  width: 1vw;
+  height: 1vh;
+  overflow: auto; 
+  background: white;
 }
 
 #compass {
@@ -77,6 +126,7 @@
   justify-content: center;
   width: 50px;
 }
+
 #search-btn:hover {
   background: #3aa599;
 }

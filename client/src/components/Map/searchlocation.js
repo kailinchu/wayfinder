@@ -5,11 +5,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import './style.css';
 import { Divider } from '@mui/material';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import { useSearchParams } from 'react-router-dom';
 
 //creates a search bar function component
 const SearchLocationBar = (props) => {
 
     const { info, onSearchChange, startLocation, endLocation } = props; //destructuring the props
+    const [searchParams] = useSearchParams();
+    const startParam = searchParams.get("start");
+    const endParam = searchParams.get("end");
     
     const [input, setInput] = useState({
       start: "",
@@ -20,36 +24,27 @@ const SearchLocationBar = (props) => {
       includeScore: true
     }
 
-
     const fuse = new Fuse(info, options);
 
-    useEffect(() =>{
-      setInput(prev => ({
+    useEffect(() =>{// handle populate when room clicked
+        setInput(prev => ({
           ...prev,
           start: startLocation,
           end: endLocation
-        }));
+        })); 
+      
     },[startLocation, endLocation]);
 
-
-    //triggered whenever user types in the textfield (onChange is built in react event triggered whenever the value of an input field changes)
-    const handleChange = (e) => {
-      e.preventDefault();
-      const { id, value } = e.target;
-
-      if (id === "start-destination") {
+    useEffect(() =>{
+      if (startParam  && endParam) {
+        //initially on page load check params and populate
         setInput(prev => ({
           ...prev,
-          start: value
+          start: startParam,
+          end: endParam
         }));
-        
-      } else if (id === "end-destination") {
-         setInput(prev => ({
-          ...prev,
-          end: value
-        }));
-    }
-    };
+      }
+    },[searchParams]);
 
     const onSearch = (input, startEnd) =>{//when an item on the dropdown is selected populate the searchbar
         if (startEnd === "start"){
@@ -105,7 +100,7 @@ const SearchLocationBar = (props) => {
         id="start-destination"
         placeholder="Start Location"
         value={input.start}
-        onChange={handleChange} 
+        onChange={(e) => setInput(prev => ({ ...prev, start: e.target.value }))} 
         sx={{
           zIndex: 0,
           '& .MuiOutlinedInput-root': {
@@ -138,7 +133,7 @@ const SearchLocationBar = (props) => {
           id="end-destination" 
           placeholder="End Location"
           value={input.end}
-          onChange={handleChange} 
+          onChange={(e) => setInput(prev => ({ ...prev, end: e.target.value }))} 
           sx={{
             zIndex: 0,
             '& .MuiOutlinedInput-root': {
@@ -164,7 +159,10 @@ const SearchLocationBar = (props) => {
             </div>
           )}
         </div>
-        <button onClick={()=>sendLocations()} id='search-btn'><SearchIcon/></button>
+
+        <div id="search-btn-container">
+          <button onClick={()=>sendLocations()} id='search-btn'><SearchIcon/></button>
+        </div>  
     </div>
   
   );

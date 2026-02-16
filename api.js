@@ -16,7 +16,7 @@ function readCSVFile(filePath) {
   }
   
   try {
-    const fullPath = path.join(process.cwd(), 'client/public/data', filePath);
+    const fullPath = path.join(process.cwd(), 'client', 'public', 'data', filePath);
     const fileContent = fs.readFileSync(fullPath, 'utf-8');
     const records = parse(fileContent, {
       columns: true,
@@ -29,6 +29,77 @@ function readCSVFile(filePath) {
     console.error(`Error reading CSV file ${filePath}:`, error);
     return [];
   }
+}
+
+function prepareMapContext(site, locationOrigin){
+const allowedLocations = [
+"Food Court",
+"Family Birthing Center",
+"Emergency",
+"Fracture Clinic",
+"Diagnostic Imaging",
+"Arrhythmia Clinic Cardiac Diagnostics",
+"Intensive Care Unit (ICU)",
+"Cath lab Code STEMI",
+"Worship &#38; Meditation",
+"Surgical Specialty Clinics",
+"Endoscopy Clinic",
+"Pulmonary Function Test (PFT) Lab",
+"SHN Foundation Office",
+"Life Labs",
+"Registration Kiosks",
+"Patient Registration",
+"Lifemark Physiotherapy Sports Desk",
+"Information Desk",
+"Same Day Surgery",
+"Gynecology",
+"Maternal Fetal Medicine Clinic",
+"Obstetetric Medicine Clinic",
+"Neonatal Intensive Care Unit (NICU)",
+"Retail Pharmacy (Shoppers Drug Mart)",
+"Gift Shop",
+"Washroom Southwest",
+"Small Bathroom West",
+"South Bathroom",
+"Washroom East",
+"North Bathroom",
+"Elevator South",
+"Elevator West",
+"Elevator North",
+"Stairs West",
+"West Stairs Big",
+"Stairs South",
+"Stairs North",
+"Stairs Southwest",
+"Parking Office",
+"North Parking",
+"ATM Machine",
+];
+
+console.log(site);
+  const MapContext = `
+    Here is the link to the map: ${locationOrigin}/${site}/map\n
+
+    From this point onward, the instructions are only for "centenary" hospital. use ${site} to figure out which hospital it is. 
+    Do not say you can provide a link base off of a start and end location
+
+    if the user needs furthur direction, ask them for a start and end location then, Create a custom link using: ${locationOrigin}/${site}/map?start=Start&end=End
+    IMPORTANT: Base ALL responses on the actual hospital data provided above. Do not invent or assume information not present in the context.
+    IMPORTANT: the custom link is only for "centenary" hospital, look use ${site} to figure out which one it is for. In case of "birchmount" do not say you can create a custom link, 
+    do not as for starting and ending locations for custom link creation purposes.
+
+
+    Conditions for custom link:
+    1. if the user provides a start and end location, once you see two locations in ${allowedLocations}
+    2. the first one is Start the second one is End, then give them a link in ${locationOrigin}/${site}/map?start=Start&end=End. Only accept locations on this list ${allowedLocations}
+    3. when a link is made do not include any punctuation at the end of the link
+    4. if the location has multiple words make sure the link is in a valid format, use %20 as separators between words and %28 for brackets
+    5. if you do not understand a request just give them ${locationOrigin}/${site}/map
+
+    Here are the allowed locations for the map: ${allowedLocations}
+    `
+
+  return MapContext;
 }
 
 function prepareHospitalContext(site) {
@@ -134,13 +205,14 @@ function prepareHospitalContext(site) {
 
 async function chatHandler(req, res) {
   try {
-    const { message, site } = req.body;
+    const { message, site, locationOrigin } = req.body;
 
     if (!message || !site) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const contextInfo = prepareHospitalContext(site);
+    const MapContext = prepareMapContext(site, locationOrigin);
 
     const systemPrompt = `You are a helpful hospital assistant for ${site.charAt(0).toUpperCase() + site.slice(1)} Hospital, part of Scarborough Health Network (SHN). Your role is to help patients, visitors, and staff with:
 
@@ -149,6 +221,8 @@ async function chatHandler(req, res) {
 3. Answering questions about visiting hours, parking, and policies
 4. Giving directions and navigation help
 5. General hospital information and FAQs
+6. if some one askes for directions:
+${MapContext}
 
 Hospital Context (REAL DATA FROM HOSPITAL SYSTEMS):
 ${contextInfo}

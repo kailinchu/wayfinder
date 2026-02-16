@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 const Chatbot = ({ site = 'birchmount', data }) => {
   const hospitalName = site.charAt(0).toUpperCase() + site.slice(1);
@@ -19,10 +20,35 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   const maxQuestions = 10; // Maximum questions allowed per user per session
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const params = window.location.origin;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  function linkify(text) {
+  // Match full URLs including query params and encoded spaces
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  return text.split(urlRegex).map((part, i) => {
+    if (urlRegex.test(part)) {
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#48beb0", textDecoration: "underline" }}
+        >
+          {part}
+        </a>
+      );
+    }
+    // Non-URL text
+    return part;
+  });
+}
+
 
   useEffect(() => {
     scrollToBottom();
@@ -49,7 +75,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: currentInput, site: site }),
+        body: JSON.stringify({ message: currentInput, site: site, locationOrigin: params }),
       });
 
       if (!response.ok) {
@@ -122,14 +148,14 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   };
 
   const quickActions = site === 'birchmount' ? [
-    "Where is the pharmacy?",
+    "Can I Get Directions?",
     "How do I get to the emergency department?",
     "Where can I find parking?",
     "What are the visiting hours?",
     "Where is the cafeteria?",
     "How do I get to diagnostic imaging?"
   ] : [
-    "Where is the main entrance?",
+    "Can I Get Directions?",
     "What are the visiting hours?", 
     "Where can I find parking?",
     "What services are available?",
@@ -356,7 +382,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
                       wordBreak: 'break-word',
                       lineHeight: 1.4
                     }}>
-                      {message.text}
+                      {linkify(message.text)}
                     </div>
                     <div style={{ 
                       opacity: 0.7, 
