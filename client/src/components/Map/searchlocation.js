@@ -85,7 +85,7 @@ const SearchLocationBar = (props) => {
         return []; // Hide suggestions if exact match found
       }
       //if a search matches (returns score of 0) return empty array
-      return matches.filter(result => result.score < 0.6).map(result => result.item);
+      return matches.filter(result => result.score < 0.6).map(result => result.item).slice(0, 7);
     }
 
     //filter start and end searchbars
@@ -96,40 +96,42 @@ const SearchLocationBar = (props) => {
   //styles and handles the search input
   return (
     <div id="search-box">
+      <div className="input-wrapper">
         <TextField 
-        id="start-destination"
-        placeholder="Start Location"
-        value={input.start}
-        onChange={(e) => setInput(prev => ({ ...prev, start: e.target.value }))} 
-        sx={{
-          zIndex: 0,
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#48beb0', // Default border color
+          id="start-destination"
+          placeholder="Start Location"
+          value={input.start}
+          onChange={(e) => setInput(prev => ({ ...prev, start: e.target.value }))} 
+          sx={{
+            zIndex: 0,
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: '#48beb0', // Default border color
+              },
+              '&:hover fieldset': {
+                borderColor: '#48beb0', // Border color when hovering
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#48beb0', // Border color when focused
+              },
             },
-            '&:hover fieldset': {
-              borderColor: '#48beb0', // Border color when hovering
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#48beb0', // Border color when focused
-            },
-          },
-        }}
-        style={{width: '45vw'}}
-        />
-        <div className="dropdown">
-        {startresult.map((item) => 
-          <div className="dropdown-row" key={item} onClick={() => {onSearch(item, "start")}}>
-            {item} 
-            <Divider component="div" className='dropdown-divider'/>
+          }}
+          style={{width: '45vw'}}
+          />
+          <div className="dropdown">
+            {startresult.length > 0 && startresult.map((item) => 
+              <div className="dropdown-row" key={item} onClick={() => {onSearch(item, "start")}}>
+                {item} 
+                <Divider component="div" className='dropdown-divider'/>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-
+        </div>
+        
         <button onClick={()=>swapLocations()} id='search-btn'><SwapVertIcon/></button>
 
         <div id="end-search-button-row">
-          <div id="end-row">
+          <div className="input-wrapper">
             <TextField 
             id="end-destination" 
             placeholder="End Location"
@@ -151,9 +153,8 @@ const SearchLocationBar = (props) => {
             }}
             style={{width: '45vw'}}
             />
-          
             <div className="dropdown">
-              {endresult.map((item) => 
+              {endresult.length > 0 && endresult.map((item) => 
                 <div className="dropdown-row" key={item} onClick={() => {onSearch(item, "end")}}>
                   {item} 
                   <Divider component="div" className='dropdown-divider'/>
