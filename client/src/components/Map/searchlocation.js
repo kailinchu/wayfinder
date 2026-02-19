@@ -128,41 +128,44 @@ const SearchLocationBar = (props) => {
 
         <button onClick={()=>swapLocations()} id='search-btn'><SwapVertIcon/></button>
 
-        <div id="end-row">
-          <TextField 
-          id="end-destination" 
-          placeholder="End Location"
-          value={input.end}
-          onChange={(e) => setInput(prev => ({ ...prev, end: e.target.value }))} 
-          sx={{
-            zIndex: 0,
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: '#48beb0', // Default border color
+        <div id="end-search-button-row">
+          <div id="end-row">
+            <TextField 
+            id="end-destination" 
+            placeholder="End Location"
+            value={input.end}
+            onChange={(e) => setInput(prev => ({ ...prev, end: e.target.value }))} 
+            sx={{
+              zIndex: 0,
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#48beb0', // Default border color
+                },
+                '&:hover fieldset': {
+                  borderColor: '#48beb0', // Border color when hovering
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#48beb0', // Border color when focused
+                },
               },
-              '&:hover fieldset': {
-                borderColor: '#48beb0', // Border color when hovering
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#48beb0', // Border color when focused
-              },
-            },
-          }}
-          style={{width: '45vw'}}
-          />
-        </div>
-        <div className="dropdown">
-          {endresult.map((item) => 
-            <div className="dropdown-row" key={item} onClick={() => {onSearch(item, "end")}}>
-              {item} 
-              <Divider component="div" className='dropdown-divider'/>
+            }}
+            style={{width: '45vw'}}
+            />
+          
+            <div className="dropdown">
+              {endresult.map((item) => 
+                <div className="dropdown-row" key={item} onClick={() => {onSearch(item, "end")}}>
+                  {item} 
+                  <Divider component="div" className='dropdown-divider'/>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          
+          <div id="search-btn-container">
+            <button onClick={()=>sendLocations()} id='search-btn'><SearchIcon/></button>
+          </div>  
         </div>
-
-        <div id="search-btn-container">
-          <button onClick={()=>sendLocations()} id='search-btn'><SearchIcon/></button>
-        </div>  
     </div>
   
   );

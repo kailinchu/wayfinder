@@ -14,7 +14,7 @@ const MakeSVG = (site, onRoomSelect) => {
     fetch(centenaryMap)
       .then(response => response.text())
       .then(svgText => {
-        document.getElementById("svg-container").innerHTML = svgText;
+        document.getElementById("svg-content").innerHTML = svgText;
 
         const svg = document.querySelector('#svg-container svg'); // control elements of the svg
         svg.style.setProperty('width', '100%');
@@ -227,11 +227,9 @@ class InteractiveMap extends Component {
 
     if (!document.fullscreenElement) {
       el.requestFullscreen();
-      console.log("true");
       this.setState({ isFullscreen: true });
     } else {
       document.exitFullscreen();
-      console.log("false");
       this.setState({ isFullscreen: false });
     }
   };
@@ -309,32 +307,34 @@ class InteractiveMap extends Component {
           
           {site === "centenary" && (
             <div id='centenary-map'>
+                <div id="compass-container">
+                  <img src={flippedCompass} id="compass"></img>
+                </div>
 
-              <div id="compass-container">
-                <img src={flippedCompass} id="compass"></img>
-              </div>
+                <SearchLocationBar 
+                    info={this.state.roomIds} 
+                    onSearchChange={this.handleSearchChange} 
+                    startLocation={this.state.start} 
+                    endLocation={this.state.end} 
+                />
 
-              <SearchLocationBar 
-                  info={this.state.roomIds} 
-                  onSearchChange={this.handleSearchChange} 
-                  startLocation={this.state.start} 
-                  endLocation={this.state.end} 
-              />
+                <div id="Full-screen-button-container">
+                  <button id="Full-screen-button" onClick={this.toggleFullscreen} title="Maximize Map"><FaMaximize/></button>
+                </div>
 
-              <div id="Full-screen-button-container">
-                <button id="Full-screen-button" onClick={this.toggleFullscreen} title="Maximize Map"><FaMaximize/></button>
-              </div>
+                <div id="svg-container" ref={this.mapRef}>
 
-              <div id="svg-container" ref={this.mapRef}>
-                {this.state.isFullscreen && (
-                  <button
-                    id="exit-fullscreen-button"
-                    onClick={this.toggleFullscreen}
-                    title="Exit Fullscreen"
-                  >
-                    ✕
-                  </button>
-                )}
+                <div id="svg-content">
+                  {this.state.isFullscreen && (
+                    <button
+                      id="exit-fullscreen-button"
+                      onClick={this.toggleFullscreen}
+                      title="Exit Fullscreen"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           )}
