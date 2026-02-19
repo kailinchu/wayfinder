@@ -76,7 +76,6 @@ const allowedLocations = [
 "ATM Machine",
 ];
 
-console.log(site);
   const MapContext = `
     Here is the link to the map: ${locationOrigin}/${site}/map\n
 
@@ -205,14 +204,14 @@ function prepareHospitalContext(site) {
 
 async function chatHandler(req, res) {
   try {
-    const { message, site, locationOrigin } = req.body;
+    const { message, site } = req.body;
 
     if (!message || !site) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const contextInfo = prepareHospitalContext(site);
-    const MapContext = prepareMapContext(site, locationOrigin);
+    //const MapContext = prepareMapContext(site, locationOrigin);
 
     const systemPrompt = `You are a helpful hospital assistant for ${site.charAt(0).toUpperCase() + site.slice(1)} Hospital, part of Scarborough Health Network (SHN). Your role is to help patients, visitors, and staff with:
 
@@ -221,8 +220,6 @@ async function chatHandler(req, res) {
 3. Answering questions about visiting hours, parking, and policies
 4. Giving directions and navigation help
 5. General hospital information and FAQs
-6. if some one askes for directions:
-${MapContext}
 
 Hospital Context (REAL DATA FROM HOSPITAL SYSTEMS):
 ${contextInfo}
