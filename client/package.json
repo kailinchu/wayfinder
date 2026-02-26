@@ -1,5 +1,6 @@
 {
   "name": "nodebootstraper-client",
+  "proxy": "http://localhost:3001",
   "version": "0.2.0",
   "private": true,
   "dependencies": {
@@ -13,7 +14,9 @@
     "@vercel/analytics": "^1.5.0",
     "bootstrap": "^5.2.3",
     "create-react-app": "^5.0.1",
+    "firebase": "^12.8.0",
     "fuse.js": "^7.1.0",
+    "openai": "^6.16.0",
     "papaparse": "^5.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.2.0",
@@ -28,7 +31,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3000",
   "browserslist": {
     "production": [
       ">0.2%",

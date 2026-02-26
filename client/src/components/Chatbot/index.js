@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { db } from '../../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const Chatbot = ({ site = 'birchmount', data }) => {
   const hospitalName = site.charAt(0).toUpperCase() + site.slice(1);
-  
+
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -16,6 +18,9 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   const [feedback, setFeedback] = useState({});
   const [showQuickActions, setShowQuickActions] = useState(true);
   const [questionCount, setQuestionCount] = useState(0);
+  const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [feedbackMessageId, setFeedbackMessageId] = useState(null);
   const maxQuestions = 10; // Maximum questions allowed per user per session
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -57,7 +62,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       }
 
       const data = await response.json();
-      
+
       const botMessage = {
         id: Date.now() + 1,
         text: data.message,
@@ -92,22 +97,37 @@ const Chatbot = ({ site = 'birchmount', data }) => {
     }
   };
 
-  const handleFeedback = (messageId, isPositive) => {
+  const handleFeedback = async (messageId, isPositive, feedbackText = null) => {
+
     setFeedback(prev => ({
       ...prev,
       [messageId]: isPositive
     }));
-    console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'}`);
-    // Temporary analytics logging (e.g., fire-and-forget method for analytics)
-    fetch('/api/log-feedback', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+
+    // Find the message text for context
+    const message = messages.find(m => m.id === messageId);
+    const messageText = message?.text || '';
+
+    try {
+      // Send feedback to Firebase
+      let dataBase = 'chatbotFeedback'; // Default collection name
+      if (feedbackText && feedbackText.trim()) {
+        dataBase = 'chatbotDetailedFeedback';
+      }
+      const feedbackRef = collection(db, dataBase);
+      await addDoc(feedbackRef, {
         messageId,
         feedback: isPositive ? 'positive' : 'negative',
-        timestamp: new Date()
-      })
-    });
+        site,
+        messageText,
+        feedbackText,
+        timestamp: serverTimestamp(),
+        userAgent: navigator.userAgent
+      });
+      console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'} - Logged to Firebase`);
+    } catch (error) {
+      console.error('Error logging feedback to Firebase:', error);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -130,7 +150,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
     "How do I get to diagnostic imaging?"
   ] : [
     "Where is the main entrance?",
-    "What are the visiting hours?", 
+    "What are the visiting hours?",
     "Where can I find parking?",
     "What services are available?",
     "How do I contact patient information?",
@@ -155,10 +175,10 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   };
 
   return (
-    <div style={{ 
-      width: '100%', 
-      maxWidth: '800px', 
-      margin: '2rem auto', 
+    <div style={{
+      width: '100%',
+      maxWidth: '800px',
+      margin: '2rem auto',
       fontFamily: 'Arial, sans-serif'
     }}>
       <div style={{
@@ -187,17 +207,17 @@ const Chatbot = ({ site = 'birchmount', data }) => {
             🤖
           </div>
           <div>
-            <h1 style={{ 
-              color: 'white', 
-              fontWeight: 600, 
-              margin: 0, 
+            <h1 style={{
+              color: 'white',
+              fontWeight: 600,
+              margin: 0,
               fontSize: '2rem',
               fontFamily: 'inherit'
             }}>
               Hospital Assistant
             </h1>
-            <p style={{ 
-              color: 'rgba(255,255,255,0.9)', 
+            <p style={{
+              color: 'rgba(255,255,255,0.9)',
               margin: 0,
               fontSize: '1.1rem'
             }}>
@@ -205,7 +225,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
             </p>
           </div>
         </div>
-        <button 
+        <button
           onClick={clearChat}
           style={{
             position: 'absolute',
@@ -242,7 +262,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
           borderRadius: '0',
           boxShadow: 'none'
         }}>
-          <div 
+          <div
             style={{
               backgroundColor: '#f8f9fa',
               padding: '12px 16px',
@@ -255,8 +275,8 @@ const Chatbot = ({ site = 'birchmount', data }) => {
             onClick={() => setShowQuickActions(!showQuickActions)}
           >
             <span style={{ fontWeight: 600, color: '#474B8E' }}>Quick Questions</span>
-            <span style={{ 
-              color: '#48beb0', 
+            <span style={{
+              color: '#48beb0',
               transform: showQuickActions ? 'rotate(180deg)' : 'rotate(0deg)',
               transition: 'transform 0.2s'
             }}>
@@ -268,10 +288,10 @@ const Chatbot = ({ site = 'birchmount', data }) => {
               backgroundColor: '#f8f9fa',
               padding: '16px'
             }}>
-              <div style={{ 
-                display: 'flex', 
-                flexWrap: 'wrap', 
-                gap: '8px' 
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px'
               }}>
                 {quickActions.map((action, index) => (
                   <button
@@ -307,18 +327,18 @@ const Chatbot = ({ site = 'birchmount', data }) => {
 
         <div style={{ height: '1px', backgroundColor: '#e0e0e0' }}></div>
 
-        <div style={{ 
-          height: '400px', 
-          overflowY: 'auto', 
+        <div style={{
+          height: '400px',
+          overflowY: 'auto',
           padding: '16px',
           display: 'flex',
           flexDirection: 'column',
           gap: '16px'
         }}>
           {messages.map((message) => (
-            <div key={message.id} style={{ 
-              display: 'flex', 
-              justifyContent: message.isBot ? 'flex-start' : 'flex-end' 
+            <div key={message.id} style={{
+              display: 'flex',
+              justifyContent: message.isBot ? 'flex-start' : 'flex-end'
             }}>
               <div style={{
                 maxWidth: '70%',
@@ -327,8 +347,8 @@ const Chatbot = ({ site = 'birchmount', data }) => {
                 backgroundColor: message.isBot ? '#f0f0f0' : '#48beb0',
                 color: message.isBot ? '#474B8E' : 'white',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                ...(message.isError && { 
-                  backgroundColor: '#ffebee', 
+                ...(message.isError && {
+                  backgroundColor: '#ffebee',
                   color: '#c62828',
                   border: '1px solid #ffcdd2'
                 })
@@ -351,33 +371,33 @@ const Chatbot = ({ site = 'birchmount', data }) => {
                     </div>
                   )}
                   <div style={{ flex: 1 }}>
-                    <div style={{ 
-                      whiteSpace: 'pre-wrap', 
+                    <div style={{
+                      whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word',
                       lineHeight: 1.4
                     }}>
                       {message.text}
                     </div>
-                    <div style={{ 
-                      opacity: 0.7, 
-                      marginTop: '4px', 
-                      fontSize: '0.75rem' 
+                    <div style={{
+                      opacity: 0.7,
+                      marginTop: '4px',
+                      fontSize: '0.75rem'
                     }}>
                       {formatTime(message.timestamp)}
                     </div>
                   </div>
                 </div>
-                
+
                 {message.isBot && !message.isError && (
-                  <div style={{ 
-                    display: 'flex', 
-                    gap: '4px', 
-                    marginTop: '8px', 
-                    justifyContent: 'flex-end' 
+                  <div style={{
+                    display: 'flex',
+                    gap: '4px',
+                    marginTop: '8px',
+                    justifyContent: 'flex-end'
                   }}>
                     <button
                       onClick={() => handleFeedback(message.id, true)}
-                      style={{ 
+                      style={{
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
@@ -390,8 +410,14 @@ const Chatbot = ({ site = 'birchmount', data }) => {
                       👍
                     </button>
                     <button
-                      onClick={() => handleFeedback(message.id, false)}
-                      style={{ 
+                      //   onClick={() => handleFeedback(message.id, false)}
+                      onClick={async () => {
+                        await handleFeedback(message.id, false);
+
+                        setFeedbackMessageId(message.id);
+                        setShowFeedbackPrompt(true);
+                      }}
+                      style={{
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
@@ -433,7 +459,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
                 }}>
                   🤖
                 </div>
-                <div style={{ 
+                <div style={{
                   color: '#474B8E',
                   display: 'flex',
                   alignItems: 'center',
@@ -548,10 +574,10 @@ const Chatbot = ({ site = 'birchmount', data }) => {
               ➤
             </button>
           </div>
-          
-          <div style={{ 
-            color: '#666', 
-            marginTop: '8px', 
+
+          <div style={{
+            color: '#666',
+            marginTop: '8px',
             textAlign: 'center',
             fontSize: '0.875rem'
           }}>
@@ -559,6 +585,91 @@ const Chatbot = ({ site = 'birchmount', data }) => {
           </div>
         </form>
       </div>
+      {showFeedbackPrompt && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '20px',
+            width: '90%',
+            maxWidth: '400px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+          }}>
+            <h3 style={{ marginTop: 0, color: '#474B8E' }}>
+              What went wrong?
+            </h3>
+
+            <textarea
+              value={feedbackText}
+              onChange={(e) => setFeedbackText(e.target.value)}
+              placeholder="Tell us what was unhelpful or incorrect..."
+              rows={4}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '6px',
+                border: '1px solid #ccc',
+                fontFamily: 'inherit',
+                resize: 'none'
+              }}
+            />
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              marginTop: '16px'
+            }}>
+              <button
+                onClick={() => {
+                  setShowFeedbackPrompt(false);
+                  setFeedbackText('');
+                  setFeedbackMessageId(null);
+                }}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#666',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={async () => {
+                  await handleFeedback(feedbackMessageId, false, feedbackText);
+                  setShowFeedbackPrompt(false);
+                  setFeedbackText('');
+                  setFeedbackMessageId(null);
+                }}
+                style={{
+                  backgroundColor: '#c62828',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '6px 12px',
+                  cursor: 'pointer'
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       <style>
         {`
@@ -574,6 +685,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
           }
         `}
       </style>
+
     </div>
   );
 };
