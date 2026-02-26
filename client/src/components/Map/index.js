@@ -2,6 +2,12 @@ import React, { Component, useRef } from 'react';
 import './style.css';
 import SearchLocationBar from './searchlocation';
 
+class Map extends Component {
+  render() {
+    // Access the site prop and construct the image path dynamically
+    const { site } = this.props;
+    // Always use lowercase for folder and file names
+    const mapImagePath = `../../../images/${ site }-maps/general.png`;
 
 const MakeSVG = (site, onRoomSelect) => {
   // Access the site prop and construct the image path dynamically
