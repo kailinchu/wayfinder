@@ -90,7 +90,6 @@ const SearchLocationBar = (props) => {
 
     //filter start and end searchbars
     const startresult = filteritems(input.start);
-    //console.log("start: " + startresult);
     const endresult = filteritems(input.end);
 
   //styles and handles the search input
@@ -99,25 +98,12 @@ const SearchLocationBar = (props) => {
       <div className="input-wrapper">
         <TextField 
           id="start-destination"
+          className="searchbar"
           placeholder="Start Location"
           value={input.start}
           onChange={(e) => setInput(prev => ({ ...prev, start: e.target.value }))} 
-          sx={{
-            zIndex: 0,
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: '#48beb0', // Default border color
-              },
-              '&:hover fieldset': {
-                borderColor: '#48beb0', // Border color when hovering
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#48beb0', // Border color when focused
-              },
-            },
-          }}
-          style={{width: '45vw'}}
           />
+          
           <div className="dropdown">
             {startresult.length > 0 && startresult.map((item) => 
               <div className="dropdown-row" key={item} onClick={() => {onSearch(item, "start")}}>
@@ -133,25 +119,11 @@ const SearchLocationBar = (props) => {
         <div id="end-search-button-row">
           <div className="input-wrapper">
             <TextField 
-            id="end-destination" 
+            id="end-destination"
+            className="searchbar"
             placeholder="End Location"
             value={input.end}
             onChange={(e) => setInput(prev => ({ ...prev, end: e.target.value }))} 
-            sx={{
-              zIndex: 0,
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#48beb0', // Default border color
-                },
-                '&:hover fieldset': {
-                  borderColor: '#48beb0', // Border color when hovering
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#48beb0', // Border color when focused
-                },
-              },
-            }}
-            style={{width: '45vw'}}
             />
             <div className="dropdown">
               {endresult.length > 0 && endresult.map((item) => 

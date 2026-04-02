@@ -7,7 +7,7 @@ import SearchLocationBar from './searchlocation';
 
 const MakeSVG = (site, onRoomSelect) => {
   // Access the site prop and construct the image path dynamically
-  const centenaryMap = `../../../images/${site}-Maps/Centenary_Maps_2025_FINAL2.svg`; // Use capitalized site
+  const centenaryMap = `../../../images/${site}-maps/Centenary_Maps_2025_FINAL2.svg`; // Use capitalized site
   let selectedRooms = [];
 
   if (site === "Centenary") {
@@ -111,7 +111,7 @@ const MakeSVG = (site, onRoomSelect) => {
           //make a function the clears the room stroke generally not just for the rooms
           room1.removeAttribute('stroke');
           room2.removeAttribute('stroke');
-          //console.log(selectedRooms);
+          
           selectedRooms = [];
 
           // find closest dot to start and end room
@@ -289,8 +289,8 @@ class InteractiveMap extends Component {
 
   render() {
     const { site } = this.props;
-    const birchmountMap = `../../../images/${site}-Maps/general.png`;
-    const flippedCompass = `../../../images/${site}-Maps/flipped_compass.png`;
+    const birchmountMap = `../../../images/${site}-maps/general.png`;
+    const flippedCompass = `../../../images/${site}-maps/flipped_compass.png`;
     
     return (
       <div>

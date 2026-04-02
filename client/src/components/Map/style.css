@@ -24,7 +24,7 @@
 
 #Full-screen-button-container{
   margin-top: 50px;
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 #svg-container svg {
@@ -87,6 +87,22 @@
   max-width: 700px;          
 }
 
+.searchbar{
+  width: 45vw;
+}
+
+.searchbar .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #48beb0;
+}
+
+.searchbar .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #48beb0;
+}
+
+.searchbar .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #48beb0;
+}
+
 .input-wrapper {
   position: relative;
   width: 45vw;
@@ -132,6 +148,9 @@
   background: white;
   border: 2px solid #48beb0;
   border-radius: 12px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-top: none;
   padding: 5px;
   z-index: 1000;
 }
