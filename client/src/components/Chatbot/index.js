@@ -109,22 +109,26 @@ const Chatbot = ({ site = 'birchmount', data }) => {
     const messageText = message?.text || '';
 
     try {
-      // Send feedback to Firebase
-      let dataBase = 'chatbotFeedback'; // Default collection name
-      if (feedbackText && feedbackText.trim()) {
-        dataBase = 'chatbotDetailedFeedback';
+      if (db) {
+        // Send feedback to Firebase
+        let dataBase = 'chatbotFeedback'; // Default collection name
+        if (feedbackText && feedbackText.trim()) {
+          dataBase = 'chatbotDetailedFeedback';
+        }
+        const feedbackRef = collection(db, dataBase);
+        await addDoc(feedbackRef, {
+          messageId,
+          feedback: isPositive ? 'positive' : 'negative',
+          site,
+          messageText,
+          feedbackText,
+          timestamp: serverTimestamp(),
+          userAgent: navigator.userAgent
+        });
+        console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'} - Logged to Firebase`);
+      } else {
+        console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'} - Firebase not available`);
       }
-      const feedbackRef = collection(db, dataBase);
-      await addDoc(feedbackRef, {
-        messageId,
-        feedback: isPositive ? 'positive' : 'negative',
-        site,
-        messageText,
-        feedbackText,
-        timestamp: serverTimestamp(),
-        userAgent: navigator.userAgent
-      });
-      console.log(`Feedback for message ${messageId}: ${isPositive ? 'positive' : 'negative'} - Logged to Firebase`);
     } catch (error) {
       console.error('Error logging feedback to Firebase:', error);
     }
