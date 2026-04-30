@@ -1,5 +1,4 @@
 import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -20,10 +19,15 @@ const AccordionMenu = (props) => {
         indices.push(i);
     }    
 
-    //used to render the "\n" in the object description as an actual line break
-    const renderDescription = (description) => {
-        return { __html: description.replace(/\n/g, '<br>') };
-    }
+    const normalizeDescription = (description = '') => (
+        description
+            .replace(/\r\n/g, '\n')
+            .replace(/See map below\.\s+To get/g, 'See map below.\nTo get')
+            .replace(/\n\s*\n+/g, '\n')
+            .replace(/[ \t]+\n/g, '\n')
+            .replace(/\n[ \t]+/g, '\n')
+            .trim()
+    );
 
 
     //if the tab index is 7, meaning that user has clicked on the "all" tab, return EVERY DIRECTORY
@@ -43,7 +47,7 @@ const AccordionMenu = (props) => {
                     {unit.name}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <div dangerouslySetInnerHTML={renderDescription(unit.description)} />
+                    <div className="directory-description">{normalizeDescription(unit.description)}</div>
                     <img src={unit.image} alt= {unit.name + "image"} className="mapImage"></img>
                 </AccordionDetails>
               </Accordion>
@@ -62,7 +66,7 @@ const AccordionMenu = (props) => {
                 <Typography fontWeight="600">{info[idx].name}</Typography>    
                 </AccordionSummary>
                 <AccordionDetails>
-                    <div dangerouslySetInnerHTML={renderDescription(info[idx].description)} />
+                    <div className="directory-description">{normalizeDescription(info[idx].description)}</div>
                     <img src={info[idx].image} alt= {info[idx].name + "image"} className="map-image"></img>
                 </AccordionDetails>
             </Accordion>

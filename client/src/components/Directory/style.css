@@ -30,3 +30,7 @@
   .semi-bold{
     font-weight: 200;
   }
+
+  .directory-description {
+    white-space: pre-line;
+  }
