@@ -4,6 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import AudioButton from '../AudioButton';
 import './style.css';
 
 //This class creates the accordion menu, using MUI accordion menu api
@@ -37,7 +38,10 @@ const AccordionMenu = (props) => {
         <> 
         {index === 7? 
               <>
-              {filteredInfo.map(unit => (
+              {filteredInfo.map(unit => {
+                const description = normalizeDescription(unit.description);
+
+                return (
                 <Accordion disableGutters key={unit.name}> 
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
@@ -47,15 +51,19 @@ const AccordionMenu = (props) => {
                     {unit.name}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <div className="directory-description">{normalizeDescription(unit.description)}</div>
+                    <AudioButton text={`${unit.name}. ${description}`} />
+                    <div className="directory-description">{description}</div>
                     <img src={unit.image} alt= {unit.name + "image"} className="mapImage"></img>
                 </AccordionDetails>
               </Accordion>
-              ))}
+              )})}
             </>
         :
         <>
-        {indices.map(idx => (
+        {indices.map(idx => {
+            const description = normalizeDescription(info[idx].description);
+
+            return (
             <Accordion disableGutters key={idx}> 
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
@@ -66,11 +74,12 @@ const AccordionMenu = (props) => {
                 <Typography fontWeight="600">{info[idx].name}</Typography>    
                 </AccordionSummary>
                 <AccordionDetails>
-                    <div className="directory-description">{normalizeDescription(info[idx].description)}</div>
+                    <AudioButton text={`${info[idx].name}. ${description}`} />
+                    <div className="directory-description">{description}</div>
                     <img src={info[idx].image} alt= {info[idx].name + "image"} className="map-image"></img>
                 </AccordionDetails>
             </Accordion>
-        ))}
+        )})}
         </>
     }
     </>
