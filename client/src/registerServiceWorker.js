@@ -101,8 +101,16 @@ function checkValidServiceWorker(swUrl) {
 
 export function unregister() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
-      registration.unregister();
-    });
+    navigator.serviceWorker.getRegistrations()
+      .then(registrations => Promise.all(
+        registrations.map(registration => registration.unregister())
+      ));
+  }
+
+  if ('caches' in window) {
+    caches.keys()
+      .then(cacheNames => Promise.all(
+        cacheNames.map(cacheName => caches.delete(cacheName))
+      ));
   }
 }
