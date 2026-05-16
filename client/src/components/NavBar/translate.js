@@ -11,7 +11,7 @@ const Translate = () => {
         pageLanguage: "en",
         autoDisplay: false,
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        includedLanguages: "en,fr,zh,ar,ta",
+        includedLanguages: "en,ar,zh-TW,fr,es,zh-CN,tl,ta,ur,pt-PT",
       },
       "google_translate_element"
     );
