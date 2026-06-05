@@ -2,6 +2,7 @@ import React, { useEffect, useId, useState } from 'react';
 import Button from '@mui/material/Button';
 import StopIcon from '@mui/icons-material/Stop';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { track } from '@vercel/analytics/react';
 import './AudioButton.css';
 
 const AUDIO_START_EVENT = 'wayfinder-audio-start';
@@ -35,6 +36,10 @@ const AudioButton = ({ text, label = 'Read aloud' }) => {
 
     if (isReading) {
       window.speechSynthesis.cancel();
+      track('Audio Read Aloud Stopped', {
+        path: window.location.pathname,
+        textLength: text.length,
+      });
       setIsReading(false);
       return;
     }
@@ -48,6 +53,10 @@ const AudioButton = ({ text, label = 'Read aloud' }) => {
     utterance.onerror = () => setIsReading(false);
 
     setIsReading(true);
+    track('Audio Read Aloud Started', {
+      path: window.location.pathname,
+      textLength: text.length,
+    });
     window.speechSynthesis.speak(utterance);
   };
 
