@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AudioButton from '../AudioButton';
 
 function FAQItem({ question, answer, image, isFirst, isLast }) {
   // function to render text with line breaks
@@ -33,6 +34,7 @@ function FAQItem({ question, answer, image, isFirst, isLast }) {
       </AccordionSummary>
       <AccordionDetails>
         <div>
+          <AudioButton text={`${question}. ${answer}`} />
           <Typography style={{ marginBottom: image ? '16px' : '0' }}>
             {renderTextWithLineBreaks(answer)}
           </Typography>

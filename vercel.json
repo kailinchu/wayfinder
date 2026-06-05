@@ -1,3 +1,21 @@
 {
-    "outputDirectory": "client/build"
+    "outputDirectory": "client/build",
+    "redirects": [
+        {
+            "source": "/centenary",
+            "destination": "/birchmount",
+            "permanent": false
+        },
+        {
+            "source": "/centenary/:path*",
+            "destination": "/birchmount",
+            "permanent": false
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
 }

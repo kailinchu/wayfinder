@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Analytics } from "@vercel/analytics/react"
 
-import { BrowserRouter, Routes, Route, useParams, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams, Outlet, Navigate } from 'react-router-dom';
 
 import Home from './components/Home';
 import Footer from './components/Footer';
@@ -22,17 +22,29 @@ import theme from './styles/theme';
 import { birchmountData } from './data/birchmountData';
 import { centenaryData } from './data/centenaryData';
 // import { generalData } from './data/generalData';
+import { getAllowedSites, getDefaultSite, isSingleSitePreview, isSiteAllowed } from './config/siteScope';
 
 const hospitalData = {
   birchmount: birchmountData,
   centenary: centenaryData,
 };
 
-const images = Object.keys(hospitalData).map(hospital => (hospitalData[hospital].landingImage));
+const siteEntries = Object.entries(hospitalData);
+const availableSites = siteEntries.map(([site]) => site);
+const defaultSite = getDefaultSite(availableSites);
+const allowedSites = getAllowedSites(availableSites);
+const defaultSitePath = `/${defaultSite}`;
+const images = siteEntries
+  .filter(([site]) => allowedSites.includes(site))
+  .map(([, data]) => data.landingImage);
 
 const HospitalSite = () => {
   const { site, page } = useParams();
   const data = hospitalData[site];
+
+  if (!data || !isSiteAllowed(site, availableSites)) {
+    return isSingleSitePreview ? <Navigate to={defaultSitePath} replace /> : <NotFound />;
+  }
 
   if (page == undefined) {
     return <Home data={data.home} />
@@ -56,6 +68,11 @@ const HospitalSite = () => {
 
 const PageLayout = ({displayNavBar}) => {
   const { site } = useParams();
+
+  if (site && !isSiteAllowed(site, availableSites)) {
+    return isSingleSitePreview ? <Navigate to={defaultSitePath} replace /> : <NotFound />;
+  }
+
   return (
     <div>
       <NavBar hospitalSite={site} displayNavBar={displayNavBar}/>
@@ -72,23 +89,26 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-
         <BrowserRouter>
           <Analytics />
 
           <Routes>
-            <Route exact path="/" element={<PageLayout displayNavBar={false}/>}>
-              <Route path="" element={<Landing images={images}/>} />
-            </Route>
+            {isSingleSitePreview ? (
+              <Route path="/" element={<Navigate to={defaultSitePath} replace />} />
+            ) : (
+              <Route path="/" element={<PageLayout displayNavBar={false}/>}>
+                <Route index element={<Landing images={images}/>} />
+              </Route>
+            )}
             <Route path="/:site" element={<PageLayout displayNavBar={true}/>}>
-              <Route exact path="/:site" element={<HospitalSite/>} />
-              <Route path="/:site/:page" element={<HospitalSite/>} />
-              <Route path="*" element={<NotFound/>} />
+              <Route index element={<HospitalSite/>} />
+              <Route path=":page" element={<HospitalSite/>} />
+              <Route path="*" element={isSingleSitePreview ? <Navigate to={defaultSitePath} replace /> : <NotFound/>} />
             </Route>
+            <Route path="*" element={isSingleSitePreview ? <Navigate to={defaultSitePath} replace /> : <NotFound/>} />
           </Routes>
           <Footer/>
         </BrowserRouter>
-
       </ThemeProvider>
     )
   }
