@@ -13,6 +13,14 @@
 - `REACT_APP_SITE_SCOPE=all`
 - `REACT_APP_DEFAULT_SITE=birchmount`
 
+## Preview Deployment
+
+- Branch: `shlok/launch-two-site-wayfinder`
+- Commit SHA: `a88d1d49244bde8466433b5a5264a0bf98d4a8f2`
+- SHN Vercel preview: `https://shn-wayfinder-live-m8xjt4iyv-shn-wayfinder.vercel.app`
+- Vercel deployment dashboard: `https://vercel.com/shn-wayfinder/shn-wayfinder-live/6rZTNsuF7va9YwWKWekPGibpxAGC`
+- Note: direct unauthenticated preview requests currently redirect to Vercel SSO, so preview review requires Vercel access unless deployment protection is changed.
+
 ## Completed Checks
 
 - Production build succeeded with launch env variables.
@@ -20,6 +28,7 @@
 - Static image reference audit passed for Birchmount and Centenary directory CSVs.
 - Centenary floor browser map paths all resolve to files in `client/public/images/centenary-maps`.
 - Built app route smoke test returned HTTP 200 for `/`, all Birchmount routes, and all Centenary routes through the Express static server.
+- SHN Vercel preview deployment completed successfully.
 
 ## Manual Verification Still Required
 
