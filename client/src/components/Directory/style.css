@@ -39,6 +39,27 @@
     margin-bottom: 12px;
   }
 
+  .directory-section {
+    margin-bottom: 18px;
+  }
+
+  .directory-section-title {
+    color: #181c63;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 8px 0 6px;
+  }
+
+  .directory-map {
+    margin: 18px 0 0;
+  }
+
+  .directory-map figcaption {
+    color: #181c63;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
   .MuiAccordionSummary-content {
     min-width: 0;
   }

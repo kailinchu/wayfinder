@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Analytics } from "@vercel/analytics/react"
 
-import { BrowserRouter, Routes, Route, useParams, Outlet, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams, Outlet, Navigate, useLocation } from 'react-router-dom';
 
 import Home from './components/Home';
 import Footer from './components/Footer';
@@ -14,6 +14,7 @@ import NotFound from './components/NotFound';
 
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
+import { stopWayfinderAudio } from './components/AudioButton';
 
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme';
@@ -68,6 +69,11 @@ const HospitalSite = () => {
 
 const PageLayout = ({displayNavBar}) => {
   const { site } = useParams();
+  const location = useLocation();
+
+  useEffect(() => {
+    stopWayfinderAudio('route-change', true);
+  }, [location.pathname]);
 
   if (site && !isSiteAllowed(site, availableSites)) {
     return isSingleSitePreview ? <Navigate to={defaultSitePath} replace /> : <NotFound />;

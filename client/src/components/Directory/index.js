@@ -9,6 +9,7 @@ import AccordionMenu from './accordion';
 import SearchBar from './searchbar';
 import Papa from 'papaparse';
 import Fuse from 'fuse.js'
+import { stopWayfinderAudio } from '../AudioButton';
 
 // Gets ranges of indices for each letter group
 function getLetterRangeIndices(directory, startLetter, endLetter) {
@@ -35,6 +36,29 @@ function getLetterRangeIndices(directory, startLetter, endLetter) {
 
   return { startIdx, endIdx };
 }
+
+const sanitizeCell = (value = '') => (
+  `${value || ''}`
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n[ \t]+/g, '\n')
+    .replace(/\n\s*\n+/g, '\n')
+    .replace(/[ \t]+/g, ' ')
+    .trim()
+);
+
+const sanitizeDirectoryRow = (row) => {
+  const sanitized = Object.entries(row).reduce((acc, [key, value]) => {
+    acc[key] = sanitizeCell(value);
+    return acc;
+  }, {});
+
+  return {
+    ...sanitized,
+    name: sanitizeCell(sanitized.name || sanitized['name (red - new entries)(yellow - editted entries)']),
+  };
+};
 
 // Letter groups for range (Hard Coded)
 const letterGroups = [
@@ -101,6 +125,18 @@ class Directory extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.site !== this.props.site) {
+      stopWayfinderAudio('route-change', true);
+      this.setState({
+        tabIndex: 0,
+        searchInput: '',
+        csvData: null,
+        filteredDirectoryIndices: [],
+      }, this.loadCSVData);
+    }
+  }
+
   componentWillUnmount() {
 // Cleanup observer
     if (this.observer) {
@@ -121,6 +157,9 @@ class Directory extends React.Component {
 
   handleSearchChange = (input) => {
     const { csvData } = this.state; // Access csvData from the component's state
+    if (!csvData) {
+      return;
+    }
 
     this.setState({ tabIndex: 8, searchInput: input }); // Set tabIndex to 9 for the "All" tab and update searchInput
 
@@ -153,7 +192,11 @@ class Directory extends React.Component {
           skipEmptyLines: true, // Skip empty lines
           complete: (results) => {
             // Sort the results by name alphabetically
-            const sortedData = results.data.sort((a, b) => {
+            const sanitizedData = results.data
+              .map(sanitizeDirectoryRow)
+              .filter((item) => item.name);
+
+            const sortedData = sanitizedData.sort((a, b) => {
               const nameA = a.name.toLowerCase();
               const nameB = b.name.toLowerCase();
               return nameA.localeCompare(nameB);
@@ -161,8 +204,8 @@ class Directory extends React.Component {
             
             // Update the state with the sorted data
             this.setState({ 
-              csvData: results.data, // Set the parsed CSV data to state
-              filteredDirectoryIndices: results.data // Initialize filteredDirectoryIndices with all items
+              csvData: sortedData, // Set the parsed CSV data to state
+              filteredDirectoryIndices: sortedData // Initialize filteredDirectoryIndices with all items
             });
           },
         });
