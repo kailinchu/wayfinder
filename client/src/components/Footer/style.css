@@ -1,0 +1,11 @@
+.footer-link {
+  color: #474B8E;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  color: #2f817f;
+  text-decoration: underline;
+}

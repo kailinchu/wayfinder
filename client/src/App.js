@@ -10,6 +10,7 @@ import Faqs from './components/Faqs';
 import Feedback from './components/Feedback';
 import Landing from './components/Landing';
 import Map from './components/Map';
+import Credits from './components/Credits';
 import NotFound from './components/NotFound';
 
 import './App.css';
@@ -106,6 +107,9 @@ class App extends Component {
                 <Route index element={<Landing images={images}/>} />
               </Route>
             )}
+            <Route path="/credits" element={<PageLayout displayNavBar={false}/>}>
+              <Route index element={<Credits />} />
+            </Route>
             <Route path="/:site" element={<PageLayout displayNavBar={true}/>}>
               <Route index element={<HospitalSite/>} />
               <Route path=":page" element={<HospitalSite/>} />

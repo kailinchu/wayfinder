@@ -1,0 +1,120 @@
+.credits-page {
+  color: #24304f;
+  padding: 48px 0 56px;
+}
+
+.credits-hero {
+  background:
+    linear-gradient(135deg, rgba(71, 75, 142, 0.96), rgba(38, 148, 158, 0.92)),
+    radial-gradient(circle at top right, rgba(82, 201, 190, 0.55), transparent 36%);
+  border-radius: 28px;
+  color: #fff;
+  margin-bottom: 28px;
+  overflow: hidden;
+  padding: 44px;
+  position: relative;
+}
+
+.credits-hero::after {
+  background: rgba(255, 255, 255, 0.18);
+  content: "";
+  height: 220px;
+  position: absolute;
+  right: -56px;
+  top: -52px;
+  transform: rotate(34deg);
+  width: 120px;
+}
+
+.credits-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.credits-hero h1 {
+  font-size: clamp(2.25rem, 7vw, 4.6rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  margin: 0 0 18px;
+}
+
+.credits-hero p:last-child {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 720px;
+}
+
+.credits-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.credits-card {
+  background: #fff;
+  border: 1px solid rgba(71, 75, 142, 0.14);
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(24, 37, 73, 0.08);
+  padding: 28px;
+}
+
+.credits-card-featured {
+  background: linear-gradient(180deg, #ffffff, #f5fbfb);
+  border-color: rgba(74, 196, 185, 0.45);
+}
+
+.credits-card h2 {
+  color: #1f247f;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.credits-name-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.credits-name-list li {
+  background: #f4f6fb;
+  border: 1px solid rgba(71, 75, 142, 0.12);
+  border-radius: 999px;
+  color: #41506b;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 9px 13px;
+}
+
+@media only screen and (max-width: 600px) {
+  .credits-page {
+    padding: 24px 0 36px;
+  }
+
+  .credits-hero {
+    border-radius: 20px;
+    padding: 30px 22px;
+  }
+
+  .credits-card {
+    border-radius: 18px;
+    padding: 22px;
+  }
+
+  .credits-name-list {
+    gap: 8px;
+  }
+
+  .credits-name-list li {
+    font-size: 0.9rem;
+    padding: 8px 11px;
+  }
+}
