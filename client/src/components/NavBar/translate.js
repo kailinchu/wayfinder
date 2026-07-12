@@ -3,15 +3,41 @@ import { useEffect } from "react";
 
 //translate function component
 const Translate = () => {
+  const includedLanguages = [
+    "en",
+    "ar",
+    "zh-TW",
+    "fr",
+    "es",
+    "zh-CN",
+    "tl",
+    "ta",
+    "ur",
+    "pt-PT",
+    "hi",
+    "pa",
+    "bn",
+    "fa",
+    "gu",
+    "ko",
+    "vi",
+    "ru",
+    "uk",
+    "it",
+  ].join(",");
 
   //sets the initialization to create a new translate widget 
   const googleTranslateElementInit = () => {
+    if (!window.google?.translate?.TranslateElement) {
+      return;
+    }
+
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
         autoDisplay: false,
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        includedLanguages: "en,ar,zh-TW,fr,es,zh-CN,tl,ta,ur,pt-PT",
+        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+        includedLanguages,
       },
       "google_translate_element"
     );
@@ -42,7 +68,10 @@ const Translate = () => {
   }, []);
 
   return (
-    <div id="google_translate_element"></div>
+    <div
+      id="google_translate_element"
+      aria-label="Translate WayFinder website"
+    ></div>
   );
 };
 
