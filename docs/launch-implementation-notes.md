@@ -16,7 +16,7 @@
 ## Preview Deployment
 
 - Branch: `shlok/launch-two-site-wayfinder`
-- Commit SHA: `a88d1d49244bde8466433b5a5264a0bf98d4a8f2`
+- Commit SHA: use the final branch head recorded in the launch handoff.
 - SHN Vercel preview: `https://shn-wayfinder-live-m8xjt4iyv-shn-wayfinder.vercel.app`
 - Vercel deployment dashboard: `https://vercel.com/shn-wayfinder/shn-wayfinder-live/6rZTNsuF7va9YwWKWekPGibpxAGC`
 - Note: direct unauthenticated preview requests currently redirect to Vercel SSO, so preview review requires Vercel access unless deployment protection is changed.
