@@ -116,7 +116,7 @@ const Map = ({ site }) => {
       <section className="floor-browser" aria-labelledby="floor-browser-title">
         <div className="floor-browser-heading">
           <h2 id="floor-browser-title">Centenary floor maps</h2>
-          <p>Select a floor to view the current launch map. Floor 13 is intentionally skipped.</p>
+          <p>Select a floor to view the current launch map.</p>
         </div>
 
         <div className="floor-controls" role="tablist" aria-label="Select a Centenary floor map">
