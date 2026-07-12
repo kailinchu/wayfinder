@@ -75,6 +75,74 @@
   margin-bottom: 18px;
 }
 
+.credits-card-label {
+  color: #2f817f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.credits-team-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.credits-team {
+  background: #f8fbfc;
+  border: 1px solid rgba(74, 196, 185, 0.24);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.credits-team h3 {
+  color: #2f817f;
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0 0 14px;
+}
+
+.credits-role-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.credits-role-list li {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(71, 75, 142, 0.12);
+  border-radius: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 13px 15px;
+}
+
+.credits-card-featured .credits-role-list li {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(74, 196, 185, 0.32);
+}
+
+.credits-person-name {
+  color: #273653;
+  font-weight: 800;
+}
+
+.credits-person-role {
+  background: #eef9f8;
+  border-radius: 999px;
+  color: #2f817f;
+  flex-shrink: 0;
+  font-size: 0.86rem;
+  font-weight: 800;
+  padding: 7px 10px;
+}
+
 .credits-name-list {
   display: flex;
   flex-wrap: wrap;
@@ -107,6 +175,16 @@
   .credits-card {
     border-radius: 18px;
     padding: 22px;
+  }
+
+  .credits-team-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .credits-role-list li {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .credits-name-list {

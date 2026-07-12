@@ -1,15 +1,36 @@
 import React from 'react';
 import './style.css';
 
-const executiveTeam = [
-  'Negha Elsa Binod',
-  'Kailin Chu',
-  'Achinthyaa Kaveri',
-  'Shlok Panchal',
-  'Malika Sinnarajah',
+const leadershipTeam = [
+  { name: 'Kailin Chu', role: 'WayFinder Lead' },
+  { name: 'Negha Elsa Binod', role: 'Maps Lead' },
+  { name: 'Achinthyaa Kaveri', role: 'FAQs/Directory Lead' },
+  { name: 'Shlok Panchal', role: 'Web Dev Lead' },
+  { name: 'Malika Sinnarajah', role: 'FAQs/Directory Lead' },
 ];
 
-const currentVolunteers = [
+const projectTeams = [
+  {
+    team: 'Web Team',
+    members: [
+      { name: 'Shlok Panchal', role: 'Web Dev Lead' },
+      { name: 'Matthew Atu', role: 'Team Member' },
+      { name: 'Kaiyan Chu', role: 'Team Member' },
+    ],
+  },
+  {
+    team: 'Maps Team',
+    members: [
+      { name: 'Negha Elsa Binod', role: 'Maps Lead' },
+      { name: 'Anjaly Jeyacanthan', role: 'Team Member' },
+      { name: 'Faith Zou', role: 'Team Member' },
+      { name: 'Julianne Hu', role: 'Team Member' },
+      { name: 'Neha Rahman', role: 'Team Member' },
+    ],
+  },
+];
+
+const contributors = [
   'Andrew Chen',
   'Kaiyan Chu',
   'Jiya Freya',
@@ -43,10 +64,21 @@ const currentVolunteers = [
 ];
 
 const previousExec = [
-  'Simon Hanna',
-  'Tony Hu',
-  'Malika Shahid',
+  { name: 'Simon Hanna', role: 'Advisory Role' },
+  { name: 'Tony Hu', role: 'Previous Exec' },
+  { name: 'Malika Shahid', role: 'Previous Exec' },
 ];
+
+const RoleList = ({ people }) => (
+  <ul className="credits-role-list">
+    {people.map((person) => (
+      <li key={`${person.name}-${person.role}`}>
+        <span className="credits-person-name">{person.name}</span>
+        <span className="credits-person-role">{person.role}</span>
+      </li>
+    ))}
+  </ul>
+);
 
 const NameList = ({ names }) => (
   <ul className="credits-name-list">
@@ -63,24 +95,38 @@ const Credits = () => (
       <h1 id="credits-title">Volunteer Credits</h1>
       <p>
         WayFinder was built by a volunteer-led team across design, mapping,
-        translation, content, and web development.
+        translation, content, and web development, with thanks to every
+        contributor who helped bring the project to launch.
       </p>
     </div>
 
     <div className="credits-grid">
       <article className="credits-card credits-card-featured">
-        <h2>Executive Team</h2>
-        <NameList names={executiveTeam} />
+        <p className="credits-card-label">Current 2025</p>
+        <h2>Leadership Team</h2>
+        <RoleList people={leadershipTeam} />
+      </article>
+
+      <article className="credits-card">
+        <h2>Project Teams</h2>
+        <div className="credits-team-grid">
+          {projectTeams.map((team) => (
+            <section className="credits-team" key={team.team}>
+              <h3>{team.team}</h3>
+              <RoleList people={team.members} />
+            </section>
+          ))}
+        </div>
       </article>
 
       <article className="credits-card">
         <h2>Present and Past Volunteers</h2>
-        <NameList names={currentVolunteers} />
+        <NameList names={contributors} />
       </article>
 
       <article className="credits-card">
         <h2>Previous Exec</h2>
-        <NameList names={previousExec} />
+        <RoleList people={previousExec} />
       </article>
     </div>
   </section>
