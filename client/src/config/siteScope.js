@@ -2,11 +2,11 @@ const SITE_SCOPE_ALL = 'all';
 const FALLBACK_SITE = 'birchmount';
 
 const normalizeSiteKey = (value) => (value || '').trim().toLowerCase();
+const requestedSiteScope = normalizeSiteKey(process.env.REACT_APP_SITE_SCOPE);
 
-export const siteScope = normalizeSiteKey(process.env.REACT_APP_SITE_SCOPE) === FALLBACK_SITE
-  || normalizeSiteKey(process.env.REACT_APP_SITE_SCOPE) === SITE_SCOPE_ALL
-    ? normalizeSiteKey(process.env.REACT_APP_SITE_SCOPE)
-    : FALLBACK_SITE;
+export const siteScope = requestedSiteScope === FALLBACK_SITE || requestedSiteScope === SITE_SCOPE_ALL
+  ? requestedSiteScope
+  : SITE_SCOPE_ALL;
 
 export const isSingleSitePreview = siteScope !== SITE_SCOPE_ALL;
 
