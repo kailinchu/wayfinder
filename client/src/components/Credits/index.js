@@ -3,10 +3,11 @@ import './style.css';
 
 const leadershipTeam = [
   { name: 'Kailin Chu', role: 'WayFinder Lead' },
+  { name: 'Shlok Panchal', role: 'Web Dev Lead' },
   { name: 'Negha Elsa Binod', role: 'Maps Lead' },
   { name: 'Achinthyaa Kaveri', role: 'FAQs/Directory Lead' },
-  { name: 'Shlok Panchal', role: 'Web Dev Lead' },
   { name: 'Malika Sinnarajah', role: 'FAQs/Directory Lead' },
+  { name: 'Simon Hanna', role: 'Advisory Role' },
 ];
 
 const projectTeams = [
@@ -64,7 +65,6 @@ const contributors = [
 ];
 
 const previousExec = [
-  { name: 'Simon Hanna', role: 'Advisory Role' },
   { name: 'Tony Hu', role: 'Previous Exec' },
   { name: 'Malika Shahid', role: 'Previous Exec' },
 ];
