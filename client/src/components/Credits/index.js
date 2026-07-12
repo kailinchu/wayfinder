@@ -102,7 +102,7 @@ const Credits = () => (
 
     <div className="credits-grid">
       <article className="credits-card credits-card-featured">
-        <p className="credits-card-label">Current 2025</p>
+        <p className="credits-card-label">Current Team (2026)</p>
         <h2>Leadership Team</h2>
         <RoleList people={leadershipTeam} />
       </article>
