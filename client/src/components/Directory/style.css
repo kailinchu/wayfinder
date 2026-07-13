@@ -60,6 +60,69 @@
     margin-bottom: 8px;
   }
 
+  .directory-map-large-button,
+  .directory-map-lightbox-close {
+    background: #181c63;
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 12px;
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  .directory-map-large-button:hover,
+  .directory-map-large-button:focus-visible,
+  .directory-map-lightbox-close:hover,
+  .directory-map-lightbox-close:focus-visible {
+    background: #0056b3;
+    outline: none;
+  }
+
+  .directory-map-lightbox {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.78);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    padding: 22px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 2000;
+  }
+
+  .directory-map-lightbox-content {
+    background: #ffffff;
+    border-radius: 18px;
+    max-height: 94vh;
+    max-width: 1200px;
+    overflow: auto;
+    padding: 20px;
+    width: 100%;
+  }
+
+  .directory-map-lightbox-content h2 {
+    color: #181c63;
+    font-size: 1.35rem;
+    margin: 12px 0 6px;
+  }
+
+  .directory-map-lightbox-content p {
+    color: #343a40;
+    font-weight: 700;
+    margin: 0 0 14px;
+  }
+
+  .directory-map-lightbox-image {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
   .MuiAccordionSummary-content {
     min-width: 0;
   }
@@ -82,5 +145,14 @@
     .mapImage {
       max-height: none;
       margin-top: 12px;
+    }
+
+    .directory-map-lightbox {
+      padding: 8px;
+    }
+
+    .directory-map-lightbox-content {
+      border-radius: 12px;
+      padding: 14px;
     }
   }

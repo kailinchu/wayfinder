@@ -2,7 +2,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import AudioButton, { stopWayfinderAudio } from '../AudioButton';
 import SafeImage from '../SafeImage';
@@ -14,6 +14,18 @@ const AccordionMenu = (props) => {
     //destructuring the props
     const {info, startIdx, endIdx} = props;
     const [expandedKey, setExpandedKey] = useState(null);
+    const [largeViewMap, setLargeViewMap] = useState(null);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                setLargeViewMap(null);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     //add all the indices of objects (referring to the huge array of objects in index.js)
     //the way menu items are displayed is by index from the huge array of objects
@@ -125,11 +137,46 @@ const AccordionMenu = (props) => {
                                 alt={`${map.label} for ${unit.name}`}
                                 className="map-image"
                             />
+                            <button
+                                type="button"
+                                className="directory-map-large-button"
+                                onClick={() => setLargeViewMap({ ...map, unitName: unit.name })}
+                                aria-label={`Open larger map for ${unit.name}`}
+                            >
+                                Open larger map
+                            </button>
                         </figure>
                     ))}
                 </AccordionDetails>
             </Accordion>
         )})}
+        {largeViewMap && (
+            <div
+                className="directory-map-lightbox"
+                role="dialog"
+                aria-modal="true"
+                aria-label={`Large map: ${largeViewMap.label} for ${largeViewMap.unitName}`}
+            >
+                <div className="directory-map-lightbox-content">
+                    <button
+                        type="button"
+                        className="directory-map-lightbox-close"
+                        onClick={() => setLargeViewMap(null)}
+                        aria-label="Close larger map"
+                    >
+                        Close
+                    </button>
+                    <h2>{largeViewMap.unitName}</h2>
+                    <p>{largeViewMap.label}</p>
+                    <SafeImage
+                        src={largeViewMap.src}
+                        alt={`${largeViewMap.label} large map for ${largeViewMap.unitName}`}
+                        className="directory-map-lightbox-image"
+                        loading="eager"
+                    />
+                </div>
+            </div>
+        )}
     </>
     );
 }
