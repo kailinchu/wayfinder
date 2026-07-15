@@ -9,7 +9,12 @@ class Footer extends Component {
     return (
       <footer className="footer mt-auto py-3 bg-light">
         <div className="container">
-          <span className="text-muted">&copy;&nbsp; 2025</span>
+          <span className="text-muted">
+            &copy;&nbsp; 2026 SHN WayFinder. Developed by{' '}
+            <Link className="footer-link" to="/credits">
+              Volunteer Services WayFinding Team and contributors
+            </Link>.
+          </span>
         </div>
       </footer>
     )

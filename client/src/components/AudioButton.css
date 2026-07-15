@@ -1,0 +1,21 @@
+.audio-button {
+  margin-bottom: 12px !important;
+  text-transform: none !important;
+  border-color: #48beb0 !important;
+  color: #1f6f68 !important;
+  font-weight: 600 !important;
+  min-height: 40px !important;
+}
+
+.audio-button:hover {
+  border-color: #1f6f68 !important;
+  background-color: rgba(72, 190, 176, 0.08) !important;
+}
+
+@media (max-width: 600px) {
+  .audio-button {
+    width: 100%;
+    justify-content: center !important;
+    margin-bottom: 14px !important;
+  }
+}
