@@ -36,14 +36,14 @@ const centenaryFloorMaps = [//add a list of valid locations
         'North Parking',
         'South Parking Office',
         'South Stairs',
-        'South Washroom',
+        'South Bathroom',
         'South Elevator',
         'West Stairs',
-        'West Washroom',
+        'West Bathroom',
         'West Elevator',
         'East Stairs',
         'North Elevator',
-        'North Washroom',
+        'North Bathroom',
         'North Stairs'
       ]
     }],  
@@ -78,9 +78,9 @@ const centenaryFloorMaps = [//add a list of valid locations
         'Retail Pharmacy (Shoppers Drug Mart)',
         'Family Birthing Centre',
         'Food Court',
-        'South Washroom',
-        'West Washroom',
-        'North Washroom',
+        'South Bathroom',
+        'West Bathroom',
+        'North Bathroom',
         'South Elevator',
         'East Elevator',
         'North Elevator',
@@ -89,8 +89,8 @@ const centenaryFloorMaps = [//add a list of valid locations
         'Small East Stairs',
         'East Stairs',
         'North Stairs',
-        'East Washroom',
-        'Small East Washroom'
+        'East Bathroom',
+        'Small East Bathroom'
       ]
     }], 
   },
@@ -129,7 +129,7 @@ const centenaryFloorMaps = [//add a list of valid locations
     info: [{
       validLocations: [
         "Dietian's Office",
-        "South Stairs ",
+        "South Stairs",
         "Medicine Clinic",
         "Hemodialysis Zone B",
         "Ortho Rapid Access Clinic (ORAC)",
@@ -159,8 +159,8 @@ const centenaryFloorMaps = [//add a list of valid locations
         "Rehab Gym",
         "East Stairs",
         "South Elevator",
-        "South Washroom",
-        "West Washroom",
+        "South Bathroom",
+        "West Bathroom",
         "West Stairs"
       ]
     }]
@@ -174,7 +174,7 @@ const centenaryFloorMaps = [//add a list of valid locations
         'Mood & Anxiety Clinic',
         'Outpatient Mental Health 6W',
         'West Stairs',
-        'West Washroom',
+        'West Bathroom',
         'South Elevator',
         'East Elevator'
       ]
@@ -585,14 +585,26 @@ const Map = ({ site }) => {
             if (node === start) result.push(start);
           }
         return result;
+  }
+  const contains = (Array, value) => {
+    for (let i = 0; i < Array.length; i++){
+      if (Array[i] === value) {
+        return true;
+      }
     }
+    return false;
+  }
 
-  const findClosestRect = (room, rects) => {
+  const findClosestRect = (room, rects, skip = []) => {
           let closestRectangle = null;
           let closestDistance = Infinity;
           const roomCenter = getCenter(room);
 
           rects.forEach(rect => {
+            if (contains(skip, rect)) {
+              console.log(rect)
+              return;
+            }
             const rectCenter = getCenter(rect);
 
             // find the distance of the room to each of the rectangles
@@ -608,6 +620,24 @@ const Map = ({ site }) => {
           });
 
     return closestRectangle;
+  }
+
+  const fixClosestRect = (doorDots, room, closestDot, roomMap) => {//map 4 is causing some issues due to map interfering
+    let bannedDots = [];
+    let attempts = 0;
+    const MAX_ATTEMPTS = doorDots.length;
+
+    // check if the door dots are in the right svg based on map1selected, then only allow those to be used
+    let doordotMap = closestDot?.closest('#svg-content, #svg-content2');
+    
+    while (doordotMap?.id !== roomMap?.id && attempts < MAX_ATTEMPTS){
+      bannedDots= [...bannedDots, closestDot];
+      closestDot = findClosestRect(room, doorDots, bannedDots);
+      doordotMap = closestDot?.closest('#svg-content, #svg-content2');
+      attempts++;
+    }
+
+    return closestDot;
   }
 
   const makePath = async (room1, room2, map1Selected) => {
@@ -631,8 +661,17 @@ const Map = ({ site }) => {
     const doorDots = [...document.querySelectorAll('path[fill="#525C5C"]')];
 
     // find closest dot to start and end room
-    const closestStartDot = findClosestRect(room1, doorDots);
-    const closestEndDot = findClosestRect(room2, doorDots);
+    let closestStartDot = findClosestRect(room1, doorDots);
+    let closestEndDot = findClosestRect(room2, doorDots);
+
+    //check if the closest dot is in the same map
+    if (map1Selected){
+      closestStartDot = fixClosestRect(doorDots, room1, closestStartDot, room1Map);
+      closestEndDot = fixClosestRect(doorDots, room2, closestEndDot, room1Map);
+    } else {
+      closestStartDot = fixClosestRect(doorDots, room1, closestStartDot, room2Map);
+      closestEndDot = fixClosestRect(doorDots, room2, closestEndDot, room2Map);
+    }
 
     // find closest rect to the dots
     const startRect = findClosestRect(closestStartDot, path);
@@ -648,7 +687,6 @@ const Map = ({ site }) => {
 
     if (points) {//if a path is returned then create a line using the coordinates
       const svg = document.querySelector('#svg-content svg'); // || svg content2
-
       const svg2 = document.querySelector('#svg-content2 svg');
 
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
@@ -657,8 +695,6 @@ const Map = ({ site }) => {
       line.setAttribute('stroke', 'blue');
       line.setAttribute('stroke-width', '5');
       line.setAttribute('fill', 'none');
-      
-      console.log(map1Selected, selectedFloor);
 
       if ((map1Selected && svg) || selectedFloor !== '4'){
         svg.appendChild(line);
