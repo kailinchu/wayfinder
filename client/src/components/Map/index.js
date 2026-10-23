@@ -766,8 +766,9 @@ const Map = ({ site }) => {
     const mapImagePath = `/images/${site}-maps/general.png`;
   
     return (
-      <>
+      <div>
         <div className="title-container">
+          <h1 className="title">Map</h1>
           <h1 className="title">Map</h1>
         </div>
         <SafeImage
