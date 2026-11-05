@@ -4,6 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
+import { track } from '@vercel/analytics/react';
 import AudioButton, { stopWayfinderAudio } from '../AudioButton';
 import SafeImage from '../SafeImage';
 import './style.css';
@@ -76,20 +77,32 @@ const AccordionMenu = (props) => {
         return images.map((image, imageIndex) => ({
             src: image,
             label: labels[imageIndex] || `Map for ${unit.name}`,
+            index: imageIndex,
         }));
     };
 
-    const getReadAloudText = (unit) => {
-        const sectionsText = getEntranceSections(unit)
-            .map((section) => section.label ? `${section.label}. ${section.text}` : section.text)
-            .join(' ');
+    const getMapsForSection = (sectionIndex, sections, maps) => {
+        if (sections.length === 1 || maps.length < sections.length) {
+            return maps;
+        }
 
-        return `${unit.name}. ${sectionsText}`;
+        if (maps.length > sections.length) {
+            return [maps[sectionIndex], ...maps.slice(sections.length)].filter(Boolean);
+        }
+
+        return maps[sectionIndex] ? [maps[sectionIndex]] : [];
     };
 
-    const handleAccordionChange = (key) => (_event, isExpanded) => {
+    const handleAccordionChange = (key, itemName) => (_event, isExpanded) => {
         stopWayfinderAudio('accordion-change', true);
         setExpandedKey(isExpanded ? key : null);
+
+        if (isExpanded) {
+            track('Directory Item Opened', {
+                item_name: itemName,
+                site: window.location.pathname.split('/').filter(Boolean)[0] || 'unknown',
+            });
+        }
     };
 
 
@@ -103,13 +116,31 @@ const AccordionMenu = (props) => {
             const sections = getEntranceSections(unit);
             const maps = getMapEntries(unit);
             const key = `${unit.name}-${idx}`;
+            const renderMaps = (sectionMaps, sectionIndex) => sectionMaps.map((map) => (
+                <figure className="directory-map" key={`${key}-section-${sectionIndex}-map-${map.index}`}>
+                    <figcaption>{map.label}</figcaption>
+                    <SafeImage
+                        src={map.src}
+                        alt={`${map.label} for ${unit.name}`}
+                        className="map-image"
+                    />
+                    <button
+                        type="button"
+                        className="directory-map-large-button"
+                        onClick={() => setLargeViewMap({ ...map, unitName: unit.name })}
+                        aria-label={`Open larger map for ${unit.name}`}
+                    >
+                        Open larger map
+                    </button>
+                </figure>
+            ));
 
             return (
             <Accordion
                 disableGutters
                 key={key}
                 expanded={expandedKey === key}
-                onChange={handleAccordionChange(key)}
+                onChange={handleAccordionChange(key, unit.name)}
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
@@ -119,34 +150,51 @@ const AccordionMenu = (props) => {
                     <Typography fontWeight="600">{unit.name}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <AudioButton
-                        text={getReadAloudText(unit)}
-                        label={`Read ${unit.name} directions aloud`}
-                    />
-                    {sections.map((section, sectionIndex) => (
-                        <div className="directory-section" key={`${key}-section-${sectionIndex}`}>
-                            {section.label && <h3 className="directory-section-title">{section.label}</h3>}
+                    {sections.map((section, sectionIndex) => {
+                        const sectionMaps = getMapsForSection(sectionIndex, sections, maps);
+                        const description = (
                             <div className="directory-description">{section.text}</div>
-                        </div>
-                    ))}
-                    {maps.map((map, mapIndex) => (
-                        <figure className="directory-map" key={`${key}-map-${mapIndex}`}>
-                            <figcaption>{map.label}</figcaption>
-                            <SafeImage
-                                src={map.src}
-                                alt={`${map.label} for ${unit.name}`}
-                                className="map-image"
-                            />
-                            <button
-                                type="button"
-                                className="directory-map-large-button"
-                                onClick={() => setLargeViewMap({ ...map, unitName: unit.name })}
-                                aria-label={`Open larger map for ${unit.name}`}
+                        );
+
+                        if (!section.label) {
+                            return (
+                                <div key={`${key}-section-${sectionIndex}`}>
+                                    <AudioButton
+                                        text={`${unit.name}. ${section.text}`}
+                                        label={`Read ${unit.name} directions aloud`}
+                                    />
+                                    <div className="directory-section">{description}</div>
+                                    {renderMaps(sectionMaps, sectionIndex)}
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <Accordion
+                                disableGutters
+                                key={`${key}-section-${sectionIndex}`}
+                                className="directory-entrance-accordion"
                             >
-                                Open larger map
-                            </button>
-                        </figure>
-                    ))}
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls={`${key}-entrance-${sectionIndex}-content`}
+                                    id={`${key}-entrance-${sectionIndex}-header`}
+                                >
+                                    <Typography fontWeight="600">
+                                        Instructions from {section.label}
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <AudioButton
+                                        text={`${unit.name}. ${section.label}. ${section.text}`}
+                                        label={`Read ${section.label} directions for ${unit.name} aloud`}
+                                    />
+                                    <div className="directory-section">{description}</div>
+                                    {renderMaps(sectionMaps, sectionIndex)}
+                                </AccordionDetails>
+                            </Accordion>
+                        );
+                    })}
                 </AccordionDetails>
             </Accordion>
         )})}
