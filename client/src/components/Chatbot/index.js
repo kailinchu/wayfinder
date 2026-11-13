@@ -12,7 +12,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       timestamp: new Date()
     }
   ]);
-  const messageMax = 5;
+  const messageMax = 3;
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState({});
