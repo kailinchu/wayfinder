@@ -12,6 +12,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       timestamp: new Date()
     }
   ]);
+  const messageMax = 5;
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState({});
@@ -21,7 +22,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const params = window.location.origin;
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -49,7 +49,6 @@ const Chatbot = ({ site = 'birchmount', data }) => {
   });
 }
 
-
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -65,17 +64,19 @@ const Chatbot = ({ site = 'birchmount', data }) => {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setQuestionCount(prev => prev + 1);  // Increment question count
     const currentInput = inputValue;
     setInputValue('');
     setIsLoading(true);
+    const history = updatedMessages.filter(m => !m.isBot).slice(-messageMax).map(m => m.text).join("\n");
 
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: currentInput, site: site, locationOrigin: params }),
+        body: JSON.stringify({ message: history, site: site, locationOrigin: params }),
       });
 
       if (!response.ok) {
@@ -138,6 +139,7 @@ const Chatbot = ({ site = 'birchmount', data }) => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
+      console.log('param', params);
       e.preventDefault();
       handleSubmit(e);
     }

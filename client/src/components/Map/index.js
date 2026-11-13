@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SafeImage from '../SafeImage';
 import './style.css';
 import SearchLocationBar from './searchlocation.js';
+import { useSearchParams } from 'react-router-dom';
 
 const centenaryFloorMaps = [//add a list of valid locations
   {
@@ -333,6 +334,8 @@ const svgMapLabels = [
 let selectedRooms = [];
 
 const Map = ({ site }) => {
+  const [searchParams] = useSearchParams();
+  const FloorParam = searchParams.get("floor");
   const [selectedFloor, setSelectedFloor] = useState('1');
   const [largeViewMap, setLargeViewMap] = useState(null);
   const selectedFloorData = centenaryFloorMaps.find((floorMap) => floorMap.floor === selectedFloor);
@@ -355,6 +358,13 @@ const Map = ({ site }) => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  useEffect(() =>{
+    if (FloorParam) {
+      //initially on page load check params and populate
+        setSelectedFloor(FloorParam);
+      }
+      },[searchParams]);
 
   useEffect(()=>{
     setRoomSelect(prev => ({
@@ -602,7 +612,6 @@ const Map = ({ site }) => {
 
           rects.forEach(rect => {
             if (contains(skip, rect)) {
-              console.log(rect)
               return;
             }
             const rectCenter = getCenter(rect);
@@ -648,11 +657,8 @@ const Map = ({ site }) => {
     //where are the rooms? if both are in svg-content2 then map1Selected = false
     const room1Map = room1?.closest('#svg-content, #svg-content2');
     const room2Map = room2?.closest('#svg-content, #svg-content2');
-
-    console.log(room1Map?.id, room2Map?.id);
     
     if (room1Map?.id !== room2Map?.id) {
-      console.log('Rooms are on different maps');
       alert('Rooms are on different maps');
       return;
     }
@@ -735,7 +741,6 @@ const Map = ({ site }) => {
     const room2Map = room2?.closest('#svg-content, #svg-content2');
 
     if (room1Map?.id !== room2Map?.id) {
-      console.log('Rooms are on different maps');
       alert('Rooms are on different maps');
       return;
     }
@@ -777,7 +782,7 @@ const Map = ({ site }) => {
           className="map"
           loading="eager"
         />
-      </>
+      </div>
     );
   }
 

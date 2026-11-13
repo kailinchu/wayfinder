@@ -32,73 +32,300 @@ function readCSVFile(filePath) {
 }
 
 function prepareMapContext(site, locationOrigin){
-const allowedLocations = [
-"Food Court",
-"Family Birthing Center",
-"Emergency",
-"Fracture Clinic",
-"Diagnostic Imaging",
-"Arrhythmia Clinic Cardiac Diagnostics",
-"Intensive Care Unit (ICU)",
-"Cath lab Code STEMI",
-"Worship &#38; Meditation",
-"Surgical Specialty Clinics",
-"Endoscopy Clinic",
-"Pulmonary Function Test (PFT) Lab",
-"SHN Foundation Office",
-"Life Labs",
-"Registration Kiosks",
-"Patient Registration",
-"Lifemark Physiotherapy Sports Desk",
-"Information Desk",
-"Same Day Surgery",
-"Gynecology",
-"Maternal Fetal Medicine Clinic",
-"Obstetetric Medicine Clinic",
-"Neonatal Intensive Care Unit (NICU)",
-"Retail Pharmacy (Shoppers Drug Mart)",
-"Gift Shop",
-"Washroom Southwest",
-"Small Bathroom West",
-"South Bathroom",
-"Washroom East",
-"North Bathroom",
-"Elevator South",
-"Elevator West",
-"Elevator North",
-"Stairs West",
-"West Stairs Big",
-"Stairs South",
-"Stairs North",
-"Stairs Southwest",
-"Parking Office",
-"North Parking",
-"ATM Machine",
+const Floor1allowedLocations = [
+'Security',
+'Hemodialysis',
+'Registration Kiosks',
+'Breast Clinic / Bone Mineral Density & Laboratory Reception and Waiting Room',
+'Occupational Therapy & Physiotherapy',
+'Speech & Audiology',
+'Patient Registration',
+'MRI',
+'Palliative Hub',
+'G.A.I.N. Clinic',
+'Volunteer Services',
+'Patient Billing & Payroll',
+'Medical Device Reprocessing Department (MDRD)',
+'Diabetes Program',
+'Health Records',
+'Workspace',
+'Health & Safety',
+'Diabetes Education Theatre',
+'Tunnel to Shoniker Building',
+'Cancer Care & Hematology Clinic',
+'Thyroid Rapid Diagnostic Clinic',
+'Human Resources',
+'Medical Mall',
+'North Parking',
+'South Parking Office',
+'South Stairs',
+'South Bathroom',
+'South Elevator',
+'West Stairs',
+'West Bathroom',
+'West Elevator',
+'East Stairs',
+'North Elevator',
+'North Bathroom',
+'North Stairs'
 ];
 
-console.log(site);
-  const MapContext = `
-    Here is the link to the map: ${locationOrigin}/${site}/map\n
+const Floor2allowedLocations = [
+        'Emergency',
+        'Fracture Clinic',
+        'Cath Lab Code STEMI',
+        'Intensive Care Unit (ICU)',
+        'Arrhythmia Clinic Cardiac Diagnostics',
+        'Diagnostic Imaging',
+        'Surgical Specialty Clinics',
+        'Worship & Meditation',
+        'Endoscopy Clinic',
+        'Pulmonary Function Test (PFT) Lab',
+        'Life Labs',
+        'SHN Foundation Office',
+        'Same Day Surgery',
+        'Gynecology',
+        'Maternal Fetal Medicine Clinic',
+        'Obstetric Medicine Clinic',
+        'Neonatal Intensive Care Unit (NICU)',
+        'Information Desk',
+        'Gift Shop',
+        'Lifemark Physiotherapy Sports Medicine',
+        'Parking Office',
+        'Retail Pharmacy (Shoppers Drug Mart)',
+        'Family Birthing Centre',
+        'Food Court',
+        'South Bathroom',
+        'West Bathroom',
+        'North Bathroom',
+        'South Elevator',
+        'East Elevator',
+        'North Elevator',
+        'South Stairs',
+        'Southeast Stairs',
+        'Small East Stairs',
+        'East Stairs',
+        'North Stairs',
+        'East Bathroom',
+        'Small East Bathroom'
+];
 
-    From this point onward, the instructions are only for "centenary" hospital. use ${site} to figure out which hospital it is. 
-    Do not say you can provide a link base off of a start and end location
+const Floor3allowedLocations = [
+        "Restorative Rehabilitation Unit 3E",
+        "Restorative Rehabilitation Unit 3W",
+        "Administration",
+        "Nutrition and Food Services",
+        "Board Room C3D",
+        "Meeting Room C3B",
+        "Conference Room C3A",
+        "Atrium Lounge Area",
+        "South Elevator",
+        'South Stairs',
+        'West Stairs',
+        'Tower Elevator',
+        'North Stairs',
+        'East Bathroom (Female)',
+        'East Bathroom (Male)',
+        'East Stairs'
+];
 
-    if the user needs furthur direction, ask them for a start and end location then, Create a custom link using: ${locationOrigin}/${site}/map?start=Start&end=End
-    IMPORTANT: Base ALL responses on the actual hospital data provided above. Do not invent or assume information not present in the context.
-    IMPORTANT: the custom link is only for "centenary" hospital, look use ${site} to figure out which one it is for. In case of "birchmount" do not say you can create a custom link, 
-    do not as for starting and ending locations for custom link creation purposes.
+const Floor4allowedLocationsTower = [ // split tower and MBW
+        "Dietian's Office",
+        "South Stairs",
+        "Medicine Clinic",
+        "Hemodialysis Zone B",
+        "Ortho Rapid Access Clinic (ORAC)",
+        "West Stairs",
+        "East Stairs",
+        "East Elevator",
+        "Genetics Clinic",
+        "West Bathroom"
+];
 
+const Floor4allowedLocationsMBW = [
+        "Cardiology Unit",
+        "Coronary Care Unit",
+        "South Bathroom",
+        "West Elevator",
+        "North Stairs"
+];
 
-    Conditions for custom link:
-    1. if the user provides a start and end location, once you see two locations in ${allowedLocations}
-    2. the first one is Start the second one is End, then give them a link in ${locationOrigin}/${site}/map?start=Start&end=End. Only accept locations on this list ${allowedLocations}
-    3. when a link is made do not include any punctuation at the end of the link
-    4. if the location has multiple words make sure the link is in a valid format, use %20 as separators between words and %28 for brackets
-    5. if you do not understand a request just give them ${locationOrigin}/${site}/map
+const Floor5allowedLocations = [
+        "Nursing Station",
+        "Rehabilitation Unit 5E",
+        "Lounge Area",
+        "Surgical Unit 5W",
+        "Rehab Gym",
+        "East Stairs",
+        "South Elevator",
+        "South Bathroom",
+        "West Bathroom",
+        "West Stairs"
+]
 
-    Here are the allowed locations for the map: ${allowedLocations}
-    `
+const Floor6allowedLocations = [
+        'Mood & Anxiety Clinic',
+        'Outpatient Mental Health 6W',
+        'West Stairs',
+        'West Bathroom',
+        'South Elevator',
+        'East Elevator'
+]
+const Floor7allowedLocations = [
+        'Newborn Assessment Clinic',
+        'Kids Care Clinic',
+        'Kids Care Unit 7W',
+        'Healthy Outcome Pediatric Program of Scarborough (HOPPS) Clinic',
+        'Kids Care (POGO) Clinic',
+        'Acute Care',
+        'West Stairs',
+        'West Bathroom',
+        'South Bathroom',
+        'South Elevator',
+        'East Stairs'
+]
+const Floor8allowedLocations = [
+        'Medicine Unit 8E',
+        'Medicine Unit 8SW',
+        'Child & Adolescent Mental Health Unit 8NW',
+        'West Stairs',
+        'West Bathroom',
+        'East Bathroom',
+        'South Bathroom',
+        'South Elevator',
+        'East Stairs'
+]
+const Floor9allowedLocations = [
+        'Medicine Unit 9E',
+        'Medicine Unit 9W',
+        'West Stairs',
+        'West Bathroom',
+        'South Bathroom',
+        'South Elevator',
+        'East Elevator',
+        'East Stairs'
+]
+const Floor10allowedLocations = [
+        'Psychiatric Intensive Care Unit (PICU) 10E',
+        'Mental Health & Psychiatric Intensive Care Unit (PICU) 10W',
+        '10W Care Station',
+        'West Stairs',
+        'South Elevator',
+        'East Stairs'
+]
+const Floor11allowedLocations = [
+        'Finance Procurement',
+        'Lounge Area',
+        'Kandhal & Singh Cardiovascular Education Theatre C11A',
+        'Labraico Cardiovascular Rehabilitation',
+        'Cardiac Program Call Centre',
+        'South Elevator',
+        'North Bathroom (Male)',
+        'North Bathroom (Female)',
+        'East Stairs'
+]
+const Floor12allowedLocations = [
+        'Kids and Teens Care Specialty Clinics',
+        'Patient Safety',
+        'Privacy & Risk Management',
+        'Professional Practice',
+        'Quality Office',
+        'Strategy & Transformation',
+        'Trillium Gift of Life',
+        'West Stairs',
+        'North Elevator',
+        'South Bathroom',
+        'East Stairs'
+]
+const Floor14allowedLocations = [
+        'Payroll Office',
+        'Patient Billing',
+        'Enterprise Analytics',
+        'Digital Services',
+        'Biomedical Engineering',
+        'Support Services / Resource Centre',
+        'Environmental Services (EVS)',
+        'Plant & Facilities Operations',
+        'West Stairs',
+        'East Elevator',
+        'East Bathroom (Female)',
+        'East Bathroom (Male)',
+        'East Stairs',
+        'East Bathroom'
+]
 
+const baseMapContext = `
+<map_general>
+Hospital map: ${locationOrigin}/${site}/map
+Base all answers on the hospital data provided above. Do not invent or assume information that is not in the context.
+If a request is unclear, give the general map link above.
+</map_general>
+`;
+
+const centenaryMapContext = `
+${baseMapContext}
+
+<custom_link_feature>
+You can generate a custom directions link for this hospital.
+
+WHEN TO GENERATE ONE
+Generate a link whenever the user wants to get somewhere or find something in the hospital, including phrasing like "how do I get to", "where is", "directions to", "take me to", "I'm at X and need Y", or "find the X". Don't wait for them to say "link" or "map".
+
+WORKFLOW
+1. Identify the START location, END location, and FLOOR from the conversation. Use anything already stated; don't re-ask.
+2. If any of the three is missing, ask only for what's missing (always ask for the floor if they haven't given it).
+3. Validate: both locations must appear in the allowed list for that floor, and both must be on the same floor.
+   - Floor 4 has two maps (Tower and Margret Birch Wing). Both locations must be on the same one.
+4. If valid, output the link. If not, explain briefly what's wrong and ask for a correction.
+5. If you can see both locations are on the same floor, then don't ask to clarify the room, just create the appropriate link.
+
+LINK FORMAT
+${locationOrigin}/${site}/map?start=START&end=END&floor=FLOOR
+
+- Replace spaces with %20 and "(" / ")" with %28 / %29.
+- Do not include any punctuation or brackets when generating a link, and put it on its own line.
+- Supported floors: 1-12 and 14.
+</custom_link_feature>
+
+<allowed_locations>
+<floor n="1">${Floor1allowedLocations}</floor>
+<floor n="2">${Floor2allowedLocations}</floor>
+<floor n="3">${Floor3allowedLocations}</floor>
+<floor n="4" map="Tower">${Floor4allowedLocationsTower}</floor>
+<floor n="4" map="Margret Birch Wing">${Floor4allowedLocationsMBW}</floor>
+<floor n="5">${Floor5allowedLocations}</floor>
+<floor n="6">${Floor6allowedLocations}</floor>
+<floor n="7">${Floor7allowedLocations}</floor>
+<floor n="8">${Floor8allowedLocations}</floor>
+<floor n="9">${Floor9allowedLocations}</floor>
+<floor n="10">${Floor10allowedLocations}</floor>
+<floor n="11">${Floor11allowedLocations}</floor>
+<floor n="12">${Floor12allowedLocations}</floor>
+<floor n="14">${Floor14allowedLocations}</floor>
+</allowed_locations>
+
+<examples>
+User: How do I get from security to the the thyroid clinic? I'm on floor 1.
+Assistant: Here's your route:
+${locationOrigin}/${site}/map?start=Security&end=Thyroid%20Rapid%20Diagnostic%20Clinic&floor=1
+
+User: Where is radiology?
+Assistant: Happy to help. Which floor are you on, and where are you starting from?
+
+User: how do I get from the food court to the emergency room?
+Assistant: Here's your route on floor 2:
+${locationOrigin}/${site}/map?start=Food%20Court&end=Emergency&floor=2
+
+User: I'm on floor 2 at Elevator A, take me to Room 2%28B%29 on floor 3.
+Assistant: Both locations need to be on the same floor for a route. Which floor is your destination on, or do you want directions to an elevator first?
+</examples>
+`;
+
+const birchmountMapContext = baseMapContext; // no custom links
+
+const MapContext = site === "centenary" ? centenaryMapContext : birchmountMapContext;
+
+    
   return MapContext;
 }
 
@@ -205,7 +432,7 @@ function prepareHospitalContext(site) {
 
 async function chatHandler(req, res) {
   try {
-    const { message, site, locationOrigin } = req.body;
+    const { message, site, locationOrigin } = req.body;// send array  of the past 5 messages to the AI
 
     if (!message || !site) {
       return res.status(400).json({ message: 'Missing required fields' });
@@ -243,13 +470,13 @@ IMPORTANT: Base ALL responses on the actual hospital data provided above. Do not
 Remember: You are representing ${site.charAt(0).toUpperCase() + site.slice(1)} Hospital, so maintain a professional and helpful tone at all times.`;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-nano",
+      model: "gpt-6-luna",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message }
       ],
-      max_tokens: 100,
-      temperature: 0.3, 
+      max_completion_tokens: 1000,
+      temperature: 1, 
     });
 
     const responseMessage = completion.choices[0].message.content;
