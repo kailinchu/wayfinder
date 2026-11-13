@@ -11,6 +11,8 @@ import Feedback from './components/Feedback';
 import Landing from './components/Landing';
 import Map from './components/Map';
 import Credits from './components/Credits';
+import InteractiveMap from './components/Map';
+import Chatbot from './components/Chatbot';
 import NotFound from './components/NotFound';
 
 import './App.css';
@@ -60,9 +62,11 @@ const HospitalSite = () => {
     case 'directory':
       return <Directory data={data.directory} site={site} />;
     case 'map':
-      return <Map data={data.map} site={site}/>;
+      return <InteractiveMap data={data.map} site={site}/>;
     case 'feedback':
       return <Feedback data={data.feedback} />;
+    case 'chatbot':
+      return <Chatbot site={site} data={data} />;
     default:
       return <NotFound />;
   }
@@ -97,7 +101,7 @@ class App extends Component {
     return (
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Analytics />
+          {/* <Analytics /> */}
 
           <Routes>
             {isSingleSitePreview ? (
